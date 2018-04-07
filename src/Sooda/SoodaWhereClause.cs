@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,115 +27,123 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using Sooda.QL;
-
 namespace Sooda
 {
+    using System.Collections.Generic;
+    using QL;
+
     public class SoodaWhereClause
     {
         private SoqlBooleanExpression whereExpression;
-        private object[] parameters = null;
+        private object[] parameters;
 
-        public SoodaWhereClause() : this((string)null, null) { }
-        public SoodaWhereClause(string whereText) : this(whereText, null) { }
+        public SoodaWhereClause() : this((string) null, null)
+        {
+        }
+
+        public SoodaWhereClause(string whereText) : this(whereText, null)
+        {
+        }
+
         public SoodaWhereClause(string whereText, params object[] par)
         {
-            this.Parameters = par;
+            Parameters = par;
             if (whereText != null)
             {
-                this.WhereExpression = SoqlParser.ParseWhereClause(whereText);
+                WhereExpression = SoqlParser.ParseWhereClause(whereText);
             }
             else
             {
-                this.WhereExpression = null;
+                WhereExpression = null;
             }
         }
 
         public SoodaWhereClause(SoqlBooleanExpression whereExpression)
         {
-            this.WhereExpression = whereExpression;
+            WhereExpression = whereExpression;
         }
 
         public SoodaWhereClause(SoqlBooleanExpression whereExpression, params object[] par)
         {
-            this.Parameters = par;
-            this.WhereExpression = whereExpression;
+            Parameters = par;
+            WhereExpression = whereExpression;
         }
 
         public SoqlBooleanExpression WhereExpression
         {
-            get
-            {
-                return whereExpression;
-            }
-            set
-            {
-                whereExpression = value;
-            }
+            get { return whereExpression; }
+            set { whereExpression = value; }
         }
 
         public object[] Parameters
         {
-            get
-            {
-                return this.parameters;
-            }
+            get { return parameters; }
             set
             {
                 if (value != null && value.Length != 0)
                 {
-                    this.parameters = value;
+                    parameters = value;
                 }
                 else
                 {
-                    this.parameters = null;
+                    parameters = null;
                 }
             }
         }
-
 
         public SoodaWhereClause Append(SoodaWhereClause other)
         {
             if (other.WhereExpression == null)
                 return this;
-            if (this.WhereExpression == null)
+            if (WhereExpression == null)
                 return other;
 
-            object[] newParams = this.Parameters;
+            object[] newParams = Parameters;
 
-            if (this.Parameters == null)
+            if (Parameters == null)
                 newParams = other.Parameters;
-            else if (other.Parameters != null)
-                throw new SoodaException("You cannot merge two where clauses when they both have parameters");
-
+            else if (other.Parameters != null) //wash{
+            {
+                List<object> objlist = new List<object>(newParams);
+                foreach (object o in other.Parameters)
+                {
+                    objlist.Add(o);
+                }
+                newParams = objlist.ToArray();
+                //throw new SoodaException("You cannot merge two where clauses when they both have parameters");
+            } //}wash
             return new SoodaWhereClause(new SoqlBooleanAndExpression(
-                this.WhereExpression, other.WhereExpression), newParams);
+                WhereExpression, other.WhereExpression), newParams);
+        }
+
+        public static SoodaWhereClause operator +(SoodaWhereClause where1, SoodaWhereClause where2)
+        {
+            return where1.Append(where2);
         }
 
         public bool Matches(SoodaObject obj, bool throwOnUnknown)
         {
-            if (this.WhereExpression == null)
+            if (WhereExpression == null)
                 return true;
 
             EvaluateContext context = new EvaluateContext(this, obj);
-            object val = this.WhereExpression.Evaluate(context);
-            if (val == null && throwOnUnknown)
-                throw new SoqlException("Cannot evaluate expression '" + this.whereExpression.ToString() + " ' in memory.");
+            object val = WhereExpression.Evaluate(context);
+            //if (val == null && throwOnUnknown)
+            // throw new SoqlException("Cannot evaluate expression '" + this.whereExpression.ToString() + " ' in memory.");
 
             if (val is bool)
-                return (bool)val;
-            else
-                return false;
+                return (bool) val;
+            return false;
         }
 
         public override string ToString()
         {
-            return (this.WhereExpression != null) ? this.WhereExpression.ToString() : "";
+            return (WhereExpression != null) ? WhereExpression.ToString() : "";
         }
 
-        public static readonly SoodaWhereClause Unrestricted = new SoodaWhereClause((string)null);
+        public static readonly SoodaWhereClause Unrestricted = new SoodaWhereClause((string) null);
 
-        class EvaluateContext : ISoqlEvaluateContext
+        private class EvaluateContext : ISoqlEvaluateContext
         {
             private SoodaWhereClause _whereClause;
             private SoodaObject _rootObject;
@@ -159,4 +166,3 @@ namespace Sooda
         }
     }
 }
-

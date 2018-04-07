@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,17 +27,21 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using Sooda.Schema;
-
 namespace Sooda.QL
 {
+    using Schema;
+
     public class SoqlLiteralValueModifiers
     {
         private FieldDataType _dataTypeOverride;
 
-        public readonly static SoqlLiteralValueModifiers AnsiString = new SoqlLiteralValueModifiers(FieldDataType.AnsiString);
+        public static readonly SoqlLiteralValueModifiers AnsiString =
+            new SoqlLiteralValueModifiers(FieldDataType.AnsiString);
 
-        public SoqlLiteralValueModifiers() { }
+        public SoqlLiteralValueModifiers()
+        {
+        }
+
         public SoqlLiteralValueModifiers(FieldDataType dataType)
         {
             _dataTypeOverride = dataType;

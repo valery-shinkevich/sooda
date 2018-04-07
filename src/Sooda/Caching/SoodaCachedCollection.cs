@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,11 +27,10 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System.Collections;
-
-
 namespace Sooda.Caching
 {
+    using System.Collections;
+
     public class SoodaCachedCollection
     {
         private string _rootClassName;

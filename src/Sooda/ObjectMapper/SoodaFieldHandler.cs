@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,41 +27,31 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.Data;
-using System.Xml;
-
 namespace Sooda.ObjectMapper
 {
+    using System;
+    using System.Data;
+    using System.Xml;
+
     public abstract class SoodaFieldHandler
     {
-        readonly bool _isNullable;
+        private readonly bool _isNullable;
 
         protected SoodaFieldHandler(bool nullable)
         {
-            this._isNullable = nullable;
+            _isNullable = nullable;
         }
 
         public bool IsNullable
         {
-            get
-            {
-                return _isNullable;
-            }
+            get { return _isNullable; }
         }
 
         public object Deserialize(XmlReader xr)
         {
             if (xr.GetAttribute("type") != TypeName)
                 throw new ArgumentException("Invalid field type on deserialize");
-            if (xr.GetAttribute("null") != null)
-            {
-                return null;
-            }
-            else
-            {
-                return RawDeserialize(xr.GetAttribute("value"));
-            }
+            return xr.GetAttribute("null") != null ? null : RawDeserialize(xr.GetAttribute("value"));
         }
 
         protected abstract string TypeName { get; }
@@ -88,18 +77,19 @@ namespace Sooda.ObjectMapper
 
         public abstract Type GetFieldType();
         public abstract Type GetSqlType();
+
         public virtual Type GetNullableType()
         {
             return GetFieldType();
         }
 
+        // ReSharper disable once InconsistentNaming
         public abstract void SetupDBParameter(IDbDataParameter parameter, object value);
 
         public virtual string GetTypedWrapperClass()
         {
-            return "Sooda.QL.TypedWrappers.Soql" + (IsNullable ? "Nullable" : "") + GetFieldType().Name + "WrapperExpression";
+            return "Sooda.QL.TypedWrappers.Soql" + (IsNullable ? "Nullable" : "") + GetFieldType().Name +
+                   "WrapperExpression";
         }
-
     }
 }
-

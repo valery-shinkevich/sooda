@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -31,9 +30,12 @@
 using System.Reflection;
 
 [assembly: AssemblyTitle("Sooda")]
-[assembly: AssemblyDescription("Sooda")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Sooda Community - sooda.sourceforge.net")]
-[assembly: AssemblyProduct("Sooda - Simple Object Oriented Database Access")]
-[assembly: AssemblyCopyright("Copyright (c) 2002-2006 by Jaroslaw Kowalski")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("")]
+[assembly: AssemblyCopyright("Copyright (c) 2002-2006 by Jarek, pfusik, WaSh")]
 [assembly: AssemblyCulture("")]
+[assembly: AssemblyVersion("2.4.910.*")]
+[assembly: AssemblyFileVersion("2.0.0.0")]
+//skip 893

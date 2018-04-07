@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,8 +27,10 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using Sooda.Schema;
 using System;
+using System.Xml;
+using Sooda.Schema;
+using Sooda.Sql;
 using System.IO;
 using System.Xml.Serialization;
 
@@ -37,16 +38,20 @@ namespace SoodaSchemaTool
 {
     [Command("updateschema", "Update schema.")]
     public class CommandUpdateSchema : Command, ISchemaImporterOptions
-    {
-        string _databaseType = "mssql";
-        string _connectionString;
-        string _schemaFile;
-        bool _updateTypes = false;
-        bool _updateSizes = false;
-        bool _updateNullable = false;
-        bool _updatePrimaryKeys = false;
-        string _tableName = null;
-        string _outputSchemaFile = null;
+	{
+        private string _databaseType = "mssql";
+        private string _connectionString;
+        private string _schemaFile;
+        private bool _updateTypes = false;
+        private bool _updateSizes = false;
+        private bool _updateNullable = false;
+        private bool _updatePrimaryKeys = false;
+        private string _tableName = null;
+        private string _outputSchemaFile = null;
+
+		public CommandUpdateSchema()
+		{
+		}
 
         public string DatabaseType
         {
@@ -104,24 +109,27 @@ namespace SoodaSchemaTool
 
         public override int Run(string[] args)
         {
-            SchemaImporter importer = null;
+            Sooda.Schema.SchemaImporter importer = null;
 
             switch (DatabaseType)
             {
                 case "mssql":
                 case "sqlserver":
-                    importer = new MSSqlSchemaImporter();
+                    importer = new MsSqlSchemaImporter();
                     break;
+                default:
+                    throw new NotImplementedException();
             }
 
             SchemaInfo dbSchemaInfo = importer.GetSchemaFromDatabase(this);
 
-            XmlSerializer ser = new XmlSerializer(typeof(SchemaInfo));
+
+            XmlSerializer ser = new XmlSerializer(typeof (SchemaInfo));
 
             SchemaInfo currentSchemaInfo;
             using (FileStream fs = File.OpenRead(SchemaFile))
             {
-                currentSchemaInfo = (SchemaInfo)ser.Deserialize(fs);
+                currentSchemaInfo = (SchemaInfo) ser.Deserialize(fs);
             }
 
             if (UpdateTypes || UpdateSizes || UpdateNullable || UpdatePrimaryKeys)
@@ -197,5 +205,5 @@ namespace SoodaSchemaTool
             if (UpdatePrimaryKeys)
                 fi.IsPrimaryKey = dbfi.IsPrimaryKey;
         }
-    }
+	}
 }

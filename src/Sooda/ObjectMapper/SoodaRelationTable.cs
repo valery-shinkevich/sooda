@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,15 +27,15 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using Sooda.Caching;
-using System;
-using System.Xml;
-
-// TODO - this is very hackish - needs to be cleaned up
+ // TODO - this is very hackish - needs to be cleaned up
 // original intention was preserving memory, but this has gone too far
 
 namespace Sooda.ObjectMapper
 {
+    using System;
+    using System.Xml;
+    using Caching;
+
     public class SoodaRelationTupleChangedArgs : EventArgs
     {
         public object Left;
@@ -45,9 +44,9 @@ namespace Sooda.ObjectMapper
 
         public SoodaRelationTupleChangedArgs(object left, object right, int mode)
         {
-            this.Left = left;
-            this.Right = right;
-            this.Mode = mode;
+            Left = left;
+            Right = right;
+            Mode = mode;
         }
     }
 
@@ -59,21 +58,22 @@ namespace Sooda.ObjectMapper
         {
             public object ref1;
             public object ref2;
-            public int tupleMode;       // -1 - remove, +1 - add
+            public int tupleMode; // -1 - remove, +1 - add
             public bool saved;
         }
 
-        private Tuple[] tuples = null;
-        private int count = 0;
+        private Tuple[] tuples;
+        private int count;
         private string tableName;
         private string leftColumnName;
         private string rightColumnName;
-        private Sooda.Schema.RelationInfo relationInfo;
-        private bool _dirty = false;
+        private Schema.RelationInfo relationInfo;
+        private bool _dirty;
 
         public event SoodaRelationTupleChanged OnTupleChanged;
 
-        protected SoodaRelationTable(string tableName, string leftColumnName, string rightColumnName, Sooda.Schema.RelationInfo relationInfo)
+        protected SoodaRelationTable(string tableName, string leftColumnName, string rightColumnName,
+            Schema.RelationInfo relationInfo)
         {
             this.relationInfo = relationInfo;
             this.tableName = tableName;
@@ -83,18 +83,12 @@ namespace Sooda.ObjectMapper
 
         public int TupleCount
         {
-            get
-            {
-                return count;
-            }
+            get { return count; }
         }
 
         public Tuple[] Tuples
         {
-            get
-            {
-                return tuples;
-            }
+            get { return tuples; }
         }
 
         public void Add(object ref1, object ref2)
@@ -107,7 +101,7 @@ namespace Sooda.ObjectMapper
             SetTupleMode(ref1, ref2, -1);
         }
 
-        void SetTupleMode(object ref1, object ref2, int tupleMode)
+        private void SetTupleMode(object ref1, object ref2, int tupleMode)
         {
             _dirty = true;
             for (int i = 0; i < count; ++i)
@@ -117,8 +111,8 @@ namespace Sooda.ObjectMapper
                     if (tuples[i].tupleMode != tupleMode)
                         tuples[i].saved = false;
                     tuples[i].tupleMode = tupleMode;
-                    if (this.OnTupleChanged != null)
-                        this.OnTupleChanged(this, new SoodaRelationTupleChangedArgs(ref1, ref2, tupleMode));
+                    if (OnTupleChanged != null)
+                        OnTupleChanged(this, new SoodaRelationTupleChangedArgs(ref1, ref2, tupleMode));
                     return;
                 }
             }
@@ -127,17 +121,17 @@ namespace Sooda.ObjectMapper
             tuples[count].ref2 = ref2;
             tuples[count].tupleMode = tupleMode;
             count++;
-            if (this.OnTupleChanged != null)
-                this.OnTupleChanged(this, new SoodaRelationTupleChangedArgs(ref1, ref2, tupleMode));
+            if (OnTupleChanged != null)
+                OnTupleChanged(this, new SoodaRelationTupleChangedArgs(ref1, ref2, tupleMode));
         }
 
-        void MakeRoom()
+        private void MakeRoom()
         {
             if (tuples == null || count >= tuples.Length)
             {
                 int newCapacity = 64;
                 if (tuples != null)
-                    newCapacity = tuples.Length * 2;
+                    newCapacity = tuples.Length*2;
                 if (newCapacity < 64)
                     newCapacity = 64;
 
@@ -172,11 +166,12 @@ namespace Sooda.ObjectMapper
                         if (first)
                         {
                             first = false;
-                            tran.PrecommitRelation(this.relationInfo);
+                            tran.PrecommitRelation(relationInfo);
                         }
                     }
 
-                    ds.MakeTuple(tableName, leftColumnName, rightColumnName, tuples[i].ref1, tuples[i].ref2, tuples[i].tupleMode);
+                    ds.MakeTuple(tableName, leftColumnName, rightColumnName, tuples[i].ref1, tuples[i].ref2,
+                        tuples[i].tupleMode);
                     tuples[i].saved = true;
                 }
             }
@@ -226,9 +221,11 @@ namespace Sooda.ObjectMapper
         {
             if (_dirty)
             {
-                cache.Invalidate(this.relationInfo.Name, "", SoodaCacheInvalidateReason.ManyToManyModified);
-                cache.Invalidate(this.relationInfo.GetRef1ClassInfo().Name, "", SoodaCacheInvalidateReason.ManyToManyModified);
-                cache.Invalidate(this.relationInfo.GetRef2ClassInfo().Name, "", SoodaCacheInvalidateReason.ManyToManyModified);
+                cache.Invalidate(relationInfo.Name, "", SoodaCacheInvalidateReason.ManyToManyModified);
+                cache.Invalidate(relationInfo.GetRef1ClassInfo().Name, "", SoodaCacheInvalidateReason.ManyToManyModified);
+                    //cache
+                cache.Invalidate(relationInfo.GetRef2ClassInfo().Name, "", SoodaCacheInvalidateReason.ManyToManyModified);
+                    //cache
             }
             _dirty = false;
         }

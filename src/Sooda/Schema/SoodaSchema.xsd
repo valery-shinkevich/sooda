@@ -8,10 +8,11 @@
       <xsd:element name="include" type="sooda:IncludeInfo" minOccurs="0" maxOccurs="unbounded" />
       <xsd:element name="datasource" type="sooda:DataSourceInfo" minOccurs="0" maxOccurs="unbounded" />
       <xsd:element name="cachingPolicy" type="sooda:CachingPolicy" minOccurs="0" maxOccurs="unbounded" />
-      <xsd:element name="defaultPrecommitValues" type="sooda:DefaultPrecommitValues" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="defaultPrecommitValues" type="xsd:boolean" minOccurs="0" maxOccurs="1" />
       <xsd:element name="precommitValue" type="sooda:PrecommitValueInfo" minOccurs="0" maxOccurs="unbounded" />
       <xsd:element name="class" type="sooda:ClassInfo" minOccurs="1" maxOccurs="unbounded" />
       <xsd:element name="relation" type="sooda:RelationInfo" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element name="enum" type="sooda:EnumInfo" minOccurs="0" maxOccurs="unbounded" />
     </xsd:choice>
   </xsd:complexType>
   <xsd:complexType name="PrecommitValueInfo">
@@ -19,7 +20,7 @@
     <xsd:attribute name="value" type="xsd:string" use="required" />
   </xsd:complexType>
   <xsd:complexType name="IncludeInfo">
-    <xsd:attribute name="schema" type="xsd:string" use="required" />
+    <xsd:attribute name="schema" type="xsd:string" use="optional" />
     <xsd:attribute name="namespace" type="xsd:string" use="optional" />
     <xsd:attribute name="assembly" type="xsd:string" use="optional" />
   </xsd:complexType>
@@ -31,7 +32,6 @@
     <xsd:sequence>
       <xsd:any processContents="lax"  minOccurs="0" maxOccurs="unbounded" />
     </xsd:sequence>
-
     <xsd:attribute name="name" type="xsd:string" use="required" />
     <xsd:attribute name="type" type="xsd:string" use="required" />
     <xsd:attribute name="dynamicFields" type="xsd:boolean" use="optional" default="false" />
@@ -50,7 +50,9 @@
       <xsd:element name="field" type="sooda:FieldInfo" minOccurs="1" maxOccurs="unbounded" />
     </xsd:sequence>
     <xsd:attribute name="usage" use="optional" type="sooda:TableUsageType" default="Normal" />
+    <xsd:attribute name="migration" use="optional" type="sooda:TableMigration" default="All" />
     <xsd:attribute name="name" use="required" />
+    <xsd:attribute name="uid" type="xsd:string" use="required"/>
   </xsd:complexType>
   <xsd:complexType name="ClassInfo">
     <xsd:sequence>
@@ -66,7 +68,8 @@
     <xsd:attribute name="extBaseClassName" use="optional" />
     <xsd:attribute name="name" use="required" />
     <xsd:attribute name="label" use="optional" />
-    <xsd:attribute name="keygen" use="optional" />
+    <xsd:attribute name="MenuGroup" use="optional" />
+    <xsd:attribute name="keygen" use="optional" default="guid"/>
     <xsd:attribute name="inheritFrom" type="xsd:string" use="optional" />
     <xsd:attribute name="defaultPrecommitValue" type="xsd:string" use="optional" />
     <xsd:attribute name="subclassSelectorField" type="xsd:string" use="optional" />
@@ -89,6 +92,12 @@
     <xsd:attribute name="where" use="optional" />
     <xsd:attribute name="prefetch" use="optional" type="xsd:int" default="0" />
     <xsd:attribute name="cache" use="optional" type="xsd:boolean" default="false" />
+    <xsd:attribute name="DisplayName" type="xsd:string" use="optional" />
+    <xsd:attribute name="Browsable" type="xsd:boolean" use="optional" default="false"/>
+    <xsd:attribute name="Category" type="xsd:string" use="optional" />
+    <xsd:attribute name="UITypeEditor" type="xsd:string" use="optional" />
+    <xsd:attribute name="Description" type="xsd:string" use="optional" />
+    <xsd:attribute name="ReadOnly" type="xsd:boolean" use="optional" />
   </xsd:complexType>
   <xsd:complexType name="CollectionManyToManyInfo">
     <xsd:sequence>
@@ -105,7 +114,19 @@
       <xsd:element name="description" type="xsd:string" minOccurs="0" maxOccurs="1" />
     </xsd:sequence>
     <xsd:attribute name="name" use="required" />
-    <xsd:attribute name="key" use="required" />
+    <xsd:attribute name="key" use="required" />  
+  </xsd:complexType>
+  <xsd:complexType name="EnumInfo">
+    <xsd:sequence>
+      <xsd:element name="value" type="sooda:EnumValueInfo" minOccurs="1" maxOccurs="unbounded" />
+    </xsd:sequence>
+    <xsd:attribute name="label" use="optional" />
+    <xsd:attribute name="name" use="required" />
+  </xsd:complexType>
+  <xsd:complexType name="EnumValueInfo">
+    <xsd:attribute name="name" use="required" />
+    <xsd:attribute name="key" use="required"/>
+    <xsd:attribute name="label" use="optional" />
   </xsd:complexType>
   <xsd:complexType name="FieldInfo">
     <xsd:sequence>
@@ -114,6 +135,7 @@
     <xsd:attribute name="name" use="required" />
     <xsd:attribute name="dbcolumn" use="optional" />
     <xsd:attribute name="type" type="sooda:FieldDataType" use="required" />
+    <xsd:attribute name="enum" type="xsd:string" use="optional" />
     <xsd:attribute name="size" type="xsd:int" default="-1" use="optional" />
     <xsd:attribute name="precision" type="xsd:int" default="-1" use="optional" />
     <xsd:attribute name="references" use="optional" />
@@ -121,20 +143,26 @@
     <xsd:attribute name="prefetch" use="optional" type="xsd:int" default="0" />
     <xsd:attribute name="nullable" type="xsd:boolean" use="optional" default="false" />
     <xsd:attribute name="forceTrigger" use="optional" type="xsd:boolean" default="false" />
-    <xsd:attribute name="readOnly" use="optional" type="xsd:boolean" default="false" />
     <xsd:attribute name="primaryKey" use="optional" type="xsd:boolean" default="false" />
+    <xsd:attribute name="Identity" use="optional" type="xsd:boolean" default="false" />
     <xsd:attribute name="precommitValue" type="xsd:string" use="optional" />
     <xsd:attribute name="find" type="xsd:boolean" use="optional" default="false" />
     <xsd:attribute name="findList" type="xsd:boolean" use="optional" default="false" />
+    <xsd:attribute name="DisplayName" type="xsd:string" use="optional" />
+    <xsd:attribute name="Browsable" type="xsd:boolean" use="optional" default="true"/>
+    <xsd:attribute name="Category" type="xsd:string" use="optional" />
+    <xsd:attribute name="UITypeEditor" type="xsd:string" use="optional" />
+    <xsd:attribute name="TypeConverter" type="xsd:string" use="optional" />
+    <xsd:attribute name="Description" type="xsd:string" use="optional" />
+    <xsd:attribute name="ReadOnly" type="xsd:boolean" use="optional" default="false"/>
+    <xsd:attribute name="UiReadOnly" type="xsd:boolean" use="optional" default="false"/>
+    <xsd:attribute name="IsIndexed" type="xsd:boolean" use="optional" default="false"/>
+    <xsd:attribute name="Modifier" use="optional" type="sooda:FieldModifier" default="" />
+    <xsd:attribute name="uid" type="xsd:string" use="required"/>
+    <xsd:attribute name="IsRowGuidCol" type="xsd:boolean" use="optional" default="false"/>
+    <xsd:attribute name="IsFileStream" type="xsd:boolean" use="optional" default="false"/>
     <xsd:anyAttribute namespace="##other" processContents="lax" />
   </xsd:complexType>
-  <xsd:simpleType name="DefaultPrecommitValues">
-    <xsd:restriction base="xsd:string">
-      <xsd:enumeration value="false" />
-      <xsd:enumeration value="true" />
-      <xsd:enumeration value="null" />
-    </xsd:restriction>
-  </xsd:simpleType>
   <xsd:simpleType name="FieldDataType">
     <xsd:restriction base="xsd:string">
       <xsd:enumeration value="Integer" />
@@ -151,6 +179,9 @@
       <xsd:enumeration value="Image" />
       <xsd:enumeration value="TimeSpan" />
       <xsd:enumeration value="AnsiString" />
+      <xsd:enumeration value="Money"/>
+      <xsd:enumeration value="RowVersion"/>
+      <xsd:enumeration value="Date"/>
     </xsd:restriction>
   </xsd:simpleType>
   <xsd:simpleType name="ClassCardinality">
@@ -174,11 +205,25 @@
       <xsd:enumeration value="Normal" />
     </xsd:restriction>
   </xsd:simpleType>
-    <xsd:simpleType name="TableUsageType">
-        <xsd:restriction base="xsd:string">
-            <xsd:enumeration value="Normal" />
-            <xsd:enumeration value="Dictionary" />
-            <xsd:enumeration value="OccasionallyModificated" />
-        </xsd:restriction>
-    </xsd:simpleType>
+  <xsd:simpleType name="TableUsageType">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="Normal" />
+      <xsd:enumeration value="Dictionary" />
+      <xsd:enumeration value="OccasionallyModificated" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="TableMigration">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="Local" />
+      <xsd:enumeration value="All" />
+      <xsd:enumeration value="Selected" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="FieldModifier">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="" />
+      <xsd:enumeration value="new" />
+      <xsd:enumeration value="override" />
+    </xsd:restriction>
+  </xsd:simpleType>
 </xsd:schema>

@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -33,18 +32,15 @@ namespace Sooda.Schema
     using System;
     using System.Xml.Serialization;
 
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://www.sooda.org/schemas/SoodaSchema.xsd")]
+    [XmlType(Namespace = "http://www.sooda.org/schemas/SoodaSchema.xsd")]
     [Serializable]
     public class IncludeInfo
     {
-        [XmlAttribute("schema")]
-        public string SchemaFile;
+        [XmlAttribute("schema")] public string SchemaFile;
 
-        [XmlAttribute("assembly")]
-        public string AssemblyName;
+        [XmlAttribute("assembly")] public string AssemblyName;
 
-        [XmlAttribute("namespace")]
-        public string Namespace;
+        [XmlAttribute("namespace")] public string Namespace;
 
         public SchemaInfo Schema;
     }

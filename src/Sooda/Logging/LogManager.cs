@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -9,11 +8,11 @@
 // are met:
 //
 // * Redistributions of source code must retain the above copyright notice,
-//   this list of conditions and the following disclaimer.
+// this list of conditions and the following disclaimer.
 //
 // * Redistributions in binary form must reproduce the above copyright notice,
-//   this list of conditions and the following disclaimer in the documentation
-//   and/or other materials provided with the distribution.
+// this list of conditions and the following disclaimer in the documentation
+// and/or other materials provided with the distribution.
 //
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 // AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -28,10 +27,10 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-
 namespace Sooda.Logging
 {
+    using System;
+
     public static class LogManager
     {
         private static ILoggingImplementation _implementation;
@@ -40,35 +39,30 @@ namespace Sooda.Logging
         {
             // set up null implementation first so that any logging statements
             // from SoodaConfig will not result in NullReferenceException
-
             _implementation = new NullLoggingImplementation();
             try
             {
                 string loggingImplementationName = SoodaConfig.GetString("sooda.logging", "null");
                 string typeName;
-
                 switch (loggingImplementationName)
                 {
                     case "console":
                         _implementation = new ConsoleLoggingImplementation();
                         break;
-
                     case "null":
                         _implementation = new NullLoggingImplementation();
                         break;
-
                     case "nlog":
                         typeName = "Sooda.Logging.NLog.LoggingImplementation, Sooda.Logging.NLog";
                         _implementation = Activator.CreateInstance(Type.GetType(typeName)) as ILoggingImplementation;
                         break;
-
                     case "log4net":
                         typeName = "Sooda.Logging.log4net.LoggingImplementation, Sooda.Logging.log4net";
                         _implementation = Activator.CreateInstance(Type.GetType(typeName)) as ILoggingImplementation;
                         break;
-
                     default:
-                        _implementation = Activator.CreateInstance(Type.GetType(loggingImplementationName)) as ILoggingImplementation;
+                        _implementation =
+                            Activator.CreateInstance(Type.GetType(loggingImplementationName)) as ILoggingImplementation;
                         break;
                 }
             }

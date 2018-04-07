@@ -1,44 +1,49 @@
-//
+// 
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
-//
+// 
 // All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions
+// 
+// Redistribution and use in source and binary forms, with or without 
+// modification, are permitted provided that the following conditions 
 // are met:
-//
-// * Redistributions of source code must retain the above copyright notice,
-//   this list of conditions and the following disclaimer.
-//
+// 
+// * Redistributions of source code must retain the above copyright notice, 
+//   this list of conditions and the following disclaimer. 
+// 
 // * Redistributions in binary form must reproduce the above copyright notice,
 //   this list of conditions and the following disclaimer in the documentation
-//   and/or other materials provided with the distribution.
-//
+//   and/or other materials provided with the distribution. 
+// 
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
-// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE 
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
 // CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF 
 // THE POSSIBILITY OF SUCH DAMAGE.
-//
+// 
 
-using Microsoft.CSharp;
 using System;
-using System.CodeDom.Compiler;
-using System.Collections.Generic;
+using System.Collections;
+
 using System.IO;
+using System.CodeDom;
+using System.CodeDom.Compiler;
+using Microsoft.CSharp;
 
 namespace SoodaCompileStubs
 {
     class EntryPoint
     {
+#if DOTNET2
         static CSharpCodeProvider compiler;
+#else
+        static ICodeCompiler compiler;
+#endif
 
         static void Compile(string description, string outputAssembly, string sourceFile, string compilerOptions, string[] args, bool additionalSources, params string[] additionalReferences)
         {
@@ -51,7 +56,7 @@ namespace SoodaCompileStubs
             foreach (string dll in additionalReferences)
                 options.ReferencedAssemblies.Add(dll);
 
-            List<string> sourceFiles = new List<string>();
+            ArrayList sourceFiles = new ArrayList();
             sourceFiles.Add(sourceFile);
 
             options.CompilerOptions = compilerOptions;
@@ -75,7 +80,11 @@ namespace SoodaCompileStubs
                 results = compiler.CompileAssemblyFromFile(options, sourceFile);
             else
             {
-                results = compiler.CompileAssemblyFromFile(options, sourceFiles.ToArray());
+#if DOTNET2
+                results = compiler.CompileAssemblyFromFile(options, (string[]) sourceFiles.ToArray(typeof(string)));
+#else
+                results = compiler.CompileAssemblyFromFileBatch(options, (string[]) sourceFiles.ToArray(typeof(string)));
+#endif
             }
             if (results.NativeCompilerReturnValue != 0)
             {
@@ -111,7 +120,7 @@ namespace SoodaCompileStubs
             DateTime maxSourceTime = DateTime.MinValue;
             DateTime minTargetTime = DateTime.MaxValue;
             DateTime dt;
-            List<string> sourceFiles = new List<string>();
+            ArrayList sourceFiles = new ArrayList();
             for (int i = 2; i < args.Length; ++i)
             {
                 if (!args[i].StartsWith("/"))
@@ -161,7 +170,11 @@ namespace SoodaCompileStubs
 
             Console.WriteLine("Rebuilding '{0}'", stubsDll);
 
+#if DOTNET2
             compiler = new CSharpCodeProvider();
+#else
+            compiler = new CSharpCodeProvider().CreateCompiler();
+#endif
 
             try
             {

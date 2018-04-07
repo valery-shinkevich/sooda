@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,32 +27,32 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using Sooda.QL.TypedWrappers;
-using System.IO;
-using System.Xml.Serialization;
-
 namespace Sooda.QL
 {
-    [XmlInclude(typeof(SoqlPathExpression))]
-    [XmlInclude(typeof(SoqlExistsExpression))]
-    [XmlInclude(typeof(SoqlPathExpression))]
-    [XmlInclude(typeof(SoqlBooleanIsNullExpression))]
-    [XmlInclude(typeof(SoqlBooleanExpression))]
-    [XmlInclude(typeof(SoqlBooleanRelationalExpression))]
-    [XmlInclude(typeof(SoqlLiteralExpression))]
-    [XmlInclude(typeof(SoqlBooleanRelationalExpression))]
-    [XmlInclude(typeof(SoqlBooleanAndExpression))]
-    [XmlInclude(typeof(SoqlBooleanOrExpression))]
-    [XmlInclude(typeof(SoqlBinaryExpression))]
-    [XmlInclude(typeof(SoqlBooleanNegationExpression))]
-    [XmlInclude(typeof(SoqlBooleanInExpression))]
-    [XmlInclude(typeof(SoqlParameterLiteralExpression))]
-    [XmlInclude(typeof(SoqlBooleanLiteralExpression))]
-    [XmlInclude(typeof(SoqlFunctionCallExpression))]
-    [XmlInclude(typeof(SoqlAsteriskExpression))]
-    [XmlInclude(typeof(SoqlNullLiteral))]
-    [XmlInclude(typeof(SoqlContainsExpression))]
-    [XmlInclude(typeof(SoqlCountExpression))]
+    using System.IO;
+    using System.Xml.Serialization;
+    using TypedWrappers;
+
+    [XmlInclude(typeof (SoqlPathExpression))]
+    [XmlInclude(typeof (SoqlExistsExpression))]
+    [XmlInclude(typeof (SoqlPathExpression))]
+    [XmlInclude(typeof (SoqlBooleanIsNullExpression))]
+    [XmlInclude(typeof (SoqlBooleanExpression))]
+    [XmlInclude(typeof (SoqlBooleanRelationalExpression))]
+    [XmlInclude(typeof (SoqlLiteralExpression))]
+    [XmlInclude(typeof (SoqlBooleanRelationalExpression))]
+    [XmlInclude(typeof (SoqlBooleanAndExpression))]
+    [XmlInclude(typeof (SoqlBooleanOrExpression))]
+    [XmlInclude(typeof (SoqlBinaryExpression))]
+    [XmlInclude(typeof (SoqlBooleanNegationExpression))]
+    [XmlInclude(typeof (SoqlBooleanInExpression))]
+    [XmlInclude(typeof (SoqlParameterLiteralExpression))]
+    [XmlInclude(typeof (SoqlBooleanLiteralExpression))]
+    [XmlInclude(typeof (SoqlFunctionCallExpression))]
+    [XmlInclude(typeof (SoqlAsteriskExpression))]
+    [XmlInclude(typeof (SoqlNullLiteral))]
+    [XmlInclude(typeof (SoqlContainsExpression))]
+    [XmlInclude(typeof (SoqlCountExpression))]
     public abstract class SoqlExpression
     {
         public virtual SoqlExpression Simplify()
@@ -70,18 +69,17 @@ namespace Sooda.QL
             StringWriter sw = new StringWriter();
             SoqlPrettyPrinter pp = new SoqlPrettyPrinter(sw);
             pp.IndentOutput = false;
-            this.Accept(pp);
+            Accept(pp);
             return sw.ToString();
         }
 
         public static SoqlExpression Unwrap(SoqlExpression expr)
         {
             if (expr is SoqlTypedWrapperExpression)
-                return Unwrap(((SoqlTypedWrapperExpression)expr).InnerExpression);
-            else if (expr is SoqlBooleanWrapperExpression)
-                return Unwrap(((SoqlBooleanWrapperExpression)expr).InnerExpression);
-            else
-                return expr;
+                return Unwrap(((SoqlTypedWrapperExpression) expr).InnerExpression);
+            if (expr is SoqlBooleanWrapperExpression)
+                return Unwrap(((SoqlBooleanWrapperExpression) expr).InnerExpression);
+            return expr;
         }
     }
 }

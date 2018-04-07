@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -52,7 +51,7 @@ namespace Sooda.QL
         /// </param>
         public SoqlExpressionCollection(SoqlExpression[] items)
         {
-            this.AddRange(items);
+            AddRange(items);
         }
 
         /// <summary>
@@ -64,7 +63,7 @@ namespace Sooda.QL
         /// </param>
         public SoqlExpressionCollection(SoqlExpressionCollection items)
         {
-            this.AddRange(items);
+            AddRange(items);
         }
 
         /// <summary>
@@ -77,7 +76,7 @@ namespace Sooda.QL
         {
             foreach (SoqlExpression item in items)
             {
-                this.List.Add(item);
+                List.Add(item);
             }
         }
 
@@ -91,7 +90,7 @@ namespace Sooda.QL
         {
             foreach (SoqlExpression item in items)
             {
-                this.List.Add(item);
+                List.Add(item);
             }
         }
 
@@ -103,7 +102,7 @@ namespace Sooda.QL
         /// </param>
         public virtual void Add(SoqlExpression value)
         {
-            this.List.Add(value);
+            List.Add(value);
         }
 
         /// <summary>
@@ -118,7 +117,7 @@ namespace Sooda.QL
         /// </returns>
         public virtual bool Contains(SoqlExpression value)
         {
-            return this.List.Contains(value);
+            return List.Contains(value);
         }
 
         /// <summary>
@@ -134,7 +133,7 @@ namespace Sooda.QL
         /// </returns>
         public virtual int IndexOf(SoqlExpression value)
         {
-            return this.List.IndexOf(value);
+            return List.IndexOf(value);
         }
 
         /// <summary>
@@ -148,7 +147,7 @@ namespace Sooda.QL
         /// </param>
         public virtual void Insert(int index, SoqlExpression value)
         {
-            this.List.Insert(index, value);
+            List.Insert(index, value);
         }
 
         /// <summary>
@@ -156,14 +155,8 @@ namespace Sooda.QL
         /// </summary>
         public virtual SoqlExpression this[int index]
         {
-            get
-            {
-                return (SoqlExpression)this.List[index];
-            }
-            set
-            {
-                this.List[index] = value;
-            }
+            get { return (SoqlExpression) List[index]; }
+            set { List[index] = value; }
         }
 
         /// <summary>
@@ -174,7 +167,7 @@ namespace Sooda.QL
         /// </param>
         public virtual void Remove(SoqlExpression value)
         {
-            this.List.Remove(value);
+            List.Remove(value);
         }
 
         /// <summary>
@@ -186,33 +179,27 @@ namespace Sooda.QL
 
             public Enumerator(SoqlExpressionCollection collection)
             {
-                this.wrapped = ((System.Collections.CollectionBase)collection).GetEnumerator();
+                wrapped = ((System.Collections.CollectionBase) collection).GetEnumerator();
             }
 
             public SoqlExpression Current
             {
-                get
-                {
-                    return (SoqlExpression)(this.wrapped.Current);
-                }
+                get { return (SoqlExpression) (wrapped.Current); }
             }
 
             object System.Collections.IEnumerator.Current
             {
-                get
-                {
-                    return (SoqlExpression)(this.wrapped.Current);
-                }
+                get { return (SoqlExpression) (wrapped.Current); }
             }
 
             public bool MoveNext()
             {
-                return this.wrapped.MoveNext();
+                return wrapped.MoveNext();
             }
 
             public void Reset()
             {
-                this.wrapped.Reset();
+                wrapped.Reset();
             }
         }
 
@@ -221,10 +208,10 @@ namespace Sooda.QL
         /// </summary>
         /// <returns>
         /// An object that implements System.Collections.IEnumerator.
-        /// </returns>
-        public new virtual SoqlExpressionCollection.Enumerator GetEnumerator()
+        /// </returns>        
+        public new virtual Enumerator GetEnumerator()
         {
-            return new SoqlExpressionCollection.Enumerator(this);
+            return new Enumerator(this);
         }
     }
 }

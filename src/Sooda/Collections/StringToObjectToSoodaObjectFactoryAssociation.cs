@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -36,14 +35,6 @@ namespace Sooda.Collections
     public class StringToObjectToSoodaObjectFactoryAssociation : System.Collections.DictionaryBase
     {
         /// <summary>
-        /// Initializes a new empty instance of the StringToObjectToSoodaObjectFactoryAssociation class
-        /// </summary>
-        public StringToObjectToSoodaObjectFactoryAssociation()
-        {
-            // empty
-        }
-
-        /// <summary>
         /// Gets or sets the ObjectToSoodaObjectFactoryAssociation associated with the given string
         /// </summary>
         /// <param name="key">
@@ -51,14 +42,8 @@ namespace Sooda.Collections
         /// </param>
         public virtual ObjectToSoodaObjectFactoryAssociation this[string key]
         {
-            get
-            {
-                return (ObjectToSoodaObjectFactoryAssociation)this.Dictionary[key];
-            }
-            set
-            {
-                this.Dictionary[key] = value;
-            }
+            get { return (ObjectToSoodaObjectFactoryAssociation) Dictionary[key]; }
+            set { Dictionary[key] = value; }
         }
 
         /// <summary>
@@ -72,7 +57,7 @@ namespace Sooda.Collections
         /// </param>
         public virtual void Add(string key, ObjectToSoodaObjectFactoryAssociation value)
         {
-            this.Dictionary.Add(key, value);
+            Dictionary.Add(key, value);
         }
 
         /// <summary>
@@ -87,7 +72,7 @@ namespace Sooda.Collections
         /// </returns>
         public virtual bool Contains(string key)
         {
-            return this.Dictionary.Contains(key);
+            return Dictionary.Contains(key);
         }
 
         /// <summary>
@@ -102,7 +87,7 @@ namespace Sooda.Collections
         /// </returns>
         public virtual bool ContainsKey(string key)
         {
-            return this.Dictionary.Contains(key);
+            return Dictionary.Contains(key);
         }
 
         /// <summary>
@@ -117,7 +102,7 @@ namespace Sooda.Collections
         /// </returns>
         public virtual bool ContainsValue(ObjectToSoodaObjectFactoryAssociation value)
         {
-            foreach (ObjectToSoodaObjectFactoryAssociation item in this.Dictionary.Values)
+            foreach (ObjectToSoodaObjectFactoryAssociation item in Dictionary.Values)
             {
                 if (item == value)
                     return true;
@@ -133,7 +118,7 @@ namespace Sooda.Collections
         /// </param>
         public virtual void Remove(string key)
         {
-            this.Dictionary.Remove(key);
+            Dictionary.Remove(key);
         }
 
         /// <summary>
@@ -141,10 +126,7 @@ namespace Sooda.Collections
         /// </summary>
         public virtual System.Collections.ICollection Keys
         {
-            get
-            {
-                return this.Dictionary.Keys;
-            }
+            get { return Dictionary.Keys; }
         }
 
         /// <summary>
@@ -152,10 +134,7 @@ namespace Sooda.Collections
         /// </summary>
         public virtual System.Collections.ICollection Values
         {
-            get
-            {
-                return this.Dictionary.Values;
-            }
+            get { return Dictionary.Values; }
         }
     }
 }

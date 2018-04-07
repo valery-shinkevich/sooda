@@ -29,27 +29,27 @@
 
 #if DOTNET35
 
-using Sooda.Logging;
-using Sooda.Sql;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.IO;
-using System.Linq;
-using System.Threading;
-
 namespace Sooda.Schema
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.IO;
+    using System.Linq;
+    using System.Threading;
+    using Logging;
+    using Sql;
+
     public static class DynamicFieldManager
     {
-        static readonly Logger logger = LogManager.GetLogger("Sooda.Schema.DynamicFieldsManager");
+        private static readonly Logger logger = LogManager.GetLogger("Sooda.Schema.DynamicFieldsManager");
 
-        static bool DynamicFieldsEnabled(SchemaInfo schema)
+        private static bool DynamicFieldsEnabled(SchemaInfo schema)
         {
             return schema.DataSources.Any(ds => ds.EnableDynamicFields);
         }
 
-        static TableInfo Prepare(FieldInfo fi)
+        private static TableInfo Prepare(FieldInfo fi)
         {
             ClassInfo ci = fi.ParentClass;
             if (ci.ContainsField(fi.Name))
@@ -64,14 +64,16 @@ namespace Sooda.Schema
             for (int i = 0; i < pks.Length; i++)
             {
                 FieldInfo pk = pks[i];
-                table.Fields.Add(new FieldInfo {
+                table.Fields.Add(new FieldInfo
+                {
                     Name = pk.Name,
                     DataType = pk.DataType,
                     Size = pk.Size,
                     Precision = pk.Precision,
                     References = pk.References,
                     IsPrimaryKey = true,
-                    DBColumnName = i == 0 ? "id" : "id" + (i + 1) });
+                    DBColumnName = i == 0 ? "id" : "id" + (i + 1)
+                });
             }
 
             fi.DBColumnName = "value";
@@ -80,7 +82,7 @@ namespace Sooda.Schema
             return table;
         }
 
-        static void Resolve(SchemaInfo schema, HashSet<ClassInfo> affectedClasses)
+        private static void Resolve(SchemaInfo schema, HashSet<ClassInfo> affectedClasses)
         {
             // add subclasses
             foreach (ClassInfo ci in affectedClasses.ToArray())
@@ -92,12 +94,12 @@ namespace Sooda.Schema
             schema.Resolve(affectedClasses);
         }
 
-        static void Resolve(ClassInfo ci)
+        private static void Resolve(ClassInfo ci)
         {
-            Resolve(ci.Schema, new HashSet<ClassInfo> { ci });
+            Resolve(ci.Schema, new HashSet<ClassInfo> {ci});
         }
 
-        static void Load(SoodaTransaction transaction)
+        private static void Load(SoodaTransaction transaction)
         {
             SchemaInfo schema = transaction.Schema;
             HashSet<ClassInfo> affectedClasses = new HashSet<ClassInfo>();
@@ -106,7 +108,10 @@ namespace Sooda.Schema
                 if (!dsi.EnableDynamicFields)
                     continue;
                 SoodaDataSource ds = transaction.OpenDataSource(dsi);
-                using (IDataReader r = ds.ExecuteRawQuery("select class, field, type, nullable, fieldsize, precision from SoodaDynamicField"))
+                using (
+                    IDataReader r =
+                        ds.ExecuteRawQuery(
+                            "select class, field, type, nullable, fieldsize, precision from SoodaDynamicField"))
                 {
                     while (r.Read())
                     {
@@ -114,7 +119,9 @@ namespace Sooda.Schema
                         ClassInfo ci = schema.FindClassByName(className);
                         if (ci == null)
                         {
-                            logger.Warn("Ignoring a dynamic field of non-existent class {0} -- see the SoodaDynamicField table", className);
+                            logger.Warn(
+                                "Ignoring a dynamic field of non-existent class {0} -- see the SoodaDynamicField table",
+                                className);
                             continue;
                         }
 
@@ -141,34 +148,34 @@ namespace Sooda.Schema
         {
             SchemaInfo schema = transaction.Schema;
 
-            if (schema._rwLock == null)
+            if (schema.RwLock == null)
             {
                 if (!DynamicFieldsEnabled(schema))
                     return;
 
                 lock (schema)
                 {
-                    if (schema._rwLock == null)
+                    if (schema.RwLock == null)
                     {
                         Load(transaction);
-                        schema._rwLock = new ReaderWriterLock();
+                        schema.RwLock = new ReaderWriterLock();
                     }
                 }
             }
 
-            schema._rwLock.AcquireReaderLock(-1);
+            schema.RwLock.AcquireReaderLock(-1);
         }
 
         internal static void CloseTransaction(SoodaTransaction transaction)
         {
-            ReaderWriterLock rwLock = transaction.Schema._rwLock;
+            ReaderWriterLock rwLock = transaction.Schema.RwLock;
             if (rwLock != null)
                 rwLock.ReleaseReaderLock();
         }
 
-        static LockCookie LockWrite(SoodaTransaction transaction)
+        private static LockCookie LockWrite(SoodaTransaction transaction)
         {
-            ReaderWriterLock rwLock = transaction.Schema._rwLock;
+            ReaderWriterLock rwLock = transaction.Schema.RwLock;
             if (rwLock == null)
                 throw new InvalidOperationException("Dynamic fields not enabled in Sooda schema");
             LockCookie lockCookie = rwLock.UpgradeToWriterLock(-1);
@@ -176,7 +183,7 @@ namespace Sooda.Schema
             return lockCookie;
         }
 
-        static int? NegativeToNull(int i)
+        private static int? NegativeToNull(int i)
         {
             if (i < 0)
                 return null;
@@ -196,8 +203,10 @@ namespace Sooda.Schema
                 fi.Table = table;
 
                 StringWriter sw = new StringWriter();
-                sw.Write("insert into SoodaDynamicField (class, field, type, nullable, fieldsize, precision) values ({0}, {1}, {2}, {3}, {4}, {5})");
-                ds.ExecuteNonQuery(sw.ToString(), ci.Name, fi.Name, fi.TypeName, fi.IsNullable ? 1 : 0, NegativeToNull(fi.Size), NegativeToNull(fi.Precision));
+                sw.Write(
+                    "insert into SoodaDynamicField (class, field, type, nullable, fieldsize, precision) values ({0}, {1}, {2}, {3}, {4}, {5})");
+                ds.ExecuteNonQuery(sw.ToString(), ci.Name, fi.Name, fi.TypeName, fi.IsNullable ? 1 : 0,
+                    NegativeToNull(fi.Size), NegativeToNull(fi.Precision));
 
                 sw = new StringWriter();
                 ds.SqlBuilder.GenerateCreateTable(sw, table, null, "");
@@ -218,7 +227,7 @@ namespace Sooda.Schema
             }
             finally
             {
-                transaction.Schema._rwLock.DowngradeFromWriterLock(ref lockCookie);
+                transaction.Schema.RwLock.DowngradeFromWriterLock(ref lockCookie);
             }
         }
 
@@ -238,7 +247,8 @@ namespace Sooda.Schema
             ClassInfo ci = fi.ParentClass;
             SoodaDataSource ds = transaction.OpenDataSource(ci.GetDataSource());
 
-            ds.ExecuteNonQuery("update SoodaDynamicField set nullable={0} where class={1} and field={2}", fi.IsNullable ? 1 : 0, ci.Name, fi.Name);
+            ds.ExecuteNonQuery("update SoodaDynamicField set nullable={0} where class={1} and field={2}",
+                fi.IsNullable ? 1 : 0, ci.Name, fi.Name);
         }
 
         public static void Remove(FieldInfo fi, SoodaTransaction transaction)
@@ -259,7 +269,7 @@ namespace Sooda.Schema
             }
             finally
             {
-                transaction.Schema._rwLock.DowngradeFromWriterLock(ref lockCookie);
+                transaction.Schema.RwLock.DowngradeFromWriterLock(ref lockCookie);
             }
         }
     }

@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,48 +27,138 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-
 namespace Sooda.Logging
 {
+    using System;
+
     public abstract class BasicLogger : Logger
     {
-        readonly string Prefix;
+        private readonly string _prefix;
 
-        public BasicLogger(string name)
+        protected BasicLogger(string name)
         {
-            Prefix = name + ": ";
+            _prefix = name + ": ";
         }
 
-        public override bool IsTraceEnabled { get { return true; } }
-        public override void Trace(IFormatProvider fp, string format, params object[] par) { OutputText(Prefix + String.Format(fp, format, par)); }
-        public override void Trace(string format, params object[] par) { OutputText(Prefix + format, par); }
-        public override void Trace(string message) { OutputText(Prefix + message); }
+        public override bool IsTraceEnabled
+        {
+            get { return true; }
+        }
 
-        public override bool IsDebugEnabled { get { return true; } }
-        public override void Debug(IFormatProvider fp, string format, params object[] par) { OutputText(Prefix + String.Format(fp, format, par)); }
-        public override void Debug(string format, params object[] par) { OutputText(Prefix + format, par); }
-        public override void Debug(string message) { OutputText(Prefix + message); }
+        public override void Trace(IFormatProvider fp, string format, params object[] par)
+        {
+            OutputText(_prefix + String.Format(fp, format, par));
+        }
 
-        public override bool IsInfoEnabled { get { return true; } }
-        public override void Info(IFormatProvider fp, string format, params object[] par) { OutputText(Prefix + String.Format(fp, format, par)); }
-        public override void Info(string format, params object[] par) { OutputText(Prefix + format, par); }
-        public override void Info(string message) { OutputText(Prefix + message); }
+        public override void Trace(string format, params object[] par)
+        {
+            OutputText(_prefix + format, par);
+        }
 
-        public override bool IsWarnEnabled { get { return true; } }
-        public override void Warn(IFormatProvider fp, string format, params object[] par) { OutputText(Prefix + String.Format(fp, format, par)); }
-        public override void Warn(string format, params object[] par) { OutputText(Prefix + format, par); }
-        public override void Warn(string message) { OutputText(Prefix + message); }
+        public override void Trace(string message)
+        {
+            OutputText(_prefix + message);
+        }
 
-        public override bool IsErrorEnabled { get { return true; } }
-        public override void Error(IFormatProvider fp, string format, params object[] par) { OutputText(Prefix + String.Format(fp, format, par)); }
-        public override void Error(string format, params object[] par) { OutputText(Prefix + format, par); }
-        public override void Error(string message) { OutputText(Prefix + message); }
+        public override bool IsDebugEnabled
+        {
+            get { return true; }
+        }
 
-        public override bool IsFatalEnabled { get { return true; } }
-        public override void Fatal(IFormatProvider fp, string format, params object[] par) { OutputText(Prefix + String.Format(fp, format, par)); }
-        public override void Fatal(string format, params object[] par) { OutputText(Prefix + format, par); }
-        public override void Fatal(string message) { OutputText(Prefix + message); }
+        public override void Debug(IFormatProvider fp, string format, params object[] par)
+        {
+            OutputText(_prefix + String.Format(fp, format, par));
+        }
+
+        public override void Debug(string format, params object[] par)
+        {
+            OutputText(_prefix + format, par);
+        }
+
+        public override void Debug(string message)
+        {
+            OutputText(_prefix + message);
+        }
+
+        public override bool IsInfoEnabled
+        {
+            get { return true; }
+        }
+
+        public override void Info(IFormatProvider fp, string format, params object[] par)
+        {
+            OutputText(_prefix + String.Format(fp, format, par));
+        }
+
+        public override void Info(string format, params object[] par)
+        {
+            OutputText(_prefix + format, par);
+        }
+
+        public override void Info(string message)
+        {
+            OutputText(_prefix + message);
+        }
+
+        public override bool IsWarnEnabled
+        {
+            get { return true; }
+        }
+
+        public override void Warn(IFormatProvider fp, string format, params object[] par)
+        {
+            OutputText(_prefix + String.Format(fp, format, par));
+        }
+
+        public override void Warn(string format, params object[] par)
+        {
+            OutputText(_prefix + format, par);
+        }
+
+        public override void Warn(string message)
+        {
+            OutputText(_prefix + message);
+        }
+
+        public override bool IsErrorEnabled
+        {
+            get { return true; }
+        }
+
+        public override void Error(IFormatProvider fp, string format, params object[] par)
+        {
+            OutputText(_prefix + String.Format(fp, format, par));
+        }
+
+        public override void Error(string format, params object[] par)
+        {
+            OutputText(_prefix + format, par);
+        }
+
+        public override void Error(string message)
+        {
+            OutputText(_prefix + message);
+        }
+
+        public override bool IsFatalEnabled
+        {
+            get { return true; }
+        }
+
+        public override void Fatal(IFormatProvider fp, string format, params object[] par)
+        {
+            OutputText(_prefix + String.Format(fp, format, par));
+        }
+
+        public override void Fatal(string format, params object[] par)
+        {
+            OutputText(_prefix + format, par);
+        }
+
+        public override void Fatal(string message)
+        {
+            OutputText(_prefix + message);
+        }
 
         protected virtual void OutputText(string message, object[] parameters)
         {

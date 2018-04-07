@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,10 +27,10 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-
 namespace Sooda.CodeGen.CDIL
 {
+    using System;
+
     public class CDILTokenizer
     {
         private CDILToken _tokenType;
@@ -63,31 +62,17 @@ namespace Sooda.CodeGen.CDIL
 
         private int ReadChar()
         {
-            if (_pos < _input.Length)
-            {
-                return (int)_input[_pos++];
-            }
-            else
-            {
-                return -1;
-            }
+            return _pos < _input.Length ? _input[_pos++] : -1;
         }
 
         private int PeekChar()
         {
-            if (_pos < _input.Length)
-            {
-                return (int)_input[_pos];
-            }
-            else
-            {
-                return -1;
-            }
+            return _pos < _input.Length ? _input[_pos] : -1;
         }
 
         private void SkipWhitespace()
         {
-            while (Char.IsWhiteSpace((char)PeekChar()))
+            while (Char.IsWhiteSpace((char) PeekChar()))
             {
                 ReadChar();
             }
@@ -106,20 +91,17 @@ namespace Sooda.CodeGen.CDIL
                 _tokenType = CDILToken.EOF;
                 return;
             }
-            char ch = (char)p;
+            char ch = (char) p;
             if (ch == '\'')
             {
                 ReadChar();
                 string text = "";
                 while ((p = ReadChar()) != -1)
                 {
-                    ch = (char)p;
+                    ch = (char) p;
                     if (ch == '\'')
                         break;
-                    if (ch == '\\')
-                        text += (char)ReadChar();
-                    else
-                        text += ch;
+                    text += ch == '\\' ? (char) ReadChar() : ch;
                 }
                 _tokenType = CDILToken.String;
                 _tokenValue = text;
@@ -133,13 +115,13 @@ namespace Sooda.CodeGen.CDIL
                     text = "-";
                     ReadChar();
                 }
-                while ((p = PeekChar()) != -1 && Char.IsNumber((char)p))
+                while ((p = PeekChar()) != -1 && Char.IsNumber((char) p))
                 {
-                    ch = (char)p;
+                    ch = (char) p;
                     ReadChar();
                     text += ch;
                 }
-                if (text == "-") throw BuildException("Number expected after -");
+                if (text == "-") throw BuildException("Number expected after -: " + ch);
                 _tokenType = CDILToken.Integer;
                 _tokenValue = Convert.ToInt32(text);
                 return;
@@ -174,8 +156,6 @@ namespace Sooda.CodeGen.CDIL
                     ReadChar();
                     _tokenType = CDILToken.Semicolon;
                     return;
-                default:
-                    break;
             }
 
             if (Char.IsLetter(ch) || ch == '_')
@@ -183,17 +163,16 @@ namespace Sooda.CodeGen.CDIL
                 string tokenName = "";
                 do
                 {
-                    tokenName += (char)ReadChar();
-                    ch = (char)PeekChar();
-                }
-                while (Char.IsLetterOrDigit(ch) || ch == '_');
+                    tokenName += (char) ReadChar();
+                    ch = (char) PeekChar();
+                } while (Char.IsLetterOrDigit(ch) || ch == '_');
+
                 _tokenValue = tokenName;
                 _tokenType = CDILToken.Keyword;
                 return;
             }
 
             throw BuildException("Unrecognized character: " + ch);
-
         }
 
         public void Expect(CDILToken token)
@@ -208,7 +187,7 @@ namespace Sooda.CodeGen.CDIL
         {
             if (TokenType < CDILToken.Keyword)
                 throw BuildException("Keyword expected.");
-            string retval = (string)_tokenValue;
+            string retval = (string) _tokenValue;
             GetNextToken();
             return retval;
         }
@@ -217,7 +196,7 @@ namespace Sooda.CodeGen.CDIL
         {
             if (TokenType < CDILToken.Keyword)
                 throw BuildException("Keyword '" + keyword + "'expected.");
-            if (keyword != (string)_tokenValue)
+            if (keyword != (string) _tokenValue)
                 throw BuildException("Keyword '" + keyword + "' expected.");
             GetNextToken();
         }
@@ -226,14 +205,17 @@ namespace Sooda.CodeGen.CDIL
         {
             if (TokenType < CDILToken.Keyword)
                 return false;
-            if (keyword != (string)_tokenValue)
+            if (keyword != (string) _tokenValue)
                 return false;
             return true;
         }
 
         public Exception BuildException(string msg)
         {
-            return new ArgumentException(msg + " Next token: " + _input.Substring(_pos, _input.Length - _pos).Substring(0,50) + " Input: " + _input);
+            return
+                new ArgumentException(msg + " Next token: " +
+                                      _input.Substring(_pos, _input.Length - _pos).Substring(0, 50) + " Input: " +
+                                      _input);
         }
     }
 }

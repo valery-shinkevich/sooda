@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,48 +27,61 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System.Collections;
-
-using System.Xml.Serialization;
-
 namespace Sooda.QL
 {
+    using System.Collections;
+    using System.Xml.Serialization;
+    using TypedWrappers;
+
     public class SoqlBooleanInExpression : SoqlBooleanExpression
     {
         public SoqlExpression Left;
 
-        [XmlArray("in")]
-        [XmlArrayItem("item")]
-        public SoqlExpressionCollection Right;
+        [XmlArray("in")] [XmlArrayItem("item")] public SoqlExpressionCollection Right;
 
-        public SoqlBooleanInExpression() { }
+        public SoqlBooleanInExpression()
+        {
+        }
+
         public SoqlBooleanInExpression(SoqlExpression lhs, SoqlExpressionCollection rhs)
         {
-            this.Left = lhs;
-            this.Right = rhs;
+            Left = lhs;
+            Right = rhs;
         }
+
         public SoqlBooleanInExpression(SoqlExpression lhs, IEnumerable rhs)
         {
-            this.Left = lhs;
-            this.Right = new SoqlExpressionCollection();
+            Left = lhs;
+            Right = new SoqlExpressionCollection();
             foreach (object expr in rhs)
             {
                 if (expr is SoqlExpression)
                 {
-                    this.Right.Add((SoqlExpression)expr);
+                    Right.Add((SoqlExpression) expr);
                     continue;
                 }
 
                 if (expr is SoodaObject)
                 {
-                    this.Right.Add(new SoqlLiteralExpression(((SoodaObject)expr).GetPrimaryKeyValue()));
+                    Right.Add(new SoqlLiteralExpression(((SoodaObject) expr).GetPrimaryKeyValue()));
                     continue;
                 }
 
-                this.Right.Add(new SoqlLiteralExpression(expr));
+                Right.Add(new SoqlLiteralExpression(expr));
             }
         }
 
+        public SoqlBooleanInExpression(SoqlExpression lhs, string subQuery)
+        {
+            Left = lhs;
+            Right = new SoqlExpressionCollection {new SoqlStringWrapperExpression(new SoqlRawExpression(subQuery))};
+        }
+
+        public SoqlBooleanInExpression(SoqlExpression lhs, SoqlRawExpression subQuery)
+        {
+            Left = lhs;
+            Right = new SoqlExpressionCollection {new SoqlStringWrapperExpression(subQuery)};
+        }
 
         // visitor pattern
         public override void Accept(ISoqlVisitor visitor)
@@ -79,16 +91,16 @@ namespace Sooda.QL
 
         public override SoqlExpression Simplify()
         {
-            if (this.Right.Count == 0)
+            if (Right.Count == 0)
                 return SoqlBooleanLiteralExpression.False;
 
-            SoqlExpression lhsExpression = this.Left.Simplify();
+            SoqlExpression lhsExpression = Left.Simplify();
             SoqlBooleanExpression retVal = null;
 
-            for (int i = 0; i < this.Right.Count; ++i)
+            for (int i = 0; i < Right.Count; ++i)
             {
-                SoqlExpression e = (SoqlExpression)this.Right[i];
-                SoqlBooleanRelationalExpression bre =
+                var e = Right[i];
+                var bre =
                     new SoqlBooleanRelationalExpression(lhsExpression, e, SoqlRelationalOperator.Equal);
 
                 if (retVal == null)
@@ -102,7 +114,7 @@ namespace Sooda.QL
 
         public override object Evaluate(ISoqlEvaluateContext context)
         {
-            // this should be evaluated on
+            // this should be evaluated on 
             return Simplify().Evaluate(context);
         }
     }

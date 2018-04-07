@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,12 +27,11 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.Reflection;
-
-
 namespace Sooda
 {
+    using System;
+    using System.Reflection;
+
     [AttributeUsage(AttributeTargets.Assembly)]
     public sealed class SoodaStubAssemblyAttribute : Attribute
     {
@@ -51,10 +49,7 @@ namespace Sooda
 
         public Assembly Assembly
         {
-            get
-            {
-                return _assembly;
-            }
+            get { return _assembly; }
         }
     }
 }

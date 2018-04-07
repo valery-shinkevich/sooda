@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,13 +27,14 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System.Reflection;
-
 namespace Sooda
 {
+    using System;
+    using System.Reflection;
+
     public abstract class SoodaObjectReflectionBasedFieldValues : SoodaObjectFieldValues
     {
-        readonly string[] _orderedFieldNames;
+        private readonly string[] _orderedFieldNames;
 
         protected SoodaObjectReflectionBasedFieldValues(string[] orderedFieldNames)
         {
@@ -44,9 +44,9 @@ namespace Sooda
         protected SoodaObjectReflectionBasedFieldValues(SoodaObjectReflectionBasedFieldValues other)
         {
             _orderedFieldNames = other.GetFieldNames();
-            for (int i = 0; i < _orderedFieldNames.Length; ++i)
+            for (int i = 0; i < _orderedFieldNames.Length; i++)
             {
-                FieldInfo fi = GetField(i);
+                var fi = GetField(i);
                 fi.SetValue(this, fi.GetValue(other));
             }
         }
@@ -56,24 +56,87 @@ namespace Sooda
             return GetType().GetField(name);
         }
 
-        FieldInfo GetField(int fieldOrdinal)
+        private FieldInfo GetField(int fieldOrdinal)
         {
             return GetField(_orderedFieldNames[fieldOrdinal]);
         }
 
         public override void SetFieldValue(int fieldOrdinal, object val)
         {
-            System.Reflection.FieldInfo fi = GetField(fieldOrdinal);
-            Sooda.Utils.SqlTypesUtil.SetValue(fi, this, val);
+            var fi = GetField(fieldOrdinal);
+            if (typeof (System.Data.SqlTypes.INullable).IsAssignableFrom(fi.FieldType))
+            {
+                if (val == null)
+                {
+                    var nullProperty = fi.FieldType.GetField("Null", BindingFlags.Static | BindingFlags.Public);
+
+                    // ReSharper disable AssignNullToNotNullAttribute
+                    // ReSharper disable PossibleNullReferenceException
+                    var sqlNullValue = nullProperty.GetValue(null);
+                    // ReSharper restore PossibleNullReferenceException
+                    // ReSharper restore AssignNullToNotNullAttribute
+                    fi.SetValue(this, sqlNullValue);
+                }
+                else
+                {
+                    var constructorParameterTypes = new[] {val.GetType()};
+                    var constructorInfo = fi.FieldType.GetConstructor(constructorParameterTypes);
+                    if (constructorInfo != null)
+                    {
+                        var sqlValue = constructorInfo.Invoke(new[] {val});
+                        fi.SetValue(this, sqlValue);
+                    }
+                }
+            }
+            else
+            {
+                fi.SetValue(this, val);
+            }
         }
+
+        public override void SetFieldValue(string fieldName, object val)
+        {
+            for (var i = 0; i < _orderedFieldNames.Length; i++)
+            {
+                if (fieldName != _orderedFieldNames[i]) continue;
+
+                SetFieldValue(i, val);
+                return;
+            }
+            throw new ArgumentOutOfRangeException("fieldName");
+        }
+
 
         public override object GetBoxedFieldValue(int fieldOrdinal)
         {
-            System.Reflection.FieldInfo fi = GetField(fieldOrdinal);
-            object rawValue = fi.GetValue(this);
+            var fi = GetField(fieldOrdinal);
+            var rawValue = fi.GetValue(this);
+
+            if (rawValue == null)
+                return null;
 
             // we got raw value, it's possible that it's a sqltype, nullables are already boxed here
-            return Sooda.Utils.SqlTypesUtil.Unwrap(rawValue);
+
+            var sqlType = rawValue as System.Data.SqlTypes.INullable;
+            if (sqlType != null)
+            {
+                return sqlType.IsNull
+                    ? null
+                    : rawValue.GetType().GetProperty("Value").GetValue(rawValue, null);
+            }
+
+            return rawValue;
+        }
+
+        public override object GetBoxedFieldValue(string fieldName)
+        {
+            for (var i = 0; i < _orderedFieldNames.Length; i++)
+            {
+                if (fieldName != _orderedFieldNames[i]) continue;
+
+                return GetBoxedFieldValue(i);
+            }
+            throw new ArgumentOutOfRangeException("fieldName");
         }
 
         public override int Length

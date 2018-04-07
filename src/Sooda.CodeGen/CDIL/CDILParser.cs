@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2015 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,14 +27,14 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.CodeDom;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
-
 namespace Sooda.CodeGen.CDIL
 {
+    using System;
+    using System.CodeDom;
+    using System.Collections;
+    using System.IO;
+    using System.Reflection;
+
     public class CDILParser : CDILTokenizer
     {
         public CDILParser(string txt, CDILContext context)
@@ -43,14 +42,14 @@ namespace Sooda.CodeGen.CDIL
         {
         }
 
-        static string Preprocess(string txt, CDILContext context)
+        private static string Preprocess(string txt, CDILContext context)
         {
             StringReader sr = new StringReader(txt);
             StringWriter sw = new StringWriter();
 
             string line;
             bool skip = false;
-            Stack<bool> skipStack = new Stack<bool>();
+            Stack skipStack = new Stack();
 
             while ((line = sr.ReadLine()) != null)
             {
@@ -60,8 +59,9 @@ namespace Sooda.CodeGen.CDIL
                     object o = context[conditionalName];
                     if (o == null)
                         throw new ArgumentException("No such conditional: " + conditionalName);
+                    bool v = Convert.ToBoolean(o) || skip;
                     skipStack.Push(skip);
-                    skip |= Convert.ToBoolean(o);
+                    skip = v;
                     continue;
                 }
                 if (line.StartsWith("#if "))
@@ -70,19 +70,19 @@ namespace Sooda.CodeGen.CDIL
                     object o = context[conditionalName];
                     if (o == null)
                         throw new ArgumentException("No such conditional: " + conditionalName);
+                    bool v = !Convert.ToBoolean(o) || skip;
                     skipStack.Push(skip);
-                    skip |= !Convert.ToBoolean(o);
+                    skip = v;
                     continue;
                 }
                 if (line.StartsWith("#endif"))
                 {
-                    skip = skipStack.Pop();
+                    skip = (bool) skipStack.Pop();
                     continue;
                 }
                 if (line.StartsWith("#else"))
                 {
-                    if (!skipStack.Peek())
-                        skip = !skip;
+                    skip = !skip;
                     continue;
                 }
                 if (!skip)
@@ -373,13 +373,11 @@ namespace Sooda.CodeGen.CDIL
                     }
                     Expect(CDILToken.RightParen);
                     currentValue = methodInvoke;
-                    continue;
                 }
                 else if (TokenType == CDILToken.Dollar)
                 {
                     GetNextToken();
                     currentValue = new CodeFieldReferenceExpression(currentValue, name);
-                    continue;
                 }
                 else
                 {
@@ -391,7 +389,7 @@ namespace Sooda.CodeGen.CDIL
 
         public CodeTypeReference ParseType()
         {
-            string name = this.EatKeyword();
+            string name = EatKeyword();
             if (name == "arrayof")
             {
                 Expect(CDILToken.LeftParen);
@@ -399,11 +397,13 @@ namespace Sooda.CodeGen.CDIL
                 Expect(CDILToken.RightParen);
                 return new CodeTypeReference(arrayItemType, 1);
             }
+
             if (name == "generic")
             {
                 Expect(CDILToken.LeftParen);
                 CodeTypeReference genericType = ParseType();
-                System.Collections.Generic.List<CodeTypeReference> typeArguments = new System.Collections.Generic.List<CodeTypeReference>();
+                System.Collections.Generic.List<CodeTypeReference> typeArguments =
+                    new System.Collections.Generic.List<CodeTypeReference>();
                 while (TokenType == CDILToken.Comma)
                 {
                     GetNextToken();
@@ -412,10 +412,11 @@ namespace Sooda.CodeGen.CDIL
                 Expect(CDILToken.RightParen);
                 return new CodeTypeReference(genericType.BaseType, typeArguments.ToArray());
             }
+
             while (TokenType == CDILToken.Dot)
             {
                 GetNextToken();
-                name += "." + this.EatKeyword();
+                name += "." + EatKeyword();
             }
 
             return new CodeTypeReference(name);
@@ -423,11 +424,11 @@ namespace Sooda.CodeGen.CDIL
 
         public TypeAttributes ParseTypeAttributes()
         {
-            TypeAttributes retval = (TypeAttributes) 0;
+            TypeAttributes retval = 0;
             for (;;)
             {
                 string keyword = EatKeyword();
-                retval |= (TypeAttributes) Enum.Parse(typeof(TypeAttributes), keyword, true);
+                retval |= (TypeAttributes) Enum.Parse(typeof (TypeAttributes), keyword, true);
                 if (TokenType != CDILToken.Comma)
                     return retval;
                 GetNextToken();
@@ -436,17 +437,16 @@ namespace Sooda.CodeGen.CDIL
 
         public MemberAttributes ParseMemberAttributes()
         {
-            MemberAttributes retval = (MemberAttributes)0;
+            MemberAttributes retval = 0;
 
             while (true)
             {
                 string keyword = EatKeyword();
-                MemberAttributes v = (MemberAttributes)Enum.Parse(typeof(MemberAttributes), keyword, true);
+                MemberAttributes v = (MemberAttributes) Enum.Parse(typeof (MemberAttributes), keyword, true);
                 retval |= v;
                 if (TokenType == CDILToken.Comma)
                 {
                     GetNextToken();
-                    continue;
                 }
                 else
                 {
@@ -740,7 +740,7 @@ namespace Sooda.CodeGen.CDIL
             }
             else
             {
-                ctd.BaseTypes.Add(typeof(object));
+                ctd.BaseTypes.Add(typeof (object));
             }
             while (IsKeyword("implements"))
             {
@@ -778,10 +778,7 @@ namespace Sooda.CodeGen.CDIL
                     CodeExpression expr = ParseExpression();
                     return new CodeVariableDeclarationStatement(type, name, expr);
                 }
-                else
-                {
-                    return new CodeVariableDeclarationStatement(type, name);
-                }
+                return new CodeVariableDeclarationStatement(type, name);
             }
             if (IsKeyword("call"))
             {
@@ -795,6 +792,18 @@ namespace Sooda.CodeGen.CDIL
 
                 GetNextToken();
                 retVal = new CodeMethodReturnStatement();
+                //    if (!IsKeyword("nothing"))
+                //        retVal.Expression = ParseExpression();
+                //    else
+                //        GetNextToken();
+                //    return retVal;
+                //}
+                //if (IsKeyword("return"))
+                //{
+                //    CodeMethodReturnStatement retVal;
+
+                //    GetNextToken();
+                //    retVal = new CodeMethodReturnStatement();
                 if (TokenType != CDILToken.Semicolon && TokenType != CDILToken.EOF)
                     retVal.Expression = ParseExpression();
                 return retVal;

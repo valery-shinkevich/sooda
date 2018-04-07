@@ -1,6 +1,6 @@
 class ${ClassName}List
     extends generic(Sooda.ObjectMapper.SoodaObjectCollectionWrapperGeneric, ${ClassName})
-
+ 
 constructor()
     attributes Public
 begin
@@ -85,6 +85,6 @@ end
 method GetSnapshot()
     returns ${ClassName}List
     attributes Public,Final
-begin
+begin    
     return new ${ClassName}List(base.GetSnapshot2())
 end

@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,21 +27,22 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using Sooda.Schema;
-using System;
-using System.Data.SqlTypes;
-
 namespace Sooda.ObjectMapper.FieldHandlers
 {
+    using System;
+    using System.Data.SqlTypes;
+    using Schema;
+
     public class FieldHandlerFactory
     {
-        static readonly SoodaFieldHandler[] _nullableHandlers = GetHandlers(true);
-        static readonly SoodaFieldHandler[] _notNullHandlers = GetHandlers(false);
+        private static readonly SoodaFieldHandler[] NullableHandlers = GetHandlers(true);
+        private static readonly SoodaFieldHandler[] NotNullHandlers = GetHandlers(false);
 
-        static SoodaFieldHandler[] GetHandlers(bool nullable)
+        private static SoodaFieldHandler[] GetHandlers(bool nullable)
         {
             // the order must match FieldDataType
-            return new SoodaFieldHandler[] {
+            return new SoodaFieldHandler[]
+            {
                 new Int32FieldHandler(nullable),
                 new Int64FieldHandler(nullable),
                 new BooleanFieldHandler(nullable),
@@ -56,37 +56,40 @@ namespace Sooda.ObjectMapper.FieldHandlers
                 new GuidFieldHandler(nullable),
                 new ImageFieldHandler(nullable),
                 new TimeSpanFieldHandler(nullable),
-                new AnsiStringFieldHandler(nullable)
+                new AnsiStringFieldHandler(nullable),
+                new MoneyFieldHandler(nullable),
+                new RowVersionFieldHandler(nullable),
+                new DateFieldHandler(nullable)
             };
         }
 
         public static SoodaFieldHandler GetFieldHandler(FieldDataType type)
         {
-            return _nullableHandlers[(int) type];
+            return NullableHandlers[(int) type];
         }
 
         public static SoodaFieldHandler GetFieldHandler(FieldDataType type, bool nullable)
         {
-            return (nullable ? _nullableHandlers : _notNullHandlers)[(int) type];
+            return (nullable ? NullableHandlers : NotNullHandlers)[(int) type];
         }
 
         internal static FieldDataType GetFieldDataType(Type type, out bool nullable)
         {
             // make sure booleans returned as BooleanAsInteger instead of the more problematic Boolean
-            if (type == typeof(bool))
+            if (type == typeof (bool))
             {
                 nullable = false;
                 return FieldDataType.BooleanAsInteger;
             }
-            if (type == typeof(bool?) || type == typeof(SqlBoolean))
+            if (type == typeof (bool?) || type == typeof (SqlBoolean))
             {
                 nullable = true;
                 return FieldDataType.BooleanAsInteger;
             }
 
-            for (int i = 0; i < _nullableHandlers.Length; i++)
+            for (int i = 0; i < NullableHandlers.Length; i++)
             {
-                SoodaFieldHandler handler = _nullableHandlers[i];
+                SoodaFieldHandler handler = NullableHandlers[i];
                 if (type == handler.GetFieldType())
                 {
                     nullable = false;

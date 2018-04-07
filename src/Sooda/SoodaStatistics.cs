@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,33 +27,35 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.Text;
-
 namespace Sooda
 {
+    using System;
+    using System.Text;
+
     public class SoodaStatistics
     {
         private static readonly SoodaStatistics _globalStatistics = new SoodaStatistics();
 
-        internal SoodaStatistics() { }
+        internal SoodaStatistics()
+        {
+        }
 
         // query timings
 
-        private int _databaseQueries = 0;
-        private double _totalQueryTime = 0.0;
-        private double _minQueryTime = 0.0;
-        private double _maxQueryTime = 0.0;
-        private double _avgQueryTime = 0.0;
-        private double _lastQueryTime = 0.0;
-        private int _cacheMisses = 0;
-        private int _cacheHits = 0;
-        private int _collectionCacheMisses = 0;
-        private int _collectionCacheHits = 0;
-        private int _extraMaterializations = 0;
-        private int _objectInserts = 0;
-        private int _objectUpdates = 0;
-        private int _objectsWithoutFields = 0;
+        private int _databaseQueries;
+        private double _totalQueryTime;
+        private double _minQueryTime;
+        private double _maxQueryTime;
+        private double _avgQueryTime;
+        private double _lastQueryTime;
+        private int _cacheMisses;
+        private int _cacheHits;
+        private int _collectionCacheMisses;
+        private int _collectionCacheHits;
+        private int _extraMaterializations;
+        private int _objectInserts;
+        private int _objectUpdates;
+        private int _objectsWithoutFields;
 
         public double TotalQueryTime
         {
@@ -114,7 +115,7 @@ namespace Sooda
                 if (total == 0)
                     return 0.0;
 
-                return (double)_cacheHits / total;
+                return (double) _cacheHits/total;
             }
         }
 
@@ -126,7 +127,7 @@ namespace Sooda
                 if (total == 0)
                     return 0.0;
 
-                return (double)_collectionCacheHits / total;
+                return (double) _collectionCacheHits/total;
             }
         }
 
@@ -157,8 +158,7 @@ namespace Sooda
                 int totalObjects = ObjectInserts + ObjectUpdates;
                 if (totalObjects == 0)
                     return 0.0;
-                else
-                    return (double)_objectsWithoutFields / totalObjects;
+                return (double) _objectsWithoutFields/totalObjects;
             }
         }
 
@@ -172,7 +172,7 @@ namespace Sooda
             _databaseQueries++;
             _totalQueryTime += timeInSeconds;
             _lastQueryTime = timeInSeconds;
-            _avgQueryTime = _totalQueryTime / _databaseQueries;
+            _avgQueryTime = _totalQueryTime/_databaseQueries;
 
             if (_databaseQueries == 1)
             {
@@ -234,16 +234,18 @@ namespace Sooda
 
             sb.AppendFormat("Queries:          count={0} total={1}ms avg={2}ms min={3}ms max={4}ms last={5}ms\n",
                 DatabaseQueries,
-                Math.Round(TotalQueryTime * 1000.0, 3),
-                Math.Round(AvgQueryTime * 1000.0, 3),
-                Math.Round(MinQueryTime * 1000.0, 3),
-                Math.Round(MaxQueryTime * 1000.0, 3),
-                Math.Round(LastQueryTime * 1000.0, 3));
-            sb.AppendFormat("Object Cache:     hits={0} misses={1} ratio={2}%\n", CacheHits, CacheMisses, Math.Round(CacheHitRatio * 100.0, 2));
-            sb.AppendFormat("Collection Cache: hits={0} misses={1} ratio={2}%\n", CollectionCacheHits, CollectionCacheMisses, Math.Round(CollectionCacheHitRatio * 100.0, 2));
+                Math.Round(TotalQueryTime*1000.0, 3),
+                Math.Round(AvgQueryTime*1000.0, 3),
+                Math.Round(MinQueryTime*1000.0, 3),
+                Math.Round(MaxQueryTime*1000.0, 3),
+                Math.Round(LastQueryTime*1000.0, 3));
+            sb.AppendFormat("Object Cache:     hits={0} misses={1} ratio={2}%\n", CacheHits, CacheMisses,
+                Math.Round(CacheHitRatio*100.0, 2));
+            sb.AppendFormat("Collection Cache: hits={0} misses={1} ratio={2}%\n", CollectionCacheHits,
+                CollectionCacheMisses, Math.Round(CollectionCacheHitRatio*100.0, 2));
             sb.AppendFormat("Objects:          inserted={0} updated={1} extra={2} nofields={3} ({4}%)\n",
                 ObjectInserts, ObjectUpdates,
-                ExtraMaterializations, ObjectsWithoutFields, Math.Round(ObjectsWithoutFieldsRatio * 100.0, 2));
+                ExtraMaterializations, ObjectsWithoutFields, Math.Round(ObjectsWithoutFieldsRatio*100.0, 2));
 
             return sb.ToString();
         }

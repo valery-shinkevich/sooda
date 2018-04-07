@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -71,32 +70,28 @@ namespace Sooda.QL
         {
             if (right)
                 return left;
-            else
-                return SoqlBooleanLiteralExpression.False;
+            return SoqlBooleanLiteralExpression.False;
         }
 
         public static SoqlBooleanExpression operator |(SoqlBooleanExpression left, bool right)
         {
             if (right)
                 return SoqlBooleanLiteralExpression.True;
-            else
-                return left;
+            return left;
         }
 
         public static SoqlBooleanExpression operator &(bool left, SoqlBooleanExpression right)
         {
             if (left)
                 return right;
-            else
-                return SoqlBooleanLiteralExpression.False;
+            return SoqlBooleanLiteralExpression.False;
         }
 
         public static SoqlBooleanExpression operator |(bool left, SoqlBooleanExpression right)
         {
             if (left)
                 return SoqlBooleanLiteralExpression.True;
-            else
-                return right;
+            return right;
         }
 
         public static SoqlBooleanExpression operator !(SoqlBooleanExpression expr)

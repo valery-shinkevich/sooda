@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,15 +27,15 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System.Runtime.InteropServices;
-
 namespace Sooda.Utils
 {
+    using System.Runtime.InteropServices;
+
     public class QPCStopWatch : StopWatch
     {
         private long _startTime;
         private long _stopTime;
-        private static long _overhead = 0;
+        private static long _overhead;
         private static long _frequency;
 
         static QPCStopWatch()
@@ -54,10 +53,10 @@ namespace Sooda.Utils
             {
                 callibration.Start();
                 callibration.Stop();
-                totalOverhead += ((QPCStopWatch)callibration).Ticks;
+                totalOverhead += ((QPCStopWatch) callibration).Ticks;
                 loopCount++;
             }
-            _overhead = totalOverhead / loopCount;
+            _overhead = totalOverhead/loopCount;
         }
 
         public override void Start()
@@ -77,14 +76,13 @@ namespace Sooda.Utils
 
         public override double Seconds
         {
-            get { return (double)(_stopTime - _startTime - _overhead) / _frequency; }
+            get { return (double) (_stopTime - _startTime - _overhead)/_frequency; }
         }
 
         [DllImport("kernel32.dll")]
-        static extern bool QueryPerformanceCounter(out long val);
+        private static extern bool QueryPerformanceCounter(out long val);
 
         [DllImport("kernel32.dll")]
-        static extern bool QueryPerformanceFrequency(out long val);
+        private static extern bool QueryPerformanceFrequency(out long val);
     }
-
 }

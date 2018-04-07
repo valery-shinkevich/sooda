@@ -1,805 +1,1107 @@
-<?xml version="1.0" encoding="utf-8"?>
-<root>
-  <!-- 
-    Microsoft ResX Schema 
-    
-    Version 1.3
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">1.3</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1">this is my long string</data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        [base64 mime encoded serialized .NET Framework object]
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        [base64 mime encoded string representing a byte array form of the .NET Framework object]
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used forserialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
 
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:element name="root" msdata:IsDataSet="true">
-      <xsd:complexType>
-        <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="data">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="resheader">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:choice>
-      </xsd:complexType>
-    </xsd:element>
-  </xsd:schema>
-  <resheader name="resmimetype">
-    <value>text/microsoft-resx</value>
-  </resheader>
-  <resheader name="version">
-    <value>1.3</value>
-  </resheader>
-  <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <data name="mainMenu1.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="mainMenu1.Location" type="System.Drawing.Point, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </data>
-  <data name="mainMenu1.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuItem1.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuItem1.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuitemFileNew.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuitemFileNew.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuitemFileOpen.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuitemFileOpen.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuitemFileSave.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuitemFileSave.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuitemFileSaveAs.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuitemFileSaveAs.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuItem7.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuItem7.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuitemFileExit.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuitemFileExit.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuItem2.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuItem2.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuItemProjectNew.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuItemProjectNew.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuItemProjectOpen.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuItemProjectOpen.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuItemProjectSave.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuItemProjectSave.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuItem9.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuItem9.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuItemProjectProperties.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuItemProjectProperties.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuItem4.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuItem4.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuItem3.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuItem3.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuitemQueryRun.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuitemQueryRun.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="statusBar1.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </data>
-  <data name="statusBar1.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="statusBar1.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="toolBar1.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </data>
-  <data name="toolBar1.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="toolBar1.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="toolBarButtonNew.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="toolBarButtonNew.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="toolBarButtonOpen.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="toolBarButtonOpen.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="toolBarButtonSave.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="toolBarButtonSave.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="toolBarSeparator1.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="toolBarSeparator1.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="toolBarButtonRun.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="toolBarButtonRun.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="toolBarButton1.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="toolBarButton1.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="toolBarButtonConnection.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="toolBarButtonConnection.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="contextMenuDatabases.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="contextMenuDatabases.Location" type="System.Drawing.Point, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>126, 17</value>
-  </data>
-  <data name="contextMenuDatabases.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuItem5.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuItem5.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuItem8.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuItem8.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuItem6.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="menuItem6.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="imageList1.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="imageList1.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="imageList1.Location" type="System.Drawing.Point, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>293, 17</value>
-  </data>
-  <data name="imageList1.ImageStream" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAFpTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0xLjAuNTAw
-        MC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZT
-        eXN0ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMA
-        AABYBgAAAk1TRnQBSQFMAgEBBQEAAQkBAAEEAQABEAEAARABAAT/ARkBEAj/AUIBTQE2BwABNgMAASgD
-        AAFAAwABMAMAAQEBAAEYBgABJP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/ACcAAYUCeAENAgABDQIAAQ0C
-        AAENrQABigJwAYoCcAHJAhABAALfAQACcAEAAnABAAJwARqnAAGQAmgBGAXnASgCzgEAApgBAALnAQAC
-        gAEAAoABAAJoASikAAOAAb8C/wFAAv8BAAL/AQAC3wEAAqABAAKAAQACgAEAAoClAAOAAVAC/wGvAv8B
-        AAL/AQACqAEAAtcBAAKAAQACgAEAAigDAAFCAgABQgIAAUICAAFCmAADgAGfAv8BYAL/AQAC/wEAAs8B
-        AAKwAQACgAEAAoABAAJQBAACnwEAAlABAAJQAQACUAFPlQADgAFwAv8BjwL/AUgCuAFIArgBAAI4AQAC
-        OAEAAoABAAI4BAACuAEAAscBAAKAAQACgAEAAkgBXZIAA4ABQAXAAUACwAFAAsADgAEAAoABAAJABwAC
-        wAEAAsABAAKAAQACgAEAAoCTAAOAAaUDSAK4AV0CjgFwAv8BjwL/AXAC/wEAAnABAAJwBAACxwEAArgB
-        AAKAAQACgAEAAkiTAAGfAlABtAMwAs8BhAJgAZ8C/wFgAv8BnwL/ATACzwEwAs8BAAJgAQACsAEAAs8B
-        AAKAAQACgAEAAjCWAAGaAlgBmgJYASgC1wEoBdcBKALXAVgFqAEoAtcBKALXAQACWAEAAlgBAAKAAQAC
-        WJwAAZUCYAGVAmABlQJgA4ABIAXfAWACoAFgAqADQAEAAkABAAJgqAADgAGQA2gCmAEoAs4BMAL/Ac8C
-        /wEwAv8BAAIwAQACMKUAAYoCcAHJAxAC7wG5AiAB3wL/ASAC/wHfAv8BEALvARAC7wEapwABhQJ4AYUC
-        eAEIAvcBCAX3AQgC9wGFAngBhQJ4rgAMgP8A/wCCAAKAAQACgBwAAoA/ABv/EwACgAEAAoABAAKAAQAC
-        gAEAAoABAAKAAQACgAEAAoABAAKAFgACgAEAAoAcAAKAGAABgCYAG/8QAAL/BAACgAEAAoABAAKAAQAC
-        gAEAAoABAAKAAQACgAEAAoABAAKAEwACgAEAAoAcAAKAGQABgAEAAYAjABv/DwAD/wEAAv8EAAKAAQAC
-        gAEAAoABAAKAAQACgAEAAoABAAKAAQACgAEAAoAQAAKAAQACgBwAAoAZAAGAAgABgAEAAYAgABv/EAAF
-        /wEAAv8EAAKAAQACgAEAAoABAAKAAQACgAEAAoABAAKAAQACgAEAAoANAAKAAQACgAEAAoABAAKAAQAC
-        gAEAAoABAAKAAQACgAEAAoABAAKAAQACgAEAAoAZAAGAAgABgAIAAYABAAGAHQAb/w8AA/8BAAX/AQAC
-        /ygAAoABAAKAGQACgAEAAoAZAAGAAgABgAIAAYACAAGAAQABgBoAG/8QAAX/AQAF/wEABf8BAAX/AQAC
-        /xkAAoAfAAKAGQABgAIAAYACAAGAAgABgAIAAYABAAGAFwAb/w8AA/8BAAX/AQAF/wEABf8BAAX/GQAC
-        gB8AAoAZAAGAAgABgAIAAYACAAGAAgABgBkAG/8QAAX/AQAC/ysAAoAfAAKAGQABgAIAAYACAAGAAgAB
-        gBwAEv9MAAKAHwACgBkAAYACAAGAAgABgB8AEv8DAAP/RgACgDoAAYACAAGAIgAS/0wAAoA6AAGA/wCd
-        AAFCAU0BPgcAAT4DAAEoAwABQAMAATADAAEBAQABAQUAAYABARYAA/+BAAHgAf8GAAGAAX8HAAE/BwAB
-        PwcAAQMHAAEBJgABgAcAAeAHAAH8BwAB/AcAAf4BAQYAAf8BhwYADP8BwAEBAv8BwAEHAQABHwGAATEC
-        /wHAAQcBAAEPAYABMQH9Af8BwAEHAQABBwGAATEB/AH/AcABBwEAAQMBgAEBAfwBfwHAAQcBAAEBAYAB
-        AQH8AT8BwAEHAgABgAEBAfwBHwHAAQcBAAEfAY8B8QH8AQ8BwAEHAQABHwGPAfEB/AEfAcABBwEAAR8B
-        jwHxAfwBPwHAAQcBjwHxAY8B8QH8AX8BwAEPAf8B+QGPAfEB/AH/AcABHwH/AXUBjwH1Af0B/wHAAT8B
-        /wGPAYABAQr/FgAL
-</value>
-  </data>
-  <data name="recordsetContextMenu.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="recordsetContextMenu.Location" type="System.Drawing.Point, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>398, 17</value>
-  </data>
-  <data name="recordsetContextMenu.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="contextMenuItemSelectAll.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="contextMenuItemSelectAll.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="contextMenuItemCopy.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="contextMenuItemCopy.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="tabControl1.SnapToGrid" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </data>
-  <data name="tabControl1.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </data>
-  <data name="tabControl1.DrawGrid" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </data>
-  <data name="tabControl1.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="tabControl1.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="tabControl1.GridSize" type="System.Drawing.Size, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>8, 8</value>
-  </data>
-  <data name="tabPageRecordSet.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </data>
-  <data name="tabPageRecordSet.SnapToGrid" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </data>
-  <data name="tabPageRecordSet.DrawGrid" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </data>
-  <data name="tabPageRecordSet.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="tabPageRecordSet.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="tabPageRecordSet.GridSize" type="System.Drawing.Size, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>8, 8</value>
-  </data>
-  <data name="resultSet.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </data>
-  <data name="resultSet.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="resultSet.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="tabPageXml.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </data>
-  <data name="tabPageXml.SnapToGrid" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </data>
-  <data name="tabPageXml.DrawGrid" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </data>
-  <data name="tabPageXml.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="tabPageXml.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="tabPageXml.GridSize" type="System.Drawing.Size, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>8, 8</value>
-  </data>
-  <data name="panel3.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </data>
-  <data name="panel3.SnapToGrid" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </data>
-  <data name="panel3.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="panel3.GridSize" type="System.Drawing.Size, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>8, 8</value>
-  </data>
-  <data name="panel3.DrawGrid" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </data>
-  <data name="panel3.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="xmlResults.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="xmlResults.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="xmlResults.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </data>
-  <data name="xmlResults.Encoding" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAEAQAAABhTeXN0ZW0uVGV4dC5VVEY4RW5jb2RpbmcGAAAAEmVtaXRVVEY4
-        SWRlbnRpZmllchBpc1Rocm93RXhjZXB0aW9uCGRhdGFJdGVtCm1fY29kZVBhZ2URRW5jb2RpbmcrZGF0
-        YUl0ZW0TRW5jb2RpbmcrbV9jb2RlUGFnZQAAAwADAAEBJVN5c3RlbS5HbG9iYWxpemF0aW9uLkNvZGVQ
-        YWdlRGF0YUl0ZW0IJVN5c3RlbS5HbG9iYWxpemF0aW9uLkNvZGVQYWdlRGF0YUl0ZW0IAQAK6f0AAArp
-        /QAACw==
-</value>
-  </data>
-  <data name="tabPageCsv.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </data>
-  <data name="tabPageCsv.SnapToGrid" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </data>
-  <data name="tabPageCsv.DrawGrid" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </data>
-  <data name="tabPageCsv.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="tabPageCsv.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="tabPageCsv.GridSize" type="System.Drawing.Size, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>8, 8</value>
-  </data>
-  <data name="panel4.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </data>
-  <data name="panel4.SnapToGrid" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </data>
-  <data name="panel4.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="panel4.GridSize" type="System.Drawing.Size, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>8, 8</value>
-  </data>
-  <data name="panel4.DrawGrid" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </data>
-  <data name="panel4.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="csvResults.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="csvResults.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="csvResults.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </data>
-  <data name="csvResults.Encoding" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAEAQAAABhTeXN0ZW0uVGV4dC5VVEY4RW5jb2RpbmcGAAAAEmVtaXRVVEY4
-        SWRlbnRpZmllchBpc1Rocm93RXhjZXB0aW9uCGRhdGFJdGVtCm1fY29kZVBhZ2URRW5jb2RpbmcrZGF0
-        YUl0ZW0TRW5jb2RpbmcrbV9jb2RlUGFnZQAAAwADAAEBJVN5c3RlbS5HbG9iYWxpemF0aW9uLkNvZGVQ
-        YWdlRGF0YUl0ZW0IJVN5c3RlbS5HbG9iYWxpemF0aW9uLkNvZGVQYWdlRGF0YUl0ZW0IAQAK6f0AAArp
-        /QAACw==
-</value>
-  </data>
-  <data name="tabPagePrettyPrint.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </data>
-  <data name="tabPagePrettyPrint.SnapToGrid" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </data>
-  <data name="tabPagePrettyPrint.DrawGrid" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </data>
-  <data name="tabPagePrettyPrint.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="tabPagePrettyPrint.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="tabPagePrettyPrint.GridSize" type="System.Drawing.Size, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>8, 8</value>
-  </data>
-  <data name="tabPageTSql.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </data>
-  <data name="tabPageTSql.SnapToGrid" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </data>
-  <data name="tabPageTSql.DrawGrid" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </data>
-  <data name="tabPageTSql.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="tabPageTSql.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="tabPageTSql.GridSize" type="System.Drawing.Size, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>8, 8</value>
-  </data>
-  <data name="panel2.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </data>
-  <data name="panel2.SnapToGrid" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </data>
-  <data name="panel2.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="panel2.GridSize" type="System.Drawing.Size, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>8, 8</value>
-  </data>
-  <data name="panel2.DrawGrid" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </data>
-  <data name="panel2.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="translatedSql.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="translatedSql.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="translatedSql.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </data>
-  <data name="translatedSql.Encoding" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAEAQAAABhTeXN0ZW0uVGV4dC5VVEY4RW5jb2RpbmcGAAAAEmVtaXRVVEY4
-        SWRlbnRpZmllchBpc1Rocm93RXhjZXB0aW9uCGRhdGFJdGVtCm1fY29kZVBhZ2URRW5jb2RpbmcrZGF0
-        YUl0ZW0TRW5jb2RpbmcrbV9jb2RlUGFnZQAAAwADAAEBJVN5c3RlbS5HbG9iYWxpemF0aW9uLkNvZGVQ
-        YWdlRGF0YUl0ZW0IJVN5c3RlbS5HbG9iYWxpemF0aW9uLkNvZGVQYWdlRGF0YUl0ZW0IAQAK6f0AAArp
-        /QAACw==
-</value>
-  </data>
-  <data name="tabPageMessages.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </data>
-  <data name="tabPageMessages.SnapToGrid" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </data>
-  <data name="tabPageMessages.DrawGrid" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </data>
-  <data name="tabPageMessages.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="tabPageMessages.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="tabPageMessages.GridSize" type="System.Drawing.Size, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>8, 8</value>
-  </data>
-  <data name="messagesTextBox.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="messagesTextBox.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </data>
-  <data name="messagesTextBox.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="TextEditorControl1.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="TextEditorControl1.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="TextEditorControl1.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </data>
-  <data name="TextEditorControl1.Encoding" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAEAQAAABhTeXN0ZW0uVGV4dC5VVEY4RW5jb2RpbmcGAAAAEmVtaXRVVEY4
-        SWRlbnRpZmllchBpc1Rocm93RXhjZXB0aW9uCGRhdGFJdGVtCm1fY29kZVBhZ2URRW5jb2RpbmcrZGF0
-        YUl0ZW0TRW5jb2RpbmcrbV9jb2RlUGFnZQAAAwADAAEBJVN5c3RlbS5HbG9iYWxpemF0aW9uLkNvZGVQ
-        YWdlRGF0YUl0ZW0IJVN5c3RlbS5HbG9iYWxpemF0aW9uLkNvZGVQYWdlRGF0YUl0ZW0IAQAK6f0AAArp
-        /QAACw==
-</value>
-  </data>
-  <data name="splitter2.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </data>
-  <data name="splitter2.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="splitter2.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="panel1.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </data>
-  <data name="panel1.SnapToGrid" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </data>
-  <data name="panel1.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="panel1.GridSize" type="System.Drawing.Size, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>8, 8</value>
-  </data>
-  <data name="panel1.DrawGrid" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </data>
-  <data name="panel1.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="panel5.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </data>
-  <data name="panel5.SnapToGrid" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </data>
-  <data name="panel5.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="panel5.GridSize" type="System.Drawing.Size, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>8, 8</value>
-  </data>
-  <data name="panel5.DrawGrid" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </data>
-  <data name="panel5.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="soqlPrettyPrint.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="soqlPrettyPrint.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="soqlPrettyPrint.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </data>
-  <data name="soqlPrettyPrint.Encoding" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAEAQAAABhTeXN0ZW0uVGV4dC5VVEY4RW5jb2RpbmcGAAAAEmVtaXRVVEY4
-        SWRlbnRpZmllchBpc1Rocm93RXhjZXB0aW9uCGRhdGFJdGVtCm1fY29kZVBhZ2URRW5jb2RpbmcrZGF0
-        YUl0ZW0TRW5jb2RpbmcrbV9jb2RlUGFnZQAAAwADAAEBJVN5c3RlbS5HbG9iYWxpemF0aW9uLkNvZGVQ
-        YWdlRGF0YUl0ZW0IJVN5c3RlbS5HbG9iYWxpemF0aW9uLkNvZGVQYWdlRGF0YUl0ZW0IAQAK6f0AAArp
-        /QAACw==
-</value>
-  </data>
-  <data name="$this.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </data>
-  <data name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>(Default)</value>
-  </data>
-  <data name="$this.TrayLargeIcon" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </data>
-  <data name="$this.Localizable" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </data>
-  <data name="$this.Name">
-    <value>MainForm</value>
-  </data>
-  <data name="$this.GridSize" type="System.Drawing.Size, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>8, 8</value>
-  </data>
-  <data name="$this.DrawGrid" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </data>
-  <data name="$this.TrayHeight" type="System.Int32, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>25</value>
-  </data>
-  <data name="$this.SnapToGrid" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </data>
-  <data name="$this.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
-  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        AAABAAMAICAQAAAAAADoAgAANgAAABAQEAAAAAAAKAEAAB4DAAAwMAAAAAAAAKgOAABGBAAAKAAAACAA
-        AABAAAAAAQAEAAAAAAAAAgAAAAAAAAAAAAAQAAAAEAAAAAAAAAAAAIAAAIAAAACAgACAAAAAgACAAICA
-        AACAgIAAwMDAAAAA/wAA/wAAAP//AP8AAAD/AP8A//8AAP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHd3d3d3d3d3d3d3d3d3cARE
-        RERERERERERERERERHAE/Pz8/MzPzP/Mz/zP//RwBPz8/Pz/z8//z/z8///0cAT8//z8/8/Mz8zP/Mz/
-        9HAE//////////////////RwBP/////////////////0cAT8//z/z/zP/P/8///d9HAE/P/8/8/P/Pz/
-        /P/9/9RwBPzP/Mz/z/z8/Pz//f/0cAT8//z/z8/8/M/M//3/1HAE/Mz8zP/8z/z//P//3fRwBP//////
-        ///////////0cAT/////////////////9HAE/Mz/zM/Mz8zP/M//z/RwBP//z8//z//P/8/8/8/0cAT/
-        zP/M/8//zP/P///P9HAE/P//z//P/8//z/z/z/RwBP/Mz8zPz//Mz/zP/Mz0cAT/////////////////
-        9HAEiIiIiIiIiIiIiIiIiIRwBEREREREREREREREREREcARMTExMTExMTExOzs5JdHAEzMzMzMzMzMzM
-        zMzMzMQAAERERERERERERERERERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAP/////////////////////AAAABgAAAAYAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAA
-        AAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAA
-        AAPAAAAH////////////////KAAAABAAAAAgAAAAAQAEAAAAAACAAAAAAAAAAAAAAAAQAAAAEAAAAAAA
-        AAAAAIAAAIAAAACAgACAAAAAgACAAICAAACAgIAAwMDAAAAA/wAA/wAAAP//AP8AAAD/AP8A//8AAP//
-        /wAHd3d3d3d3d0RERERERERHT///////+EdPz/z8/8/4R0/P/M/8/PhHT8z8/Pz8+AdPzPzP/8/4R0//
-        //////hHT8z8zPzPyEdP/Pz//P/IR0/P/M/8/8hHT8z8zPz/yEdP///////4R0iIiIiIiIhHTMzMzMzM
-        zEfEREREREREwIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAABAAAoAAAAMAAAAGAAAAABAAgAAAAAAAAJAAAAAAAAAAAAAAABAAAAAQAAAAAAAAAA
-        gAAAgAAAAICAAIAAAACAAIAAgIAAAMDAwADA3MAA8MqmAAQEBAAICAgADAwMABEREQAWFhYAHBwcACIi
-        IgApKSkAVVVVAE1NTQBCQkIAOTk5AIB8/wBQUP8AkwDWAP/szADG1u8A1ufnAJCprQAAADMAAABmAAAA
-        mQAAAMwAADMAAAAzMwAAM2YAADOZAAAzzAAAM/8AAGYAAABmMwAAZmYAAGaZAABmzAAAZv8AAJkAAACZ
-        MwAAmWYAAJmZAACZzAAAmf8AAMwAAADMMwAAzGYAAMyZAADMzAAAzP8AAP9mAAD/mQAA/8wAMwAAADMA
-        MwAzAGYAMwCZADMAzAAzAP8AMzMAADMzMwAzM2YAMzOZADMzzAAzM/8AM2YAADNmMwAzZmYAM2aZADNm
-        zAAzZv8AM5kAADOZMwAzmWYAM5mZADOZzAAzmf8AM8wAADPMMwAzzGYAM8yZADPMzAAzzP8AM/8zADP/
-        ZgAz/5kAM//MADP//wBmAAAAZgAzAGYAZgBmAJkAZgDMAGYA/wBmMwAAZjMzAGYzZgBmM5kAZjPMAGYz
-        /wBmZgAAZmYzAGZmZgBmZpkAZmbMAGaZAABmmTMAZplmAGaZmQBmmcwAZpn/AGbMAABmzDMAZsyZAGbM
-        zABmzP8AZv8AAGb/MwBm/5kAZv/MAMwA/wD/AMwAmZkAAJkzmQCZAJkAmQDMAJkAAACZMzMAmQBmAJkz
-        zACZAP8AmWYAAJlmMwCZM2YAmWaZAJlmzACZM/8AmZkzAJmZZgCZmZkAmZnMAJmZ/wCZzAAAmcwzAGbM
-        ZgCZzJkAmczMAJnM/wCZ/wAAmf8zAJnMZgCZ/5kAmf/MAJn//wDMAAAAmQAzAMwAZgDMAJkAzADMAJkz
-        AADMMzMAzDNmAMwzmQDMM8wAzDP/AMxmAADMZjMAmWZmAMxmmQDMZswAmWb/AMyZAADMmTMAzJlmAMyZ
-        mQDMmcwAzJn/AMzMAADMzDMAzMxmAMzMmQDMzMwAzMz/AMz/AADM/zMAmf9mAMz/mQDM/8wAzP//AMwA
-        MwD/AGYA/wCZAMwzAAD/MzMA/zNmAP8zmQD/M8wA/zP/AP9mAAD/ZjMAzGZmAP9mmQD/ZswAzGb/AP+Z
-        AAD/mTMA/5lmAP+ZmQD/mcwA/5n/AP/MAAD/zDMA/8xmAP/MmQD/zMwA/8z/AP//MwDM/2YA//+ZAP//
-        zABmZv8AZv9mAGb//wD/ZmYA/2b/AP//ZgAhAKUAX19fAHd3dwCGhoYAlpaWAMvLywCysrIA19fXAN3d
-        3QDj4+MA6urqAPHx8QD4+PgA8Pv/AKSgoACAgIAAAAD/AAD/AAAA//8A/wAAAP8A/wD//wAA////AAoK
-        CgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoK7Ozs7Ozs7Ozs7Ozs
-        7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7AoEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE
-        BAQEBAQEBAQEBAQEBAQEBAQEBAQE7AoO////////////////////////////////////////////////
-        //////////8E7AoE//////////////////////////////////////////////////////////8E7AoE
-        //////////////////////////////////////////////////////////8E7AoE////////////////
-        //////////////////////////////////////////8E7AoE////////////////////////////////
-        //////////////////////////8E7AoE////////////////////////////////////////////////
-        //////////8E7AoE//+trf//rf//rf+tra3//62trf+t//+t//+tra3///+t/////6ur/6v/q/8E7AoE
-        /63//63/rf//rf+t//+t/63///+t//+t//+t//+t//+t////q///////q/8E7AoE/63//63/ra2t//+t
-        //+t/62t//+tra3///+tra3///+t/////6ur////q/8E7AoE/63//63/rf//rf+t//+t/63///+t//+t
-        //+t//+t/63/rf//////////q/8E7AoE//+trf//ra2t//+tra3//62trf+tra3///+tra3//63/rf//
-        ////////q/8E7AoE//////////////////////////////////////////////////////////8E7AoE
-        //////////////////////////////////////////////////////////8E7AoE////////////////
-        //////////////////////////////////////////8E7AoE//+t/63//63//63/ra2t/63//63/ra2t
-        ////q6v/q/+r//+rq/////+rq/8E7AoE//+t/63//63//63/rf///63//63/rf////+r//////+r/6v/
-        q/+rq////6sE7AoE/63/rf+t/62tra3/ra3//62trf//ra3/////q6v///+r//+rq///////q6sE7AoE
-        /63/rf+t/63//63/rf///63//63/rf////////////+r////q/+rq///q6sE7AoE/63///+t/63//63/
-        ra2t/62trf//ra2t//////////+r////q/////+rq6sE7AoE////////////////////////////////
-        //////////////////////////8E7AoE////////////////////////////////////////////////
-        //////////8E7AoE//////////////////////////////////////////////////////////8E7AoE
-        /63///+t//+t//+trf//rf///63///+rq///q6ur/6v/q///q///q6v//6sE7AoE/63///+t//+t/63/
-        /63/rf///63//6v//6v/q/+r/6v/q/+r//+r/6v/q/8E7AoE/62t//+tra3//63//63/rf+t/63//6v/
-        ////q6ur/6ur//+rq///q6v//6sE7AoE/63///+t//+t/63//63/ra3/ra3//6v//6v///////////+r
-        //////////8E7AoE/62trf+tra3///+trf//rf///63///+rq/////////////////////////8E7AoE
-        //////////////////////////////////////////////////////////8E7AoE////////////////
-        //////////////////////////////////////////8E7AoE////////////////////////////////
-        //////////////////////////8E7AoE/62trf//ra2t/62trf+tra3//62t////rf////+rq/+r/6v/
-        /6v/q6v///8E7AoE/////63/rf///63///+t////rf//rf//rf///6v//////6v//6v/q/+r//8E7AoE
-        //+trf//ra3//63///+trf//rf//////rf////+rq////6v/q6v//6v///8E7AoE/63/////rf///63/
-        //+t////rf//rf//rf///////////6ur/6v///////8E7AoE//+tra3/ra2t/63///+tra3//62t//+t
-        ra3//////////6v//6v///////8E7AoE////////////////////////////////////////////////
-        //////////8E7AoE//////////////////////////////////////////////////////////8E7AoE
-        BwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcE7AoEBAQEBAQEBAQEBAQE
-        BAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE7AoEBPwE/AT8BPwE/AT8BPwE/AT8BAT8BPwE
-        /AT8BPwE/AT8BPwE/AT8BPwE/OwE7AoE/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8
-        /Pz8/Pz8/PwECgoKBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQKCgoK
-        CgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoK
-        CgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoK
-        CgoKCgoKCgoKCgoKCgoKCgoKCgoKCv///////wAAwAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAA
-        AACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAA
-        AAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAA
-        AACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAA
-        AAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAA
-        AACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAA
-        AAAAAAAAgAAAAAABAADAAAAAAAMAAP///////wAA////////AAD///////8AAA==
-</value>
-  </data>
-</root>
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!-- ViewVC - http://viewvc.org/
+by Greg Stein - mailto:gstein@lyra.org -->
+<!--
+~ SourceForge.net: Create, Participate, Evaluate
+~ Copyright (c) 1999-2009 SourceForge, Inc. All rights reserved.
+-->
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="description" content="The world's largest development and download repository of Open Source code and applications" />
+<meta name="keywords" content="Open Source, Development, Developers, Projects, Downloads, OSTG, VA Software, SF.net, SourceForge" />
+<title>SourceForge.net Repository - [sooda] View of /trunk/Sooda/src/SoodaQuery/MainForm.resx</title>
+<meta name="generator" content="ViewVC 1.0.5" />
+<link rel="stylesheet" type="text/css" href="http://static.sourceforge.net/css/phoneix/style.php?secure=0&amp;20080417-1657" media="all" />
+<link rel="stylesheet" type="text/css" href="http://static.sourceforge.net/css/phoneix/header.php?secure=0&amp;20080417-1657" media="all" />
+<link rel="stylesheet" type="text/css" href="http://static.sourceforge.net/css/phoneix/table.php?secure=0&amp;20080417-1657" media="all" />
+<link rel="stylesheet" type="text/css" href="/viewvc-static/styles.css" media="all" />
+<script type="text/javascript" src="https://static.sourceforge.net/include/jquery/jquery-1.2.6.min.js"></script>
+<script type="text/javascript">
+jQuery.noConflict();
+</script>
+<script type="text/javascript" src="https://static.sourceforge.net/include/jquery/jquery.cookie.js"></script>
+<script type="text/javascript">
+var jsonly = document.createElement('link');
+jsonly.setAttribute('rel', 'stylesheet');
+jsonly.setAttribute('type', 'text/css');
+jsonly.setAttribute('href', 'https://static.sourceforge.net/css/phoneix/jsonly.css?secure=1&amp;20080417-1257');
+document.getElementsByTagName('head')[0].appendChild(jsonly);
+</script>
+<script type="text/javascript" src="https://static.sourceforge.net/include/jquery/jquery.cluetip.js"></script>
+<script type="text/javascript" src="https://static.sourceforge.net/include/jquery/jquery.dimensions-1.2.0.js"></script>
+<link rel="stylesheet" href="https://static.sourceforge.net/css/phoneix/jquery.cluetip.php?secure=1" media="screen"/>
+<script type="text/javascript">
+//<![CDATA[
+var ie6SelectsShowing = true;
+function toggleIE6Selects(){
+if(jQuery.browser.msie && jQuery.browser.version == '6.0'){
+if(ie6SelectsShowing){
+jQuery('select').hide();
+ie6SelectsShowing = false;
+} else {
+jQuery('select').show();
+ie6SelectsShowing = true;
+}
+}
+}
+jQuery(function(){
+jQuery('.pop').cluetip({sticky: true, titleAttribute: 'title', local:true, cursor: 'pointer', dropShadow: true, activation: 'click' });
+jQuery('.jt').cluetip({cluetipClass: 'jtip', positionBy: false, arrows: false, dropShadow: true, local:true, mouseOutClose: true});
+jQuery('.jt_sticky').cluetip({cluetipClass: 'jtip', positionBy: false, arrows: false, dropShadow: true, local:true, closePosition: 'title', sticky:true});
+jQuery('.ph_sticky').click(toggleIE6Selects).cluetip({cluetipClass: 'default', arrows: false, cursor: 'pointer', dropShadow: true, local:true, closePosition: 'title', sticky:true, activation: 'click', onShow: function(){jQuery('#cluetip-close a').click(toggleIE6Selects);}});
+jQuery('.ajax_sticky').cluetip({cluetipClass: 'default', width: '400', cursor: 'pointer', positionBy: 'mouse', arrows: false, dropShadow: true, closePosition: 'title', sticky:true, ajaxSettings: {success: function(msg){alert( "Data Saved: " + msg );}}});
+});
+//]]>
+</script>
+<!--[if IE]>
+<link rel="stylesheet" type="text/css" media="screen" href="https://static.sourceforge.net/css/phoneix/iestyles.php?secure=1&amp;20080417-1257" />
+<![endif]-->
+<!--[if lte IE 6]>
+<link rel="stylesheet" type="text/css" media="screen" href="https://static.sourceforge.net/css/phoneix/ie6styles.php?secure=1&amp;20080417-1257" />
+<![endif]-->
+<script type="text/javascript" src="https://static.sourceforge.net/sfx.js"></script>
+<style type="text/css">
+#breadcrumb {margin: 0; padding: 0; background: none; }
+#breadcrumb li {list-style: none; padding: 0 .2em 0 0; display: inline; }
+#breadcrumb li:before {color: #aaa; content: "/"}
+#breadcrumb li:first-child:before {content: ""}
+h2 {margin: 0 0 -.5em;}
+table th.vc_header {background-color: #fff;}
+table th.vc_header_sort a {text-decoration: none; color: #000 !important;}
+hr {background: #ccc; border: none;}
+/* grr ie */
+#bd .titlebar, table tr th {_background: url("http://c.fsdn.com/sf/images/phoneix/gloss_ieblows.png");}
+table tbody tr td, .yui-gf.title .yui-u.first h2 {_background-image: none;}
+#bd { _background: #fff url("http://c.fsdn.com/sf/images/phoneix/grad_ieblows.png") repeat-x 0 6px;}
+#hd .yui-u.first h1 { _background: transparent; _filter:progid:DXImageTransform.Microsoft.AlphaImageLoader (src='http://c.fsdn.com/sf/images/phoneix/sf_phoneix.png',sizingMethod='');}
+#hd {_background: none;}
+</style>
+<!-- BEGIN: AdSolution-Tag 4.2: Global-Code [PLACE IN HTML-HEAD-AREA!] -->
+<!-- DoubleClick Random Number -->
+<script language="JavaScript" type="text/javascript">
+dfp_ord=Math.random()*10000000000000000;
+dfp_tile = 1;
+</script>
+<!-- End DoubleClick Random Number -->
+<script type="text/javascript">
+var google_page_url = 'http://sourceforge.net/projects/sooda/';
+var sourceforge_project_name = 'sooda';
+var sourceforge_project_description = '';
+</script>
+<!-- END: AdSolution-Tag 4.2: Global-Code -->
+<!-- End OSDN NavBar gid: -->
+<!-- after META tags -->
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+</head>
+<body>
+<div id="doc3" class="yui-t6 login">
+<div id="hd">
+<div id="logo_container">
+<h1>
+<a title="" href="http://sourceforge.net/">SourceForge.net</a>
+</h1>
+<ul class="jump">
+<li>
+</li>
+</ul>
+</div>
+<div id="top_bar">
+<div id="login_container">
+<ul>
+<li>
+<a href="http://sourceforge.net/community/">Community</a>
+</li>
+<li>
+<a href="http://p.sf.net/sourceforge/about">About</a>
+</li>
+<li>
+<a title="Get help and support on SourceForge.net" href="http://p.sf.net/sourceforge/getsupport">Help</a>
+</li>
+</ul>
+</div>
+<div id="search_container">
+<form id="searchform" name="searchform" method="get" action="http://sourceforge.net/search/">
+<input type="hidden" value="soft" name="type_of_search"/>
+<span class="left">
+<input class="text" type="text" tabindex="1" name="words"/>
+</span>
+<span class="right">
+<button value="Search" tabindex="0" type="submit"></button>
+</span>
+</form>
+</div>
+</div>
+</div>
+<div id="bd">
+<!-- begin content -->
+<a name="content">
+</a>
+<!-- Breadcrumb Trail -->
+<br />
+
+<ul id="breadcrumb">
+<li class="begin"> <a href="http://sourceforge.net/">SF.net</a></li>
+<li> <a href="http://sourceforge.net/softwaremap/">Projects</a></li>
+<li> SCM Repositories</li>
+
+<li>
+<a href="/viewvc/sooda/?pathrev=496">
+
+sooda</a>
+</li>
+
+<li>
+<a href="/viewvc/sooda/trunk/?pathrev=496">
+
+trunk</a>
+</li>
+
+<li>
+<a href="/viewvc/sooda/trunk/Sooda/?pathrev=496">
+
+Sooda</a>
+</li>
+
+<li>
+<a href="/viewvc/sooda/trunk/Sooda/src/?pathrev=496">
+
+src</a>
+</li>
+
+<li>
+<a href="/viewvc/sooda/trunk/Sooda/src/SoodaQuery/?pathrev=496">
+
+SoodaQuery</a>
+</li>
+
+<li>
+<a href="/viewvc/sooda/trunk/Sooda/src/SoodaQuery/MainForm.resx?view=log&amp;pathrev=496">
+
+MainForm.resx</a>
+</li>
+
+</ul>
+
+<div id="yui-main">
+<div class="yui-b">
+<h1>
+SCM Repositories -
+<a href="http://sourceforge.net/projects/sooda">sooda</a>
+</h1>
+</div>
+</div>
+<div class="yui-b">
+<div id="fad83">
+<!-- DoubleClick Ad Tag -->
+<script type="text/javascript">
+//<![CDATA[
+document.write('<script src="http://ad.doubleclick.net/adj/ostg.sourceforge/pg_viewvc_p88_shortrec;pg=viewvc;tile='+dfp_tile+';tpc=sooda;ord='+dfp_ord+'?" type="text/javascript"><\/script>');
+dfp_tile++;
+//]]>
+</script>
+<!-- End DoubleClick Ad Tag -->
+</div>
+</div>
+<br style="clear:both; margin-bottom: 1em; display: block;" />
+
+<p style="margin:0;">
+
+<a href="/viewvc/sooda/trunk/Sooda/src/SoodaQuery/?pathrev=496"><img src="/viewvc-static/images/back_small.png" width="16" height="16" alt="Parent Directory" /> Parent Directory</a>
+
+| <a href="/viewvc/sooda/trunk/Sooda/src/SoodaQuery/MainForm.resx?view=log&amp;pathrev=496"><img src="/viewvc-static/images/log.png" width="16" height="16" alt="Revision Log" /> Revision Log</a>
+
+
+
+
+</p>
+
+<hr />
+<div class="vc_summary">
+Revision <a href="/viewvc/sooda?view=rev&amp;revision=496"><strong>496</strong></a> -
+(<a href="/viewvc/sooda/trunk/Sooda/src/SoodaQuery/MainForm.resx?revision=496&amp;pathrev=496"><strong>download</strong></a>)
+
+(<a href="/viewvc/sooda/trunk/Sooda/src/SoodaQuery/MainForm.resx?annotate=496&amp;pathrev=496"><strong>annotate</strong></a>)
+
+<br /><em>Tue Sep 15 13:05:35 2009 UTC</em>
+(4 weeks, 1 day ago)
+by <em>mfigatowski</em>
+
+
+
+
+
+
+<br />File size: 52139 byte(s)
+
+
+
+<pre class="vc_log">BUGFIX Missing file ... one more try</pre>
+
+</div>
+<div id="vc_markup"><pre><a id="l_1"></a><span class="hl line">    1 </span>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+<a id="l_2"></a><span class="hl line">    2 </span>&lt;root&gt;
+<a id="l_3"></a><span class="hl line">    3 </span>  &lt;!--
+<a id="l_4"></a><span class="hl line">    4 </span>    Microsoft ResX Schema
+<a id="l_5"></a><span class="hl line">    5 </span>
+<a id="l_6"></a><span class="hl line">    6 </span>    Version 1.3
+<a id="l_7"></a><span class="hl line">    7 </span>
+<a id="l_8"></a><span class="hl line">    8 </span>    The primary goals of this format is to allow a simple XML format
+<a id="l_9"></a><span class="hl line">    9 </span>    that is mostly human readable. The generation and parsing of the
+<a id="l_10"></a><span class="hl line">   10 </span>    various data types are done through the TypeConverter classes
+<a id="l_11"></a><span class="hl line">   11 </span>    associated with the data types.
+<a id="l_12"></a><span class="hl line">   12 </span>
+<a id="l_13"></a><span class="hl line">   13 </span>    Example:
+<a id="l_14"></a><span class="hl line">   14 </span>
+<a id="l_15"></a><span class="hl line">   15 </span>    ... ado.net/XML headers &amp; schema ...
+<a id="l_16"></a><span class="hl line">   16 </span>    &lt;resheader name=&quot;resmimetype&quot;&gt;text/microsoft-resx&lt;/resheader&gt;
+<a id="l_17"></a><span class="hl line">   17 </span>    &lt;resheader name=&quot;version&quot;&gt;1.3&lt;/resheader&gt;
+<a id="l_18"></a><span class="hl line">   18 </span>    &lt;resheader name=&quot;reader&quot;&gt;System.Resources.ResXResourceReader, System.Windows.Forms, ...&lt;/resheader&gt;
+<a id="l_19"></a><span class="hl line">   19 </span>    &lt;resheader name=&quot;writer&quot;&gt;System.Resources.ResXResourceWriter, System.Windows.Forms, ...&lt;/resheader&gt;
+<a id="l_20"></a><span class="hl line">   20 </span>    &lt;data name=&quot;Name1&quot;&gt;this is my long string&lt;/data&gt;
+<a id="l_21"></a><span class="hl line">   21 </span>    &lt;data name=&quot;Color1&quot; type=&quot;System.Drawing.Color, System.Drawing&quot;&gt;Blue&lt;/data&gt;
+<a id="l_22"></a><span class="hl line">   22 </span>    &lt;data name=&quot;Bitmap1&quot; mimetype=&quot;application/x-microsoft.net.object.binary.base64&quot;&gt;
+<a id="l_23"></a><span class="hl line">   23 </span>        [base64 mime encoded serialized .NET Framework object]
+<a id="l_24"></a><span class="hl line">   24 </span>    &lt;/data&gt;
+<a id="l_25"></a><span class="hl line">   25 </span>    &lt;data name=&quot;Icon1&quot; type=&quot;System.Drawing.Icon, System.Drawing&quot; mimetype=&quot;application/x-microsoft.net.object.bytearray.base64&quot;&gt;
+<a id="l_26"></a><span class="hl line">   26 </span>        [base64 mime encoded string representing a byte array form of the .NET Framework object]
+<a id="l_27"></a><span class="hl line">   27 </span>    &lt;/data&gt;
+<a id="l_28"></a><span class="hl line">   28 </span>
+<a id="l_29"></a><span class="hl line">   29 </span>    There are any number of &quot;resheader&quot; rows that contain simple
+<a id="l_30"></a><span class="hl line">   30 </span>    name/value pairs.
+<a id="l_31"></a><span class="hl line">   31 </span>
+<a id="l_32"></a><span class="hl line">   32 </span>    Each data row contains a name, and value. The row also contains a
+<a id="l_33"></a><span class="hl line">   33 </span>    type or mimetype. Type corresponds to a .NET class that support
+<a id="l_34"></a><span class="hl line">   34 </span>    text/value conversion through the TypeConverter architecture.
+<a id="l_35"></a><span class="hl line">   35 </span>    Classes that don't support this are serialized and stored with the
+<a id="l_36"></a><span class="hl line">   36 </span>    mimetype set.
+<a id="l_37"></a><span class="hl line">   37 </span>
+<a id="l_38"></a><span class="hl line">   38 </span>    The mimetype is used forserialized objects, and tells the
+<a id="l_39"></a><span class="hl line">   39 </span>    ResXResourceReader how to depersist the object. This is currently not
+<a id="l_40"></a><span class="hl line">   40 </span>    extensible. For a given mimetype the value must be set accordingly:
+<a id="l_41"></a><span class="hl line">   41 </span>
+<a id="l_42"></a><span class="hl line">   42 </span>    Note - application/x-microsoft.net.object.binary.base64 is the format
+<a id="l_43"></a><span class="hl line">   43 </span>    that the ResXResourceWriter will generate, however the reader can
+<a id="l_44"></a><span class="hl line">   44 </span>    read any of the formats listed below.
+<a id="l_45"></a><span class="hl line">   45 </span>
+<a id="l_46"></a><span class="hl line">   46 </span>    mimetype: application/x-microsoft.net.object.binary.base64
+<a id="l_47"></a><span class="hl line">   47 </span>    value   : The object must be serialized with
+<a id="l_48"></a><span class="hl line">   48 </span>            : System.Serialization.Formatters.Binary.BinaryFormatter
+<a id="l_49"></a><span class="hl line">   49 </span>            : and then encoded with base64 encoding.
+<a id="l_50"></a><span class="hl line">   50 </span>
+<a id="l_51"></a><span class="hl line">   51 </span>    mimetype: application/x-microsoft.net.object.soap.base64
+<a id="l_52"></a><span class="hl line">   52 </span>    value   : The object must be serialized with
+<a id="l_53"></a><span class="hl line">   53 </span>            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+<a id="l_54"></a><span class="hl line">   54 </span>            : and then encoded with base64 encoding.
+<a id="l_55"></a><span class="hl line">   55 </span>
+<a id="l_56"></a><span class="hl line">   56 </span>    mimetype: application/x-microsoft.net.object.bytearray.base64
+<a id="l_57"></a><span class="hl line">   57 </span>    value   : The object must be serialized into a byte array
+<a id="l_58"></a><span class="hl line">   58 </span>            : using a System.ComponentModel.TypeConverter
+<a id="l_59"></a><span class="hl line">   59 </span>            : and then encoded with base64 encoding.
+<a id="l_60"></a><span class="hl line">   60 </span>    --&gt;
+<a id="l_61"></a><span class="hl line">   61 </span>  &lt;xsd:schema id=&quot;root&quot; xmlns=&quot;&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:msdata=&quot;urn:schemas-microsoft-com:xml-msdata&quot;&gt;
+<a id="l_62"></a><span class="hl line">   62 </span>    &lt;xsd:element name=&quot;root&quot; msdata:IsDataSet=&quot;true&quot;&gt;
+<a id="l_63"></a><span class="hl line">   63 </span>      &lt;xsd:complexType&gt;
+<a id="l_64"></a><span class="hl line">   64 </span>        &lt;xsd:choice maxOccurs=&quot;unbounded&quot;&gt;
+<a id="l_65"></a><span class="hl line">   65 </span>          &lt;xsd:element name=&quot;data&quot;&gt;
+<a id="l_66"></a><span class="hl line">   66 </span>            &lt;xsd:complexType&gt;
+<a id="l_67"></a><span class="hl line">   67 </span>              &lt;xsd:sequence&gt;
+<a id="l_68"></a><span class="hl line">   68 </span>                &lt;xsd:element name=&quot;value&quot; type=&quot;xsd:string&quot; minOccurs=&quot;0&quot; msdata:Ordinal=&quot;1&quot; /&gt;
+<a id="l_69"></a><span class="hl line">   69 </span>                &lt;xsd:element name=&quot;comment&quot; type=&quot;xsd:string&quot; minOccurs=&quot;0&quot; msdata:Ordinal=&quot;2&quot; /&gt;
+<a id="l_70"></a><span class="hl line">   70 </span>              &lt;/xsd:sequence&gt;
+<a id="l_71"></a><span class="hl line">   71 </span>              &lt;xsd:attribute name=&quot;name&quot; type=&quot;xsd:string&quot; msdata:Ordinal=&quot;1&quot; /&gt;
+<a id="l_72"></a><span class="hl line">   72 </span>              &lt;xsd:attribute name=&quot;type&quot; type=&quot;xsd:string&quot; msdata:Ordinal=&quot;3&quot; /&gt;
+<a id="l_73"></a><span class="hl line">   73 </span>              &lt;xsd:attribute name=&quot;mimetype&quot; type=&quot;xsd:string&quot; msdata:Ordinal=&quot;4&quot; /&gt;
+<a id="l_74"></a><span class="hl line">   74 </span>            &lt;/xsd:complexType&gt;
+<a id="l_75"></a><span class="hl line">   75 </span>          &lt;/xsd:element&gt;
+<a id="l_76"></a><span class="hl line">   76 </span>          &lt;xsd:element name=&quot;resheader&quot;&gt;
+<a id="l_77"></a><span class="hl line">   77 </span>            &lt;xsd:complexType&gt;
+<a id="l_78"></a><span class="hl line">   78 </span>              &lt;xsd:sequence&gt;
+<a id="l_79"></a><span class="hl line">   79 </span>                &lt;xsd:element name=&quot;value&quot; type=&quot;xsd:string&quot; minOccurs=&quot;0&quot; msdata:Ordinal=&quot;1&quot; /&gt;
+<a id="l_80"></a><span class="hl line">   80 </span>              &lt;/xsd:sequence&gt;
+<a id="l_81"></a><span class="hl line">   81 </span>              &lt;xsd:attribute name=&quot;name&quot; type=&quot;xsd:string&quot; use=&quot;required&quot; /&gt;
+<a id="l_82"></a><span class="hl line">   82 </span>            &lt;/xsd:complexType&gt;
+<a id="l_83"></a><span class="hl line">   83 </span>          &lt;/xsd:element&gt;
+<a id="l_84"></a><span class="hl line">   84 </span>        &lt;/xsd:choice&gt;
+<a id="l_85"></a><span class="hl line">   85 </span>      &lt;/xsd:complexType&gt;
+<a id="l_86"></a><span class="hl line">   86 </span>    &lt;/xsd:element&gt;
+<a id="l_87"></a><span class="hl line">   87 </span>  &lt;/xsd:schema&gt;
+<a id="l_88"></a><span class="hl line">   88 </span>  &lt;resheader name=&quot;resmimetype&quot;&gt;
+<a id="l_89"></a><span class="hl line">   89 </span>    &lt;value&gt;text/microsoft-resx&lt;/value&gt;
+<a id="l_90"></a><span class="hl line">   90 </span>  &lt;/resheader&gt;
+<a id="l_91"></a><span class="hl line">   91 </span>  &lt;resheader name=&quot;version&quot;&gt;
+<a id="l_92"></a><span class="hl line">   92 </span>    &lt;value&gt;1.3&lt;/value&gt;
+<a id="l_93"></a><span class="hl line">   93 </span>  &lt;/resheader&gt;
+<a id="l_94"></a><span class="hl line">   94 </span>  &lt;resheader name=&quot;reader&quot;&gt;
+<a id="l_95"></a><span class="hl line">   95 </span>    &lt;value&gt;System.Resources.ResXResourceReader, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&lt;/value&gt;
+<a id="l_96"></a><span class="hl line">   96 </span>  &lt;/resheader&gt;
+<a id="l_97"></a><span class="hl line">   97 </span>  &lt;resheader name=&quot;writer&quot;&gt;
+<a id="l_98"></a><span class="hl line">   98 </span>    &lt;value&gt;System.Resources.ResXResourceWriter, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&lt;/value&gt;
+<a id="l_99"></a><span class="hl line">   99 </span>  &lt;/resheader&gt;
+<a id="l_100"></a><span class="hl line">  100 </span>  &lt;data name=&quot;mainMenu1.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_101"></a><span class="hl line">  101 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_102"></a><span class="hl line">  102 </span>  &lt;/data&gt;
+<a id="l_103"></a><span class="hl line">  103 </span>  &lt;data name=&quot;mainMenu1.Location&quot; type=&quot;System.Drawing.Point, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a&quot;&gt;
+<a id="l_104"></a><span class="hl line">  104 </span>    &lt;value&gt;17, 17&lt;/value&gt;
+<a id="l_105"></a><span class="hl line">  105 </span>  &lt;/data&gt;
+<a id="l_106"></a><span class="hl line">  106 </span>  &lt;data name=&quot;mainMenu1.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_107"></a><span class="hl line">  107 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_108"></a><span class="hl line">  108 </span>  &lt;/data&gt;
+<a id="l_109"></a><span class="hl line">  109 </span>  &lt;data name=&quot;menuItem1.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_110"></a><span class="hl line">  110 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_111"></a><span class="hl line">  111 </span>  &lt;/data&gt;
+<a id="l_112"></a><span class="hl line">  112 </span>  &lt;data name=&quot;menuItem1.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_113"></a><span class="hl line">  113 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_114"></a><span class="hl line">  114 </span>  &lt;/data&gt;
+<a id="l_115"></a><span class="hl line">  115 </span>  &lt;data name=&quot;menuitemFileNew.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_116"></a><span class="hl line">  116 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_117"></a><span class="hl line">  117 </span>  &lt;/data&gt;
+<a id="l_118"></a><span class="hl line">  118 </span>  &lt;data name=&quot;menuitemFileNew.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_119"></a><span class="hl line">  119 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_120"></a><span class="hl line">  120 </span>  &lt;/data&gt;
+<a id="l_121"></a><span class="hl line">  121 </span>  &lt;data name=&quot;menuitemFileOpen.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_122"></a><span class="hl line">  122 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_123"></a><span class="hl line">  123 </span>  &lt;/data&gt;
+<a id="l_124"></a><span class="hl line">  124 </span>  &lt;data name=&quot;menuitemFileOpen.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_125"></a><span class="hl line">  125 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_126"></a><span class="hl line">  126 </span>  &lt;/data&gt;
+<a id="l_127"></a><span class="hl line">  127 </span>  &lt;data name=&quot;menuitemFileSave.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_128"></a><span class="hl line">  128 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_129"></a><span class="hl line">  129 </span>  &lt;/data&gt;
+<a id="l_130"></a><span class="hl line">  130 </span>  &lt;data name=&quot;menuitemFileSave.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_131"></a><span class="hl line">  131 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_132"></a><span class="hl line">  132 </span>  &lt;/data&gt;
+<a id="l_133"></a><span class="hl line">  133 </span>  &lt;data name=&quot;menuitemFileSaveAs.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_134"></a><span class="hl line">  134 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_135"></a><span class="hl line">  135 </span>  &lt;/data&gt;
+<a id="l_136"></a><span class="hl line">  136 </span>  &lt;data name=&quot;menuitemFileSaveAs.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_137"></a><span class="hl line">  137 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_138"></a><span class="hl line">  138 </span>  &lt;/data&gt;
+<a id="l_139"></a><span class="hl line">  139 </span>  &lt;data name=&quot;menuItem7.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_140"></a><span class="hl line">  140 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_141"></a><span class="hl line">  141 </span>  &lt;/data&gt;
+<a id="l_142"></a><span class="hl line">  142 </span>  &lt;data name=&quot;menuItem7.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_143"></a><span class="hl line">  143 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_144"></a><span class="hl line">  144 </span>  &lt;/data&gt;
+<a id="l_145"></a><span class="hl line">  145 </span>  &lt;data name=&quot;menuitemFileExit.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_146"></a><span class="hl line">  146 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_147"></a><span class="hl line">  147 </span>  &lt;/data&gt;
+<a id="l_148"></a><span class="hl line">  148 </span>  &lt;data name=&quot;menuitemFileExit.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_149"></a><span class="hl line">  149 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_150"></a><span class="hl line">  150 </span>  &lt;/data&gt;
+<a id="l_151"></a><span class="hl line">  151 </span>  &lt;data name=&quot;menuItem2.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_152"></a><span class="hl line">  152 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_153"></a><span class="hl line">  153 </span>  &lt;/data&gt;
+<a id="l_154"></a><span class="hl line">  154 </span>  &lt;data name=&quot;menuItem2.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_155"></a><span class="hl line">  155 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_156"></a><span class="hl line">  156 </span>  &lt;/data&gt;
+<a id="l_157"></a><span class="hl line">  157 </span>  &lt;data name=&quot;menuItemProjectNew.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_158"></a><span class="hl line">  158 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_159"></a><span class="hl line">  159 </span>  &lt;/data&gt;
+<a id="l_160"></a><span class="hl line">  160 </span>  &lt;data name=&quot;menuItemProjectNew.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_161"></a><span class="hl line">  161 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_162"></a><span class="hl line">  162 </span>  &lt;/data&gt;
+<a id="l_163"></a><span class="hl line">  163 </span>  &lt;data name=&quot;menuItemProjectOpen.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_164"></a><span class="hl line">  164 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_165"></a><span class="hl line">  165 </span>  &lt;/data&gt;
+<a id="l_166"></a><span class="hl line">  166 </span>  &lt;data name=&quot;menuItemProjectOpen.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_167"></a><span class="hl line">  167 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_168"></a><span class="hl line">  168 </span>  &lt;/data&gt;
+<a id="l_169"></a><span class="hl line">  169 </span>  &lt;data name=&quot;menuItemProjectSave.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_170"></a><span class="hl line">  170 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_171"></a><span class="hl line">  171 </span>  &lt;/data&gt;
+<a id="l_172"></a><span class="hl line">  172 </span>  &lt;data name=&quot;menuItemProjectSave.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_173"></a><span class="hl line">  173 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_174"></a><span class="hl line">  174 </span>  &lt;/data&gt;
+<a id="l_175"></a><span class="hl line">  175 </span>  &lt;data name=&quot;menuItem9.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_176"></a><span class="hl line">  176 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_177"></a><span class="hl line">  177 </span>  &lt;/data&gt;
+<a id="l_178"></a><span class="hl line">  178 </span>  &lt;data name=&quot;menuItem9.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_179"></a><span class="hl line">  179 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_180"></a><span class="hl line">  180 </span>  &lt;/data&gt;
+<a id="l_181"></a><span class="hl line">  181 </span>  &lt;data name=&quot;menuItemProjectProperties.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_182"></a><span class="hl line">  182 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_183"></a><span class="hl line">  183 </span>  &lt;/data&gt;
+<a id="l_184"></a><span class="hl line">  184 </span>  &lt;data name=&quot;menuItemProjectProperties.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_185"></a><span class="hl line">  185 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_186"></a><span class="hl line">  186 </span>  &lt;/data&gt;
+<a id="l_187"></a><span class="hl line">  187 </span>  &lt;data name=&quot;menuItem4.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_188"></a><span class="hl line">  188 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_189"></a><span class="hl line">  189 </span>  &lt;/data&gt;
+<a id="l_190"></a><span class="hl line">  190 </span>  &lt;data name=&quot;menuItem4.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_191"></a><span class="hl line">  191 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_192"></a><span class="hl line">  192 </span>  &lt;/data&gt;
+<a id="l_193"></a><span class="hl line">  193 </span>  &lt;data name=&quot;menuItem3.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_194"></a><span class="hl line">  194 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_195"></a><span class="hl line">  195 </span>  &lt;/data&gt;
+<a id="l_196"></a><span class="hl line">  196 </span>  &lt;data name=&quot;menuItem3.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_197"></a><span class="hl line">  197 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_198"></a><span class="hl line">  198 </span>  &lt;/data&gt;
+<a id="l_199"></a><span class="hl line">  199 </span>  &lt;data name=&quot;menuitemQueryRun.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_200"></a><span class="hl line">  200 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_201"></a><span class="hl line">  201 </span>  &lt;/data&gt;
+<a id="l_202"></a><span class="hl line">  202 </span>  &lt;data name=&quot;menuitemQueryRun.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_203"></a><span class="hl line">  203 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_204"></a><span class="hl line">  204 </span>  &lt;/data&gt;
+<a id="l_205"></a><span class="hl line">  205 </span>  &lt;data name=&quot;statusBar1.Locked&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_206"></a><span class="hl line">  206 </span>    &lt;value&gt;False&lt;/value&gt;
+<a id="l_207"></a><span class="hl line">  207 </span>  &lt;/data&gt;
+<a id="l_208"></a><span class="hl line">  208 </span>  &lt;data name=&quot;statusBar1.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_209"></a><span class="hl line">  209 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_210"></a><span class="hl line">  210 </span>  &lt;/data&gt;
+<a id="l_211"></a><span class="hl line">  211 </span>  &lt;data name=&quot;statusBar1.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_212"></a><span class="hl line">  212 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_213"></a><span class="hl line">  213 </span>  &lt;/data&gt;
+<a id="l_214"></a><span class="hl line">  214 </span>  &lt;data name=&quot;toolBar1.Locked&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_215"></a><span class="hl line">  215 </span>    &lt;value&gt;False&lt;/value&gt;
+<a id="l_216"></a><span class="hl line">  216 </span>  &lt;/data&gt;
+<a id="l_217"></a><span class="hl line">  217 </span>  &lt;data name=&quot;toolBar1.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_218"></a><span class="hl line">  218 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_219"></a><span class="hl line">  219 </span>  &lt;/data&gt;
+<a id="l_220"></a><span class="hl line">  220 </span>  &lt;data name=&quot;toolBar1.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_221"></a><span class="hl line">  221 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_222"></a><span class="hl line">  222 </span>  &lt;/data&gt;
+<a id="l_223"></a><span class="hl line">  223 </span>  &lt;data name=&quot;toolBarButtonNew.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_224"></a><span class="hl line">  224 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_225"></a><span class="hl line">  225 </span>  &lt;/data&gt;
+<a id="l_226"></a><span class="hl line">  226 </span>  &lt;data name=&quot;toolBarButtonNew.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_227"></a><span class="hl line">  227 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_228"></a><span class="hl line">  228 </span>  &lt;/data&gt;
+<a id="l_229"></a><span class="hl line">  229 </span>  &lt;data name=&quot;toolBarButtonOpen.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_230"></a><span class="hl line">  230 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_231"></a><span class="hl line">  231 </span>  &lt;/data&gt;
+<a id="l_232"></a><span class="hl line">  232 </span>  &lt;data name=&quot;toolBarButtonOpen.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_233"></a><span class="hl line">  233 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_234"></a><span class="hl line">  234 </span>  &lt;/data&gt;
+<a id="l_235"></a><span class="hl line">  235 </span>  &lt;data name=&quot;toolBarButtonSave.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_236"></a><span class="hl line">  236 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_237"></a><span class="hl line">  237 </span>  &lt;/data&gt;
+<a id="l_238"></a><span class="hl line">  238 </span>  &lt;data name=&quot;toolBarButtonSave.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_239"></a><span class="hl line">  239 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_240"></a><span class="hl line">  240 </span>  &lt;/data&gt;
+<a id="l_241"></a><span class="hl line">  241 </span>  &lt;data name=&quot;toolBarSeparator1.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_242"></a><span class="hl line">  242 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_243"></a><span class="hl line">  243 </span>  &lt;/data&gt;
+<a id="l_244"></a><span class="hl line">  244 </span>  &lt;data name=&quot;toolBarSeparator1.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_245"></a><span class="hl line">  245 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_246"></a><span class="hl line">  246 </span>  &lt;/data&gt;
+<a id="l_247"></a><span class="hl line">  247 </span>  &lt;data name=&quot;toolBarButtonRun.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_248"></a><span class="hl line">  248 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_249"></a><span class="hl line">  249 </span>  &lt;/data&gt;
+<a id="l_250"></a><span class="hl line">  250 </span>  &lt;data name=&quot;toolBarButtonRun.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_251"></a><span class="hl line">  251 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_252"></a><span class="hl line">  252 </span>  &lt;/data&gt;
+<a id="l_253"></a><span class="hl line">  253 </span>  &lt;data name=&quot;toolBarButton1.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_254"></a><span class="hl line">  254 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_255"></a><span class="hl line">  255 </span>  &lt;/data&gt;
+<a id="l_256"></a><span class="hl line">  256 </span>  &lt;data name=&quot;toolBarButton1.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_257"></a><span class="hl line">  257 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_258"></a><span class="hl line">  258 </span>  &lt;/data&gt;
+<a id="l_259"></a><span class="hl line">  259 </span>  &lt;data name=&quot;toolBarButtonConnection.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_260"></a><span class="hl line">  260 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_261"></a><span class="hl line">  261 </span>  &lt;/data&gt;
+<a id="l_262"></a><span class="hl line">  262 </span>  &lt;data name=&quot;toolBarButtonConnection.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_263"></a><span class="hl line">  263 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_264"></a><span class="hl line">  264 </span>  &lt;/data&gt;
+<a id="l_265"></a><span class="hl line">  265 </span>  &lt;data name=&quot;contextMenuDatabases.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_266"></a><span class="hl line">  266 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_267"></a><span class="hl line">  267 </span>  &lt;/data&gt;
+<a id="l_268"></a><span class="hl line">  268 </span>  &lt;data name=&quot;contextMenuDatabases.Location&quot; type=&quot;System.Drawing.Point, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a&quot;&gt;
+<a id="l_269"></a><span class="hl line">  269 </span>    &lt;value&gt;126, 17&lt;/value&gt;
+<a id="l_270"></a><span class="hl line">  270 </span>  &lt;/data&gt;
+<a id="l_271"></a><span class="hl line">  271 </span>  &lt;data name=&quot;contextMenuDatabases.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_272"></a><span class="hl line">  272 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_273"></a><span class="hl line">  273 </span>  &lt;/data&gt;
+<a id="l_274"></a><span class="hl line">  274 </span>  &lt;data name=&quot;menuItem5.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_275"></a><span class="hl line">  275 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_276"></a><span class="hl line">  276 </span>  &lt;/data&gt;
+<a id="l_277"></a><span class="hl line">  277 </span>  &lt;data name=&quot;menuItem5.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_278"></a><span class="hl line">  278 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_279"></a><span class="hl line">  279 </span>  &lt;/data&gt;
+<a id="l_280"></a><span class="hl line">  280 </span>  &lt;data name=&quot;menuItem8.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_281"></a><span class="hl line">  281 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_282"></a><span class="hl line">  282 </span>  &lt;/data&gt;
+<a id="l_283"></a><span class="hl line">  283 </span>  &lt;data name=&quot;menuItem8.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_284"></a><span class="hl line">  284 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_285"></a><span class="hl line">  285 </span>  &lt;/data&gt;
+<a id="l_286"></a><span class="hl line">  286 </span>  &lt;data name=&quot;menuItem6.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_287"></a><span class="hl line">  287 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_288"></a><span class="hl line">  288 </span>  &lt;/data&gt;
+<a id="l_289"></a><span class="hl line">  289 </span>  &lt;data name=&quot;menuItem6.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_290"></a><span class="hl line">  290 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_291"></a><span class="hl line">  291 </span>  &lt;/data&gt;
+<a id="l_292"></a><span class="hl line">  292 </span>  &lt;data name=&quot;imageList1.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_293"></a><span class="hl line">  293 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_294"></a><span class="hl line">  294 </span>  &lt;/data&gt;
+<a id="l_295"></a><span class="hl line">  295 </span>  &lt;data name=&quot;imageList1.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_296"></a><span class="hl line">  296 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_297"></a><span class="hl line">  297 </span>  &lt;/data&gt;
+<a id="l_298"></a><span class="hl line">  298 </span>  &lt;data name=&quot;imageList1.Location&quot; type=&quot;System.Drawing.Point, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a&quot;&gt;
+<a id="l_299"></a><span class="hl line">  299 </span>    &lt;value&gt;293, 17&lt;/value&gt;
+<a id="l_300"></a><span class="hl line">  300 </span>  &lt;/data&gt;
+<a id="l_301"></a><span class="hl line">  301 </span>  &lt;data name=&quot;imageList1.ImageStream&quot; mimetype=&quot;application/x-microsoft.net.object.binary.base64&quot;&gt;
+<a id="l_302"></a><span class="hl line">  302 </span>    &lt;value&gt;
+<a id="l_303"></a><span class="hl line">  303 </span>        AAEAAAD/////AQAAAAAAAAAMAgAAAFpTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0xLjAuNTAw
+<a id="l_304"></a><span class="hl line">  304 </span>        MC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZT
+<a id="l_305"></a><span class="hl line">  305 </span>        eXN0ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMA
+<a id="l_306"></a><span class="hl line">  306 </span>        AABYBgAAAk1TRnQBSQFMAgEBBQEAAQkBAAEEAQABEAEAARABAAT/ARkBEAj/AUIBTQE2BwABNgMAASgD
+<a id="l_307"></a><span class="hl line">  307 </span>        AAFAAwABMAMAAQEBAAEYBgABJP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/ACcAAYUCeAENAgABDQIAAQ0C
+<a id="l_308"></a><span class="hl line">  308 </span>        AAENrQABigJwAYoCcAHJAhABAALfAQACcAEAAnABAAJwARqnAAGQAmgBGAXnASgCzgEAApgBAALnAQAC
+<a id="l_309"></a><span class="hl line">  309 </span>        gAEAAoABAAJoASikAAOAAb8C/wFAAv8BAAL/AQAC3wEAAqABAAKAAQACgAEAAoClAAOAAVAC/wGvAv8B
+<a id="l_310"></a><span class="hl line">  310 </span>        AAL/AQACqAEAAtcBAAKAAQACgAEAAigDAAFCAgABQgIAAUICAAFCmAADgAGfAv8BYAL/AQAC/wEAAs8B
+<a id="l_311"></a><span class="hl line">  311 </span>        AAKwAQACgAEAAoABAAJQBAACnwEAAlABAAJQAQACUAFPlQADgAFwAv8BjwL/AUgCuAFIArgBAAI4AQAC
+<a id="l_312"></a><span class="hl line">  312 </span>        OAEAAoABAAI4BAACuAEAAscBAAKAAQACgAEAAkgBXZIAA4ABQAXAAUACwAFAAsADgAEAAoABAAJABwAC
+<a id="l_313"></a><span class="hl line">  313 </span>        wAEAAsABAAKAAQACgAEAAoCTAAOAAaUDSAK4AV0CjgFwAv8BjwL/AXAC/wEAAnABAAJwBAACxwEAArgB
+<a id="l_314"></a><span class="hl line">  314 </span>        AAKAAQACgAEAAkiTAAGfAlABtAMwAs8BhAJgAZ8C/wFgAv8BnwL/ATACzwEwAs8BAAJgAQACsAEAAs8B
+<a id="l_315"></a><span class="hl line">  315 </span>        AAKAAQACgAEAAjCWAAGaAlgBmgJYASgC1wEoBdcBKALXAVgFqAEoAtcBKALXAQACWAEAAlgBAAKAAQAC
+<a id="l_316"></a><span class="hl line">  316 </span>        WJwAAZUCYAGVAmABlQJgA4ABIAXfAWACoAFgAqADQAEAAkABAAJgqAADgAGQA2gCmAEoAs4BMAL/Ac8C
+<a id="l_317"></a><span class="hl line">  317 </span>        /wEwAv8BAAIwAQACMKUAAYoCcAHJAxAC7wG5AiAB3wL/ASAC/wHfAv8BEALvARAC7wEapwABhQJ4AYUC
+<a id="l_318"></a><span class="hl line">  318 </span>        eAEIAvcBCAX3AQgC9wGFAngBhQJ4rgAMgP8A/wCCAAKAAQACgBwAAoA/ABv/EwACgAEAAoABAAKAAQAC
+<a id="l_319"></a><span class="hl line">  319 </span>        gAEAAoABAAKAAQACgAEAAoABAAKAFgACgAEAAoAcAAKAGAABgCYAG/8QAAL/BAACgAEAAoABAAKAAQAC
+<a id="l_320"></a><span class="hl line">  320 </span>        gAEAAoABAAKAAQACgAEAAoABAAKAEwACgAEAAoAcAAKAGQABgAEAAYAjABv/DwAD/wEAAv8EAAKAAQAC
+<a id="l_321"></a><span class="hl line">  321 </span>        gAEAAoABAAKAAQACgAEAAoABAAKAAQACgAEAAoAQAAKAAQACgBwAAoAZAAGAAgABgAEAAYAgABv/EAAF
+<a id="l_322"></a><span class="hl line">  322 </span>        /wEAAv8EAAKAAQACgAEAAoABAAKAAQACgAEAAoABAAKAAQACgAEAAoANAAKAAQACgAEAAoABAAKAAQAC
+<a id="l_323"></a><span class="hl line">  323 </span>        gAEAAoABAAKAAQACgAEAAoABAAKAAQACgAEAAoAZAAGAAgABgAIAAYABAAGAHQAb/w8AA/8BAAX/AQAC
+<a id="l_324"></a><span class="hl line">  324 </span>        /ygAAoABAAKAGQACgAEAAoAZAAGAAgABgAIAAYACAAGAAQABgBoAG/8QAAX/AQAF/wEABf8BAAX/AQAC
+<a id="l_325"></a><span class="hl line">  325 </span>        /xkAAoAfAAKAGQABgAIAAYACAAGAAgABgAIAAYABAAGAFwAb/w8AA/8BAAX/AQAF/wEABf8BAAX/GQAC
+<a id="l_326"></a><span class="hl line">  326 </span>        gB8AAoAZAAGAAgABgAIAAYACAAGAAgABgBkAG/8QAAX/AQAC/ysAAoAfAAKAGQABgAIAAYACAAGAAgAB
+<a id="l_327"></a><span class="hl line">  327 </span>        gBwAEv9MAAKAHwACgBkAAYACAAGAAgABgB8AEv8DAAP/RgACgDoAAYACAAGAIgAS/0wAAoA6AAGA/wCd
+<a id="l_328"></a><span class="hl line">  328 </span>        AAFCAU0BPgcAAT4DAAEoAwABQAMAATADAAEBAQABAQUAAYABARYAA/+BAAHgAf8GAAGAAX8HAAE/BwAB
+<a id="l_329"></a><span class="hl line">  329 </span>        PwcAAQMHAAEBJgABgAcAAeAHAAH8BwAB/AcAAf4BAQYAAf8BhwYADP8BwAEBAv8BwAEHAQABHwGAATEC
+<a id="l_330"></a><span class="hl line">  330 </span>        /wHAAQcBAAEPAYABMQH9Af8BwAEHAQABBwGAATEB/AH/AcABBwEAAQMBgAEBAfwBfwHAAQcBAAEBAYAB
+<a id="l_331"></a><span class="hl line">  331 </span>        AQH8AT8BwAEHAgABgAEBAfwBHwHAAQcBAAEfAY8B8QH8AQ8BwAEHAQABHwGPAfEB/AEfAcABBwEAAR8B
+<a id="l_332"></a><span class="hl line">  332 </span>        jwHxAfwBPwHAAQcBjwHxAY8B8QH8AX8BwAEPAf8B+QGPAfEB/AH/AcABHwH/AXUBjwH1Af0B/wHAAT8B
+<a id="l_333"></a><span class="hl line">  333 </span>        /wGPAYABAQr/FgAL
+<a id="l_334"></a><span class="hl line">  334 </span>&lt;/value&gt;
+<a id="l_335"></a><span class="hl line">  335 </span>  &lt;/data&gt;
+<a id="l_336"></a><span class="hl line">  336 </span>  &lt;data name=&quot;recordsetContextMenu.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_337"></a><span class="hl line">  337 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_338"></a><span class="hl line">  338 </span>  &lt;/data&gt;
+<a id="l_339"></a><span class="hl line">  339 </span>  &lt;data name=&quot;recordsetContextMenu.Location&quot; type=&quot;System.Drawing.Point, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a&quot;&gt;
+<a id="l_340"></a><span class="hl line">  340 </span>    &lt;value&gt;398, 17&lt;/value&gt;
+<a id="l_341"></a><span class="hl line">  341 </span>  &lt;/data&gt;
+<a id="l_342"></a><span class="hl line">  342 </span>  &lt;data name=&quot;recordsetContextMenu.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_343"></a><span class="hl line">  343 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_344"></a><span class="hl line">  344 </span>  &lt;/data&gt;
+<a id="l_345"></a><span class="hl line">  345 </span>  &lt;data name=&quot;contextMenuItemSelectAll.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_346"></a><span class="hl line">  346 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_347"></a><span class="hl line">  347 </span>  &lt;/data&gt;
+<a id="l_348"></a><span class="hl line">  348 </span>  &lt;data name=&quot;contextMenuItemSelectAll.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_349"></a><span class="hl line">  349 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_350"></a><span class="hl line">  350 </span>  &lt;/data&gt;
+<a id="l_351"></a><span class="hl line">  351 </span>  &lt;data name=&quot;contextMenuItemCopy.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_352"></a><span class="hl line">  352 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_353"></a><span class="hl line">  353 </span>  &lt;/data&gt;
+<a id="l_354"></a><span class="hl line">  354 </span>  &lt;data name=&quot;contextMenuItemCopy.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_355"></a><span class="hl line">  355 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_356"></a><span class="hl line">  356 </span>  &lt;/data&gt;
+<a id="l_357"></a><span class="hl line">  357 </span>  &lt;data name=&quot;tabControl1.SnapToGrid&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_358"></a><span class="hl line">  358 </span>    &lt;value&gt;True&lt;/value&gt;
+<a id="l_359"></a><span class="hl line">  359 </span>  &lt;/data&gt;
+<a id="l_360"></a><span class="hl line">  360 </span>  &lt;data name=&quot;tabControl1.Locked&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_361"></a><span class="hl line">  361 </span>    &lt;value&gt;False&lt;/value&gt;
+<a id="l_362"></a><span class="hl line">  362 </span>  &lt;/data&gt;
+<a id="l_363"></a><span class="hl line">  363 </span>  &lt;data name=&quot;tabControl1.DrawGrid&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_364"></a><span class="hl line">  364 </span>    &lt;value&gt;True&lt;/value&gt;
+<a id="l_365"></a><span class="hl line">  365 </span>  &lt;/data&gt;
+<a id="l_366"></a><span class="hl line">  366 </span>  &lt;data name=&quot;tabControl1.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_367"></a><span class="hl line">  367 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_368"></a><span class="hl line">  368 </span>  &lt;/data&gt;
+<a id="l_369"></a><span class="hl line">  369 </span>  &lt;data name=&quot;tabControl1.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_370"></a><span class="hl line">  370 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_371"></a><span class="hl line">  371 </span>  &lt;/data&gt;
+<a id="l_372"></a><span class="hl line">  372 </span>  &lt;data name=&quot;tabControl1.GridSize&quot; type=&quot;System.Drawing.Size, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a&quot;&gt;
+<a id="l_373"></a><span class="hl line">  373 </span>    &lt;value&gt;8, 8&lt;/value&gt;
+<a id="l_374"></a><span class="hl line">  374 </span>  &lt;/data&gt;
+<a id="l_375"></a><span class="hl line">  375 </span>  &lt;data name=&quot;tabPageRecordSet.Locked&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_376"></a><span class="hl line">  376 </span>    &lt;value&gt;False&lt;/value&gt;
+<a id="l_377"></a><span class="hl line">  377 </span>  &lt;/data&gt;
+<a id="l_378"></a><span class="hl line">  378 </span>  &lt;data name=&quot;tabPageRecordSet.SnapToGrid&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_379"></a><span class="hl line">  379 </span>    &lt;value&gt;True&lt;/value&gt;
+<a id="l_380"></a><span class="hl line">  380 </span>  &lt;/data&gt;
+<a id="l_381"></a><span class="hl line">  381 </span>  &lt;data name=&quot;tabPageRecordSet.DrawGrid&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_382"></a><span class="hl line">  382 </span>    &lt;value&gt;True&lt;/value&gt;
+<a id="l_383"></a><span class="hl line">  383 </span>  &lt;/data&gt;
+<a id="l_384"></a><span class="hl line">  384 </span>  &lt;data name=&quot;tabPageRecordSet.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_385"></a><span class="hl line">  385 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_386"></a><span class="hl line">  386 </span>  &lt;/data&gt;
+<a id="l_387"></a><span class="hl line">  387 </span>  &lt;data name=&quot;tabPageRecordSet.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_388"></a><span class="hl line">  388 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_389"></a><span class="hl line">  389 </span>  &lt;/data&gt;
+<a id="l_390"></a><span class="hl line">  390 </span>  &lt;data name=&quot;tabPageRecordSet.GridSize&quot; type=&quot;System.Drawing.Size, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a&quot;&gt;
+<a id="l_391"></a><span class="hl line">  391 </span>    &lt;value&gt;8, 8&lt;/value&gt;
+<a id="l_392"></a><span class="hl line">  392 </span>  &lt;/data&gt;
+<a id="l_393"></a><span class="hl line">  393 </span>  &lt;data name=&quot;resultSet.Locked&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_394"></a><span class="hl line">  394 </span>    &lt;value&gt;False&lt;/value&gt;
+<a id="l_395"></a><span class="hl line">  395 </span>  &lt;/data&gt;
+<a id="l_396"></a><span class="hl line">  396 </span>  &lt;data name=&quot;resultSet.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_397"></a><span class="hl line">  397 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_398"></a><span class="hl line">  398 </span>  &lt;/data&gt;
+<a id="l_399"></a><span class="hl line">  399 </span>  &lt;data name=&quot;resultSet.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_400"></a><span class="hl line">  400 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_401"></a><span class="hl line">  401 </span>  &lt;/data&gt;
+<a id="l_402"></a><span class="hl line">  402 </span>  &lt;data name=&quot;tabPageXml.Locked&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_403"></a><span class="hl line">  403 </span>    &lt;value&gt;False&lt;/value&gt;
+<a id="l_404"></a><span class="hl line">  404 </span>  &lt;/data&gt;
+<a id="l_405"></a><span class="hl line">  405 </span>  &lt;data name=&quot;tabPageXml.SnapToGrid&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_406"></a><span class="hl line">  406 </span>    &lt;value&gt;True&lt;/value&gt;
+<a id="l_407"></a><span class="hl line">  407 </span>  &lt;/data&gt;
+<a id="l_408"></a><span class="hl line">  408 </span>  &lt;data name=&quot;tabPageXml.DrawGrid&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_409"></a><span class="hl line">  409 </span>    &lt;value&gt;True&lt;/value&gt;
+<a id="l_410"></a><span class="hl line">  410 </span>  &lt;/data&gt;
+<a id="l_411"></a><span class="hl line">  411 </span>  &lt;data name=&quot;tabPageXml.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_412"></a><span class="hl line">  412 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_413"></a><span class="hl line">  413 </span>  &lt;/data&gt;
+<a id="l_414"></a><span class="hl line">  414 </span>  &lt;data name=&quot;tabPageXml.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_415"></a><span class="hl line">  415 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_416"></a><span class="hl line">  416 </span>  &lt;/data&gt;
+<a id="l_417"></a><span class="hl line">  417 </span>  &lt;data name=&quot;tabPageXml.GridSize&quot; type=&quot;System.Drawing.Size, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a&quot;&gt;
+<a id="l_418"></a><span class="hl line">  418 </span>    &lt;value&gt;8, 8&lt;/value&gt;
+<a id="l_419"></a><span class="hl line">  419 </span>  &lt;/data&gt;
+<a id="l_420"></a><span class="hl line">  420 </span>  &lt;data name=&quot;panel3.Locked&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_421"></a><span class="hl line">  421 </span>    &lt;value&gt;False&lt;/value&gt;
+<a id="l_422"></a><span class="hl line">  422 </span>  &lt;/data&gt;
+<a id="l_423"></a><span class="hl line">  423 </span>  &lt;data name=&quot;panel3.SnapToGrid&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_424"></a><span class="hl line">  424 </span>    &lt;value&gt;True&lt;/value&gt;
+<a id="l_425"></a><span class="hl line">  425 </span>  &lt;/data&gt;
+<a id="l_426"></a><span class="hl line">  426 </span>  &lt;data name=&quot;panel3.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_427"></a><span class="hl line">  427 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_428"></a><span class="hl line">  428 </span>  &lt;/data&gt;
+<a id="l_429"></a><span class="hl line">  429 </span>  &lt;data name=&quot;panel3.GridSize&quot; type=&quot;System.Drawing.Size, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a&quot;&gt;
+<a id="l_430"></a><span class="hl line">  430 </span>    &lt;value&gt;8, 8&lt;/value&gt;
+<a id="l_431"></a><span class="hl line">  431 </span>  &lt;/data&gt;
+<a id="l_432"></a><span class="hl line">  432 </span>  &lt;data name=&quot;panel3.DrawGrid&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_433"></a><span class="hl line">  433 </span>    &lt;value&gt;True&lt;/value&gt;
+<a id="l_434"></a><span class="hl line">  434 </span>  &lt;/data&gt;
+<a id="l_435"></a><span class="hl line">  435 </span>  &lt;data name=&quot;panel3.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_436"></a><span class="hl line">  436 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_437"></a><span class="hl line">  437 </span>  &lt;/data&gt;
+<a id="l_438"></a><span class="hl line">  438 </span>  &lt;data name=&quot;xmlResults.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_439"></a><span class="hl line">  439 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_440"></a><span class="hl line">  440 </span>  &lt;/data&gt;
+<a id="l_441"></a><span class="hl line">  441 </span>  &lt;data name=&quot;xmlResults.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_442"></a><span class="hl line">  442 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_443"></a><span class="hl line">  443 </span>  &lt;/data&gt;
+<a id="l_444"></a><span class="hl line">  444 </span>  &lt;data name=&quot;xmlResults.Locked&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_445"></a><span class="hl line">  445 </span>    &lt;value&gt;False&lt;/value&gt;
+<a id="l_446"></a><span class="hl line">  446 </span>  &lt;/data&gt;
+<a id="l_447"></a><span class="hl line">  447 </span>  &lt;data name=&quot;xmlResults.Encoding&quot; mimetype=&quot;application/x-microsoft.net.object.binary.base64&quot;&gt;
+<a id="l_448"></a><span class="hl line">  448 </span>    &lt;value&gt;
+<a id="l_449"></a><span class="hl line">  449 </span>        AAEAAAD/////AQAAAAAAAAAEAQAAABhTeXN0ZW0uVGV4dC5VVEY4RW5jb2RpbmcGAAAAEmVtaXRVVEY4
+<a id="l_450"></a><span class="hl line">  450 </span>        SWRlbnRpZmllchBpc1Rocm93RXhjZXB0aW9uCGRhdGFJdGVtCm1fY29kZVBhZ2URRW5jb2RpbmcrZGF0
+<a id="l_451"></a><span class="hl line">  451 </span>        YUl0ZW0TRW5jb2RpbmcrbV9jb2RlUGFnZQAAAwADAAEBJVN5c3RlbS5HbG9iYWxpemF0aW9uLkNvZGVQ
+<a id="l_452"></a><span class="hl line">  452 </span>        YWdlRGF0YUl0ZW0IJVN5c3RlbS5HbG9iYWxpemF0aW9uLkNvZGVQYWdlRGF0YUl0ZW0IAQAK6f0AAArp
+<a id="l_453"></a><span class="hl line">  453 </span>        /QAACw==
+<a id="l_454"></a><span class="hl line">  454 </span>&lt;/value&gt;
+<a id="l_455"></a><span class="hl line">  455 </span>  &lt;/data&gt;
+<a id="l_456"></a><span class="hl line">  456 </span>  &lt;data name=&quot;tabPageCsv.Locked&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_457"></a><span class="hl line">  457 </span>    &lt;value&gt;False&lt;/value&gt;
+<a id="l_458"></a><span class="hl line">  458 </span>  &lt;/data&gt;
+<a id="l_459"></a><span class="hl line">  459 </span>  &lt;data name=&quot;tabPageCsv.SnapToGrid&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_460"></a><span class="hl line">  460 </span>    &lt;value&gt;True&lt;/value&gt;
+<a id="l_461"></a><span class="hl line">  461 </span>  &lt;/data&gt;
+<a id="l_462"></a><span class="hl line">  462 </span>  &lt;data name=&quot;tabPageCsv.DrawGrid&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_463"></a><span class="hl line">  463 </span>    &lt;value&gt;True&lt;/value&gt;
+<a id="l_464"></a><span class="hl line">  464 </span>  &lt;/data&gt;
+<a id="l_465"></a><span class="hl line">  465 </span>  &lt;data name=&quot;tabPageCsv.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_466"></a><span class="hl line">  466 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_467"></a><span class="hl line">  467 </span>  &lt;/data&gt;
+<a id="l_468"></a><span class="hl line">  468 </span>  &lt;data name=&quot;tabPageCsv.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_469"></a><span class="hl line">  469 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_470"></a><span class="hl line">  470 </span>  &lt;/data&gt;
+<a id="l_471"></a><span class="hl line">  471 </span>  &lt;data name=&quot;tabPageCsv.GridSize&quot; type=&quot;System.Drawing.Size, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a&quot;&gt;
+<a id="l_472"></a><span class="hl line">  472 </span>    &lt;value&gt;8, 8&lt;/value&gt;
+<a id="l_473"></a><span class="hl line">  473 </span>  &lt;/data&gt;
+<a id="l_474"></a><span class="hl line">  474 </span>  &lt;data name=&quot;panel4.Locked&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_475"></a><span class="hl line">  475 </span>    &lt;value&gt;False&lt;/value&gt;
+<a id="l_476"></a><span class="hl line">  476 </span>  &lt;/data&gt;
+<a id="l_477"></a><span class="hl line">  477 </span>  &lt;data name=&quot;panel4.SnapToGrid&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_478"></a><span class="hl line">  478 </span>    &lt;value&gt;True&lt;/value&gt;
+<a id="l_479"></a><span class="hl line">  479 </span>  &lt;/data&gt;
+<a id="l_480"></a><span class="hl line">  480 </span>  &lt;data name=&quot;panel4.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_481"></a><span class="hl line">  481 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_482"></a><span class="hl line">  482 </span>  &lt;/data&gt;
+<a id="l_483"></a><span class="hl line">  483 </span>  &lt;data name=&quot;panel4.GridSize&quot; type=&quot;System.Drawing.Size, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a&quot;&gt;
+<a id="l_484"></a><span class="hl line">  484 </span>    &lt;value&gt;8, 8&lt;/value&gt;
+<a id="l_485"></a><span class="hl line">  485 </span>  &lt;/data&gt;
+<a id="l_486"></a><span class="hl line">  486 </span>  &lt;data name=&quot;panel4.DrawGrid&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_487"></a><span class="hl line">  487 </span>    &lt;value&gt;True&lt;/value&gt;
+<a id="l_488"></a><span class="hl line">  488 </span>  &lt;/data&gt;
+<a id="l_489"></a><span class="hl line">  489 </span>  &lt;data name=&quot;panel4.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_490"></a><span class="hl line">  490 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_491"></a><span class="hl line">  491 </span>  &lt;/data&gt;
+<a id="l_492"></a><span class="hl line">  492 </span>  &lt;data name=&quot;csvResults.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_493"></a><span class="hl line">  493 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_494"></a><span class="hl line">  494 </span>  &lt;/data&gt;
+<a id="l_495"></a><span class="hl line">  495 </span>  &lt;data name=&quot;csvResults.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_496"></a><span class="hl line">  496 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_497"></a><span class="hl line">  497 </span>  &lt;/data&gt;
+<a id="l_498"></a><span class="hl line">  498 </span>  &lt;data name=&quot;csvResults.Locked&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_499"></a><span class="hl line">  499 </span>    &lt;value&gt;False&lt;/value&gt;
+<a id="l_500"></a><span class="hl line">  500 </span>  &lt;/data&gt;
+<a id="l_501"></a><span class="hl line">  501 </span>  &lt;data name=&quot;csvResults.Encoding&quot; mimetype=&quot;application/x-microsoft.net.object.binary.base64&quot;&gt;
+<a id="l_502"></a><span class="hl line">  502 </span>    &lt;value&gt;
+<a id="l_503"></a><span class="hl line">  503 </span>        AAEAAAD/////AQAAAAAAAAAEAQAAABhTeXN0ZW0uVGV4dC5VVEY4RW5jb2RpbmcGAAAAEmVtaXRVVEY4
+<a id="l_504"></a><span class="hl line">  504 </span>        SWRlbnRpZmllchBpc1Rocm93RXhjZXB0aW9uCGRhdGFJdGVtCm1fY29kZVBhZ2URRW5jb2RpbmcrZGF0
+<a id="l_505"></a><span class="hl line">  505 </span>        YUl0ZW0TRW5jb2RpbmcrbV9jb2RlUGFnZQAAAwADAAEBJVN5c3RlbS5HbG9iYWxpemF0aW9uLkNvZGVQ
+<a id="l_506"></a><span class="hl line">  506 </span>        YWdlRGF0YUl0ZW0IJVN5c3RlbS5HbG9iYWxpemF0aW9uLkNvZGVQYWdlRGF0YUl0ZW0IAQAK6f0AAArp
+<a id="l_507"></a><span class="hl line">  507 </span>        /QAACw==
+<a id="l_508"></a><span class="hl line">  508 </span>&lt;/value&gt;
+<a id="l_509"></a><span class="hl line">  509 </span>  &lt;/data&gt;
+<a id="l_510"></a><span class="hl line">  510 </span>  &lt;data name=&quot;tabPagePrettyPrint.Locked&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_511"></a><span class="hl line">  511 </span>    &lt;value&gt;False&lt;/value&gt;
+<a id="l_512"></a><span class="hl line">  512 </span>  &lt;/data&gt;
+<a id="l_513"></a><span class="hl line">  513 </span>  &lt;data name=&quot;tabPagePrettyPrint.SnapToGrid&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_514"></a><span class="hl line">  514 </span>    &lt;value&gt;True&lt;/value&gt;
+<a id="l_515"></a><span class="hl line">  515 </span>  &lt;/data&gt;
+<a id="l_516"></a><span class="hl line">  516 </span>  &lt;data name=&quot;tabPagePrettyPrint.DrawGrid&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_517"></a><span class="hl line">  517 </span>    &lt;value&gt;True&lt;/value&gt;
+<a id="l_518"></a><span class="hl line">  518 </span>  &lt;/data&gt;
+<a id="l_519"></a><span class="hl line">  519 </span>  &lt;data name=&quot;tabPagePrettyPrint.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_520"></a><span class="hl line">  520 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_521"></a><span class="hl line">  521 </span>  &lt;/data&gt;
+<a id="l_522"></a><span class="hl line">  522 </span>  &lt;data name=&quot;tabPagePrettyPrint.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_523"></a><span class="hl line">  523 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_524"></a><span class="hl line">  524 </span>  &lt;/data&gt;
+<a id="l_525"></a><span class="hl line">  525 </span>  &lt;data name=&quot;tabPagePrettyPrint.GridSize&quot; type=&quot;System.Drawing.Size, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a&quot;&gt;
+<a id="l_526"></a><span class="hl line">  526 </span>    &lt;value&gt;8, 8&lt;/value&gt;
+<a id="l_527"></a><span class="hl line">  527 </span>  &lt;/data&gt;
+<a id="l_528"></a><span class="hl line">  528 </span>  &lt;data name=&quot;tabPageTSql.Locked&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_529"></a><span class="hl line">  529 </span>    &lt;value&gt;False&lt;/value&gt;
+<a id="l_530"></a><span class="hl line">  530 </span>  &lt;/data&gt;
+<a id="l_531"></a><span class="hl line">  531 </span>  &lt;data name=&quot;tabPageTSql.SnapToGrid&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_532"></a><span class="hl line">  532 </span>    &lt;value&gt;True&lt;/value&gt;
+<a id="l_533"></a><span class="hl line">  533 </span>  &lt;/data&gt;
+<a id="l_534"></a><span class="hl line">  534 </span>  &lt;data name=&quot;tabPageTSql.DrawGrid&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_535"></a><span class="hl line">  535 </span>    &lt;value&gt;True&lt;/value&gt;
+<a id="l_536"></a><span class="hl line">  536 </span>  &lt;/data&gt;
+<a id="l_537"></a><span class="hl line">  537 </span>  &lt;data name=&quot;tabPageTSql.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_538"></a><span class="hl line">  538 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_539"></a><span class="hl line">  539 </span>  &lt;/data&gt;
+<a id="l_540"></a><span class="hl line">  540 </span>  &lt;data name=&quot;tabPageTSql.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_541"></a><span class="hl line">  541 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_542"></a><span class="hl line">  542 </span>  &lt;/data&gt;
+<a id="l_543"></a><span class="hl line">  543 </span>  &lt;data name=&quot;tabPageTSql.GridSize&quot; type=&quot;System.Drawing.Size, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a&quot;&gt;
+<a id="l_544"></a><span class="hl line">  544 </span>    &lt;value&gt;8, 8&lt;/value&gt;
+<a id="l_545"></a><span class="hl line">  545 </span>  &lt;/data&gt;
+<a id="l_546"></a><span class="hl line">  546 </span>  &lt;data name=&quot;panel2.Locked&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_547"></a><span class="hl line">  547 </span>    &lt;value&gt;False&lt;/value&gt;
+<a id="l_548"></a><span class="hl line">  548 </span>  &lt;/data&gt;
+<a id="l_549"></a><span class="hl line">  549 </span>  &lt;data name=&quot;panel2.SnapToGrid&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_550"></a><span class="hl line">  550 </span>    &lt;value&gt;True&lt;/value&gt;
+<a id="l_551"></a><span class="hl line">  551 </span>  &lt;/data&gt;
+<a id="l_552"></a><span class="hl line">  552 </span>  &lt;data name=&quot;panel2.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_553"></a><span class="hl line">  553 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_554"></a><span class="hl line">  554 </span>  &lt;/data&gt;
+<a id="l_555"></a><span class="hl line">  555 </span>  &lt;data name=&quot;panel2.GridSize&quot; type=&quot;System.Drawing.Size, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a&quot;&gt;
+<a id="l_556"></a><span class="hl line">  556 </span>    &lt;value&gt;8, 8&lt;/value&gt;
+<a id="l_557"></a><span class="hl line">  557 </span>  &lt;/data&gt;
+<a id="l_558"></a><span class="hl line">  558 </span>  &lt;data name=&quot;panel2.DrawGrid&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_559"></a><span class="hl line">  559 </span>    &lt;value&gt;True&lt;/value&gt;
+<a id="l_560"></a><span class="hl line">  560 </span>  &lt;/data&gt;
+<a id="l_561"></a><span class="hl line">  561 </span>  &lt;data name=&quot;panel2.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_562"></a><span class="hl line">  562 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_563"></a><span class="hl line">  563 </span>  &lt;/data&gt;
+<a id="l_564"></a><span class="hl line">  564 </span>  &lt;data name=&quot;translatedSql.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_565"></a><span class="hl line">  565 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_566"></a><span class="hl line">  566 </span>  &lt;/data&gt;
+<a id="l_567"></a><span class="hl line">  567 </span>  &lt;data name=&quot;translatedSql.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_568"></a><span class="hl line">  568 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_569"></a><span class="hl line">  569 </span>  &lt;/data&gt;
+<a id="l_570"></a><span class="hl line">  570 </span>  &lt;data name=&quot;translatedSql.Locked&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_571"></a><span class="hl line">  571 </span>    &lt;value&gt;False&lt;/value&gt;
+<a id="l_572"></a><span class="hl line">  572 </span>  &lt;/data&gt;
+<a id="l_573"></a><span class="hl line">  573 </span>  &lt;data name=&quot;translatedSql.Encoding&quot; mimetype=&quot;application/x-microsoft.net.object.binary.base64&quot;&gt;
+<a id="l_574"></a><span class="hl line">  574 </span>    &lt;value&gt;
+<a id="l_575"></a><span class="hl line">  575 </span>        AAEAAAD/////AQAAAAAAAAAEAQAAABhTeXN0ZW0uVGV4dC5VVEY4RW5jb2RpbmcGAAAAEmVtaXRVVEY4
+<a id="l_576"></a><span class="hl line">  576 </span>        SWRlbnRpZmllchBpc1Rocm93RXhjZXB0aW9uCGRhdGFJdGVtCm1fY29kZVBhZ2URRW5jb2RpbmcrZGF0
+<a id="l_577"></a><span class="hl line">  577 </span>        YUl0ZW0TRW5jb2RpbmcrbV9jb2RlUGFnZQAAAwADAAEBJVN5c3RlbS5HbG9iYWxpemF0aW9uLkNvZGVQ
+<a id="l_578"></a><span class="hl line">  578 </span>        YWdlRGF0YUl0ZW0IJVN5c3RlbS5HbG9iYWxpemF0aW9uLkNvZGVQYWdlRGF0YUl0ZW0IAQAK6f0AAArp
+<a id="l_579"></a><span class="hl line">  579 </span>        /QAACw==
+<a id="l_580"></a><span class="hl line">  580 </span>&lt;/value&gt;
+<a id="l_581"></a><span class="hl line">  581 </span>  &lt;/data&gt;
+<a id="l_582"></a><span class="hl line">  582 </span>  &lt;data name=&quot;tabPageMessages.Locked&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_583"></a><span class="hl line">  583 </span>    &lt;value&gt;False&lt;/value&gt;
+<a id="l_584"></a><span class="hl line">  584 </span>  &lt;/data&gt;
+<a id="l_585"></a><span class="hl line">  585 </span>  &lt;data name=&quot;tabPageMessages.SnapToGrid&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_586"></a><span class="hl line">  586 </span>    &lt;value&gt;True&lt;/value&gt;
+<a id="l_587"></a><span class="hl line">  587 </span>  &lt;/data&gt;
+<a id="l_588"></a><span class="hl line">  588 </span>  &lt;data name=&quot;tabPageMessages.DrawGrid&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_589"></a><span class="hl line">  589 </span>    &lt;value&gt;True&lt;/value&gt;
+<a id="l_590"></a><span class="hl line">  590 </span>  &lt;/data&gt;
+<a id="l_591"></a><span class="hl line">  591 </span>  &lt;data name=&quot;tabPageMessages.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_592"></a><span class="hl line">  592 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_593"></a><span class="hl line">  593 </span>  &lt;/data&gt;
+<a id="l_594"></a><span class="hl line">  594 </span>  &lt;data name=&quot;tabPageMessages.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_595"></a><span class="hl line">  595 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_596"></a><span class="hl line">  596 </span>  &lt;/data&gt;
+<a id="l_597"></a><span class="hl line">  597 </span>  &lt;data name=&quot;tabPageMessages.GridSize&quot; type=&quot;System.Drawing.Size, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a&quot;&gt;
+<a id="l_598"></a><span class="hl line">  598 </span>    &lt;value&gt;8, 8&lt;/value&gt;
+<a id="l_599"></a><span class="hl line">  599 </span>  &lt;/data&gt;
+<a id="l_600"></a><span class="hl line">  600 </span>  &lt;data name=&quot;messagesTextBox.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_601"></a><span class="hl line">  601 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_602"></a><span class="hl line">  602 </span>  &lt;/data&gt;
+<a id="l_603"></a><span class="hl line">  603 </span>  &lt;data name=&quot;messagesTextBox.Locked&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_604"></a><span class="hl line">  604 </span>    &lt;value&gt;False&lt;/value&gt;
+<a id="l_605"></a><span class="hl line">  605 </span>  &lt;/data&gt;
+<a id="l_606"></a><span class="hl line">  606 </span>  &lt;data name=&quot;messagesTextBox.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_607"></a><span class="hl line">  607 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_608"></a><span class="hl line">  608 </span>  &lt;/data&gt;
+<a id="l_609"></a><span class="hl line">  609 </span>  &lt;data name=&quot;TextEditorControl1.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_610"></a><span class="hl line">  610 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_611"></a><span class="hl line">  611 </span>  &lt;/data&gt;
+<a id="l_612"></a><span class="hl line">  612 </span>  &lt;data name=&quot;TextEditorControl1.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_613"></a><span class="hl line">  613 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_614"></a><span class="hl line">  614 </span>  &lt;/data&gt;
+<a id="l_615"></a><span class="hl line">  615 </span>  &lt;data name=&quot;TextEditorControl1.Locked&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_616"></a><span class="hl line">  616 </span>    &lt;value&gt;False&lt;/value&gt;
+<a id="l_617"></a><span class="hl line">  617 </span>  &lt;/data&gt;
+<a id="l_618"></a><span class="hl line">  618 </span>  &lt;data name=&quot;TextEditorControl1.Encoding&quot; mimetype=&quot;application/x-microsoft.net.object.binary.base64&quot;&gt;
+<a id="l_619"></a><span class="hl line">  619 </span>    &lt;value&gt;
+<a id="l_620"></a><span class="hl line">  620 </span>        AAEAAAD/////AQAAAAAAAAAEAQAAABhTeXN0ZW0uVGV4dC5VVEY4RW5jb2RpbmcGAAAAEmVtaXRVVEY4
+<a id="l_621"></a><span class="hl line">  621 </span>        SWRlbnRpZmllchBpc1Rocm93RXhjZXB0aW9uCGRhdGFJdGVtCm1fY29kZVBhZ2URRW5jb2RpbmcrZGF0
+<a id="l_622"></a><span class="hl line">  622 </span>        YUl0ZW0TRW5jb2RpbmcrbV9jb2RlUGFnZQAAAwADAAEBJVN5c3RlbS5HbG9iYWxpemF0aW9uLkNvZGVQ
+<a id="l_623"></a><span class="hl line">  623 </span>        YWdlRGF0YUl0ZW0IJVN5c3RlbS5HbG9iYWxpemF0aW9uLkNvZGVQYWdlRGF0YUl0ZW0IAQAK6f0AAArp
+<a id="l_624"></a><span class="hl line">  624 </span>        /QAACw==
+<a id="l_625"></a><span class="hl line">  625 </span>&lt;/value&gt;
+<a id="l_626"></a><span class="hl line">  626 </span>  &lt;/data&gt;
+<a id="l_627"></a><span class="hl line">  627 </span>  &lt;data name=&quot;splitter2.Locked&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_628"></a><span class="hl line">  628 </span>    &lt;value&gt;False&lt;/value&gt;
+<a id="l_629"></a><span class="hl line">  629 </span>  &lt;/data&gt;
+<a id="l_630"></a><span class="hl line">  630 </span>  &lt;data name=&quot;splitter2.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_631"></a><span class="hl line">  631 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_632"></a><span class="hl line">  632 </span>  &lt;/data&gt;
+<a id="l_633"></a><span class="hl line">  633 </span>  &lt;data name=&quot;splitter2.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_634"></a><span class="hl line">  634 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_635"></a><span class="hl line">  635 </span>  &lt;/data&gt;
+<a id="l_636"></a><span class="hl line">  636 </span>  &lt;data name=&quot;panel1.Locked&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_637"></a><span class="hl line">  637 </span>    &lt;value&gt;False&lt;/value&gt;
+<a id="l_638"></a><span class="hl line">  638 </span>  &lt;/data&gt;
+<a id="l_639"></a><span class="hl line">  639 </span>  &lt;data name=&quot;panel1.SnapToGrid&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_640"></a><span class="hl line">  640 </span>    &lt;value&gt;True&lt;/value&gt;
+<a id="l_641"></a><span class="hl line">  641 </span>  &lt;/data&gt;
+<a id="l_642"></a><span class="hl line">  642 </span>  &lt;data name=&quot;panel1.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_643"></a><span class="hl line">  643 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_644"></a><span class="hl line">  644 </span>  &lt;/data&gt;
+<a id="l_645"></a><span class="hl line">  645 </span>  &lt;data name=&quot;panel1.GridSize&quot; type=&quot;System.Drawing.Size, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a&quot;&gt;
+<a id="l_646"></a><span class="hl line">  646 </span>    &lt;value&gt;8, 8&lt;/value&gt;
+<a id="l_647"></a><span class="hl line">  647 </span>  &lt;/data&gt;
+<a id="l_648"></a><span class="hl line">  648 </span>  &lt;data name=&quot;panel1.DrawGrid&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_649"></a><span class="hl line">  649 </span>    &lt;value&gt;True&lt;/value&gt;
+<a id="l_650"></a><span class="hl line">  650 </span>  &lt;/data&gt;
+<a id="l_651"></a><span class="hl line">  651 </span>  &lt;data name=&quot;panel1.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_652"></a><span class="hl line">  652 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_653"></a><span class="hl line">  653 </span>  &lt;/data&gt;
+<a id="l_654"></a><span class="hl line">  654 </span>  &lt;data name=&quot;panel5.Locked&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_655"></a><span class="hl line">  655 </span>    &lt;value&gt;False&lt;/value&gt;
+<a id="l_656"></a><span class="hl line">  656 </span>  &lt;/data&gt;
+<a id="l_657"></a><span class="hl line">  657 </span>  &lt;data name=&quot;panel5.SnapToGrid&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_658"></a><span class="hl line">  658 </span>    &lt;value&gt;True&lt;/value&gt;
+<a id="l_659"></a><span class="hl line">  659 </span>  &lt;/data&gt;
+<a id="l_660"></a><span class="hl line">  660 </span>  &lt;data name=&quot;panel5.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_661"></a><span class="hl line">  661 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_662"></a><span class="hl line">  662 </span>  &lt;/data&gt;
+<a id="l_663"></a><span class="hl line">  663 </span>  &lt;data name=&quot;panel5.GridSize&quot; type=&quot;System.Drawing.Size, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a&quot;&gt;
+<a id="l_664"></a><span class="hl line">  664 </span>    &lt;value&gt;8, 8&lt;/value&gt;
+<a id="l_665"></a><span class="hl line">  665 </span>  &lt;/data&gt;
+<a id="l_666"></a><span class="hl line">  666 </span>  &lt;data name=&quot;panel5.DrawGrid&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_667"></a><span class="hl line">  667 </span>    &lt;value&gt;True&lt;/value&gt;
+<a id="l_668"></a><span class="hl line">  668 </span>  &lt;/data&gt;
+<a id="l_669"></a><span class="hl line">  669 </span>  &lt;data name=&quot;panel5.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_670"></a><span class="hl line">  670 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_671"></a><span class="hl line">  671 </span>  &lt;/data&gt;
+<a id="l_672"></a><span class="hl line">  672 </span>  &lt;data name=&quot;soqlPrettyPrint.Modifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_673"></a><span class="hl line">  673 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_674"></a><span class="hl line">  674 </span>  &lt;/data&gt;
+<a id="l_675"></a><span class="hl line">  675 </span>  &lt;data name=&quot;soqlPrettyPrint.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_676"></a><span class="hl line">  676 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_677"></a><span class="hl line">  677 </span>  &lt;/data&gt;
+<a id="l_678"></a><span class="hl line">  678 </span>  &lt;data name=&quot;soqlPrettyPrint.Locked&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_679"></a><span class="hl line">  679 </span>    &lt;value&gt;False&lt;/value&gt;
+<a id="l_680"></a><span class="hl line">  680 </span>  &lt;/data&gt;
+<a id="l_681"></a><span class="hl line">  681 </span>  &lt;data name=&quot;soqlPrettyPrint.Encoding&quot; mimetype=&quot;application/x-microsoft.net.object.binary.base64&quot;&gt;
+<a id="l_682"></a><span class="hl line">  682 </span>    &lt;value&gt;
+<a id="l_683"></a><span class="hl line">  683 </span>        AAEAAAD/////AQAAAAAAAAAEAQAAABhTeXN0ZW0uVGV4dC5VVEY4RW5jb2RpbmcGAAAAEmVtaXRVVEY4
+<a id="l_684"></a><span class="hl line">  684 </span>        SWRlbnRpZmllchBpc1Rocm93RXhjZXB0aW9uCGRhdGFJdGVtCm1fY29kZVBhZ2URRW5jb2RpbmcrZGF0
+<a id="l_685"></a><span class="hl line">  685 </span>        YUl0ZW0TRW5jb2RpbmcrbV9jb2RlUGFnZQAAAwADAAEBJVN5c3RlbS5HbG9iYWxpemF0aW9uLkNvZGVQ
+<a id="l_686"></a><span class="hl line">  686 </span>        YWdlRGF0YUl0ZW0IJVN5c3RlbS5HbG9iYWxpemF0aW9uLkNvZGVQYWdlRGF0YUl0ZW0IAQAK6f0AAArp
+<a id="l_687"></a><span class="hl line">  687 </span>        /QAACw==
+<a id="l_688"></a><span class="hl line">  688 </span>&lt;/value&gt;
+<a id="l_689"></a><span class="hl line">  689 </span>  &lt;/data&gt;
+<a id="l_690"></a><span class="hl line">  690 </span>  &lt;data name=&quot;$this.Locked&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_691"></a><span class="hl line">  691 </span>    &lt;value&gt;False&lt;/value&gt;
+<a id="l_692"></a><span class="hl line">  692 </span>  &lt;/data&gt;
+<a id="l_693"></a><span class="hl line">  693 </span>  &lt;data name=&quot;$this.Language&quot; type=&quot;System.Globalization.CultureInfo, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_694"></a><span class="hl line">  694 </span>    &lt;value&gt;(Default)&lt;/value&gt;
+<a id="l_695"></a><span class="hl line">  695 </span>  &lt;/data&gt;
+<a id="l_696"></a><span class="hl line">  696 </span>  &lt;data name=&quot;$this.TrayLargeIcon&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_697"></a><span class="hl line">  697 </span>    &lt;value&gt;False&lt;/value&gt;
+<a id="l_698"></a><span class="hl line">  698 </span>  &lt;/data&gt;
+<a id="l_699"></a><span class="hl line">  699 </span>  &lt;data name=&quot;$this.Localizable&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_700"></a><span class="hl line">  700 </span>    &lt;value&gt;False&lt;/value&gt;
+<a id="l_701"></a><span class="hl line">  701 </span>  &lt;/data&gt;
+<a id="l_702"></a><span class="hl line">  702 </span>  &lt;data name=&quot;$this.Name&quot;&gt;
+<a id="l_703"></a><span class="hl line">  703 </span>    &lt;value&gt;MainForm&lt;/value&gt;
+<a id="l_704"></a><span class="hl line">  704 </span>  &lt;/data&gt;
+<a id="l_705"></a><span class="hl line">  705 </span>  &lt;data name=&quot;$this.GridSize&quot; type=&quot;System.Drawing.Size, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a&quot;&gt;
+<a id="l_706"></a><span class="hl line">  706 </span>    &lt;value&gt;8, 8&lt;/value&gt;
+<a id="l_707"></a><span class="hl line">  707 </span>  &lt;/data&gt;
+<a id="l_708"></a><span class="hl line">  708 </span>  &lt;data name=&quot;$this.DrawGrid&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_709"></a><span class="hl line">  709 </span>    &lt;value&gt;True&lt;/value&gt;
+<a id="l_710"></a><span class="hl line">  710 </span>  &lt;/data&gt;
+<a id="l_711"></a><span class="hl line">  711 </span>  &lt;data name=&quot;$this.TrayHeight&quot; type=&quot;System.Int32, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_712"></a><span class="hl line">  712 </span>    &lt;value&gt;25&lt;/value&gt;
+<a id="l_713"></a><span class="hl line">  713 </span>  &lt;/data&gt;
+<a id="l_714"></a><span class="hl line">  714 </span>  &lt;data name=&quot;$this.SnapToGrid&quot; type=&quot;System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_715"></a><span class="hl line">  715 </span>    &lt;value&gt;True&lt;/value&gt;
+<a id="l_716"></a><span class="hl line">  716 </span>  &lt;/data&gt;
+<a id="l_717"></a><span class="hl line">  717 </span>  &lt;data name=&quot;$this.DefaultModifiers&quot; type=&quot;System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+<a id="l_718"></a><span class="hl line">  718 </span>    &lt;value&gt;Private&lt;/value&gt;
+<a id="l_719"></a><span class="hl line">  719 </span>  &lt;/data&gt;
+<a id="l_720"></a><span class="hl line">  720 </span>  &lt;data name=&quot;$this.Icon&quot; type=&quot;System.Drawing.Icon, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a&quot; mimetype=&quot;application/x-microsoft.net.object.bytearray.base64&quot;&gt;
+<a id="l_721"></a><span class="hl line">  721 </span>    &lt;value&gt;
+<a id="l_722"></a><span class="hl line">  722 </span>        AAABAAMAICAQAAAAAADoAgAANgAAABAQEAAAAAAAKAEAAB4DAAAwMAAAAAAAAKgOAABGBAAAKAAAACAA
+<a id="l_723"></a><span class="hl line">  723 </span>        AABAAAAAAQAEAAAAAAAAAgAAAAAAAAAAAAAQAAAAEAAAAAAAAAAAAIAAAIAAAACAgACAAAAAgACAAICA
+<a id="l_724"></a><span class="hl line">  724 </span>        AACAgIAAwMDAAAAA/wAA/wAAAP//AP8AAAD/AP8A//8AAP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+<a id="l_725"></a><span class="hl line">  725 </span>        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHd3d3d3d3d3d3d3d3d3cARE
+<a id="l_726"></a><span class="hl line">  726 </span>        RERERERERERERERERHAE/Pz8/MzPzP/Mz/zP//RwBPz8/Pz/z8//z/z8///0cAT8//z8/8/Mz8zP/Mz/
+<a id="l_727"></a><span class="hl line">  727 </span>        9HAE//////////////////RwBP/////////////////0cAT8//z/z/zP/P/8///d9HAE/P/8/8/P/Pz/
+<a id="l_728"></a><span class="hl line">  728 </span>        /P/9/9RwBPzP/Mz/z/z8/Pz//f/0cAT8//z/z8/8/M/M//3/1HAE/Mz8zP/8z/z//P//3fRwBP//////
+<a id="l_729"></a><span class="hl line">  729 </span>        ///////////0cAT/////////////////9HAE/Mz/zM/Mz8zP/M//z/RwBP//z8//z//P/8/8/8/0cAT/
+<a id="l_730"></a><span class="hl line">  730 </span>        zP/M/8//zP/P///P9HAE/P//z//P/8//z/z/z/RwBP/Mz8zPz//Mz/zP/Mz0cAT/////////////////
+<a id="l_731"></a><span class="hl line">  731 </span>        9HAEiIiIiIiIiIiIiIiIiIRwBEREREREREREREREREREcARMTExMTExMTExOzs5JdHAEzMzMzMzMzMzM
+<a id="l_732"></a><span class="hl line">  732 </span>        zMzMzMQAAERERERERERERERERERAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+<a id="l_733"></a><span class="hl line">  733 </span>        AAAAAAAAAAAAAP/////////////////////AAAABgAAAAYAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAA
+<a id="l_734"></a><span class="hl line">  734 </span>        AAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAA
+<a id="l_735"></a><span class="hl line">  735 </span>        AAPAAAAH////////////////KAAAABAAAAAgAAAAAQAEAAAAAACAAAAAAAAAAAAAAAAQAAAAEAAAAAAA
+<a id="l_736"></a><span class="hl line">  736 </span>        AAAAAIAAAIAAAACAgACAAAAAgACAAICAAACAgIAAwMDAAAAA/wAA/wAAAP//AP8AAAD/AP8A//8AAP//
+<a id="l_737"></a><span class="hl line">  737 </span>        /wAHd3d3d3d3d0RERERERERHT///////+EdPz/z8/8/4R0/P/M/8/PhHT8z8/Pz8+AdPzPzP/8/4R0//
+<a id="l_738"></a><span class="hl line">  738 </span>        //////hHT8z8zPzPyEdP/Pz//P/IR0/P/M/8/8hHT8z8zPz/yEdP///////4R0iIiIiIiIhHTMzMzMzM
+<a id="l_739"></a><span class="hl line">  739 </span>        zEfEREREREREwIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+<a id="l_740"></a><span class="hl line">  740 </span>        AAAAAAAAAAAAAAABAAAoAAAAMAAAAGAAAAABAAgAAAAAAAAJAAAAAAAAAAAAAAABAAAAAQAAAAAAAAAA
+<a id="l_741"></a><span class="hl line">  741 </span>        gAAAgAAAAICAAIAAAACAAIAAgIAAAMDAwADA3MAA8MqmAAQEBAAICAgADAwMABEREQAWFhYAHBwcACIi
+<a id="l_742"></a><span class="hl line">  742 </span>        IgApKSkAVVVVAE1NTQBCQkIAOTk5AIB8/wBQUP8AkwDWAP/szADG1u8A1ufnAJCprQAAADMAAABmAAAA
+<a id="l_743"></a><span class="hl line">  743 </span>        mQAAAMwAADMAAAAzMwAAM2YAADOZAAAzzAAAM/8AAGYAAABmMwAAZmYAAGaZAABmzAAAZv8AAJkAAACZ
+<a id="l_744"></a><span class="hl line">  744 </span>        MwAAmWYAAJmZAACZzAAAmf8AAMwAAADMMwAAzGYAAMyZAADMzAAAzP8AAP9mAAD/mQAA/8wAMwAAADMA
+<a id="l_745"></a><span class="hl line">  745 </span>        MwAzAGYAMwCZADMAzAAzAP8AMzMAADMzMwAzM2YAMzOZADMzzAAzM/8AM2YAADNmMwAzZmYAM2aZADNm
+<a id="l_746"></a><span class="hl line">  746 </span>        zAAzZv8AM5kAADOZMwAzmWYAM5mZADOZzAAzmf8AM8wAADPMMwAzzGYAM8yZADPMzAAzzP8AM/8zADP/
+<a id="l_747"></a><span class="hl line">  747 </span>        ZgAz/5kAM//MADP//wBmAAAAZgAzAGYAZgBmAJkAZgDMAGYA/wBmMwAAZjMzAGYzZgBmM5kAZjPMAGYz
+<a id="l_748"></a><span class="hl line">  748 </span>        /wBmZgAAZmYzAGZmZgBmZpkAZmbMAGaZAABmmTMAZplmAGaZmQBmmcwAZpn/AGbMAABmzDMAZsyZAGbM
+<a id="l_749"></a><span class="hl line">  749 </span>        zABmzP8AZv8AAGb/MwBm/5kAZv/MAMwA/wD/AMwAmZkAAJkzmQCZAJkAmQDMAJkAAACZMzMAmQBmAJkz
+<a id="l_750"></a><span class="hl line">  750 </span>        zACZAP8AmWYAAJlmMwCZM2YAmWaZAJlmzACZM/8AmZkzAJmZZgCZmZkAmZnMAJmZ/wCZzAAAmcwzAGbM
+<a id="l_751"></a><span class="hl line">  751 </span>        ZgCZzJkAmczMAJnM/wCZ/wAAmf8zAJnMZgCZ/5kAmf/MAJn//wDMAAAAmQAzAMwAZgDMAJkAzADMAJkz
+<a id="l_752"></a><span class="hl line">  752 </span>        AADMMzMAzDNmAMwzmQDMM8wAzDP/AMxmAADMZjMAmWZmAMxmmQDMZswAmWb/AMyZAADMmTMAzJlmAMyZ
+<a id="l_753"></a><span class="hl line">  753 </span>        mQDMmcwAzJn/AMzMAADMzDMAzMxmAMzMmQDMzMwAzMz/AMz/AADM/zMAmf9mAMz/mQDM/8wAzP//AMwA
+<a id="l_754"></a><span class="hl line">  754 </span>        MwD/AGYA/wCZAMwzAAD/MzMA/zNmAP8zmQD/M8wA/zP/AP9mAAD/ZjMAzGZmAP9mmQD/ZswAzGb/AP+Z
+<a id="l_755"></a><span class="hl line">  755 </span>        AAD/mTMA/5lmAP+ZmQD/mcwA/5n/AP/MAAD/zDMA/8xmAP/MmQD/zMwA/8z/AP//MwDM/2YA//+ZAP//
+<a id="l_756"></a><span class="hl line">  756 </span>        zABmZv8AZv9mAGb//wD/ZmYA/2b/AP//ZgAhAKUAX19fAHd3dwCGhoYAlpaWAMvLywCysrIA19fXAN3d
+<a id="l_757"></a><span class="hl line">  757 </span>        3QDj4+MA6urqAPHx8QD4+PgA8Pv/AKSgoACAgIAAAAD/AAD/AAAA//8A/wAAAP8A/wD//wAA////AAoK
+<a id="l_758"></a><span class="hl line">  758 </span>        CgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoK7Ozs7Ozs7Ozs7Ozs
+<a id="l_759"></a><span class="hl line">  759 </span>        7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7AoEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE
+<a id="l_760"></a><span class="hl line">  760 </span>        BAQEBAQEBAQEBAQEBAQEBAQEBAQE7AoO////////////////////////////////////////////////
+<a id="l_761"></a><span class="hl line">  761 </span>        //////////8E7AoE//////////////////////////////////////////////////////////8E7AoE
+<a id="l_762"></a><span class="hl line">  762 </span>        //////////////////////////////////////////////////////////8E7AoE////////////////
+<a id="l_763"></a><span class="hl line">  763 </span>        //////////////////////////////////////////8E7AoE////////////////////////////////
+<a id="l_764"></a><span class="hl line">  764 </span>        //////////////////////////8E7AoE////////////////////////////////////////////////
+<a id="l_765"></a><span class="hl line">  765 </span>        //////////8E7AoE//+trf//rf//rf+tra3//62trf+t//+t//+tra3///+t/////6ur/6v/q/8E7AoE
+<a id="l_766"></a><span class="hl line">  766 </span>        /63//63/rf//rf+t//+t/63///+t//+t//+t//+t//+t////q///////q/8E7AoE/63//63/ra2t//+t
+<a id="l_767"></a><span class="hl line">  767 </span>        //+t/62t//+tra3///+tra3///+t/////6ur////q/8E7AoE/63//63/rf//rf+t//+t/63///+t//+t
+<a id="l_768"></a><span class="hl line">  768 </span>        //+t//+t/63/rf//////////q/8E7AoE//+trf//ra2t//+tra3//62trf+tra3///+tra3//63/rf//
+<a id="l_769"></a><span class="hl line">  769 </span>        ////////q/8E7AoE//////////////////////////////////////////////////////////8E7AoE
+<a id="l_770"></a><span class="hl line">  770 </span>        //////////////////////////////////////////////////////////8E7AoE////////////////
+<a id="l_771"></a><span class="hl line">  771 </span>        //////////////////////////////////////////8E7AoE//+t/63//63//63/ra2t/63//63/ra2t
+<a id="l_772"></a><span class="hl line">  772 </span>        ////q6v/q/+r//+rq/////+rq/8E7AoE//+t/63//63//63/rf///63//63/rf////+r//////+r/6v/
+<a id="l_773"></a><span class="hl line">  773 </span>        q/+rq////6sE7AoE/63/rf+t/62tra3/ra3//62trf//ra3/////q6v///+r//+rq///////q6sE7AoE
+<a id="l_774"></a><span class="hl line">  774 </span>        /63/rf+t/63//63/rf///63//63/rf////////////+r////q/+rq///q6sE7AoE/63///+t/63//63/
+<a id="l_775"></a><span class="hl line">  775 </span>        ra2t/62trf//ra2t//////////+r////q/////+rq6sE7AoE////////////////////////////////
+<a id="l_776"></a><span class="hl line">  776 </span>        //////////////////////////8E7AoE////////////////////////////////////////////////
+<a id="l_777"></a><span class="hl line">  777 </span>        //////////8E7AoE//////////////////////////////////////////////////////////8E7AoE
+<a id="l_778"></a><span class="hl line">  778 </span>        /63///+t//+t//+trf//rf///63///+rq///q6ur/6v/q///q///q6v//6sE7AoE/63///+t//+t/63/
+<a id="l_779"></a><span class="hl line">  779 </span>        /63/rf///63//6v//6v/q/+r/6v/q/+r//+r/6v/q/8E7AoE/62t//+tra3//63//63/rf+t/63//6v/
+<a id="l_780"></a><span class="hl line">  780 </span>        ////q6ur/6ur//+rq///q6v//6sE7AoE/63///+t//+t/63//63/ra3/ra3//6v//6v///////////+r
+<a id="l_781"></a><span class="hl line">  781 </span>        //////////8E7AoE/62trf+tra3///+trf//rf///63///+rq/////////////////////////8E7AoE
+<a id="l_782"></a><span class="hl line">  782 </span>        //////////////////////////////////////////////////////////8E7AoE////////////////
+<a id="l_783"></a><span class="hl line">  783 </span>        //////////////////////////////////////////8E7AoE////////////////////////////////
+<a id="l_784"></a><span class="hl line">  784 </span>        //////////////////////////8E7AoE/62trf//ra2t/62trf+tra3//62t////rf////+rq/+r/6v/
+<a id="l_785"></a><span class="hl line">  785 </span>        /6v/q6v///8E7AoE/////63/rf///63///+t////rf//rf//rf///6v//////6v//6v/q/+r//8E7AoE
+<a id="l_786"></a><span class="hl line">  786 </span>        //+trf//ra3//63///+trf//rf//////rf////+rq////6v/q6v//6v///8E7AoE/63/////rf///63/
+<a id="l_787"></a><span class="hl line">  787 </span>        //+t////rf//rf//rf///////////6ur/6v///////8E7AoE//+tra3/ra2t/63///+tra3//62t//+t
+<a id="l_788"></a><span class="hl line">  788 </span>        ra3//////////6v//6v///////8E7AoE////////////////////////////////////////////////
+<a id="l_789"></a><span class="hl line">  789 </span>        //////////8E7AoE//////////////////////////////////////////////////////////8E7AoE
+<a id="l_790"></a><span class="hl line">  790 </span>        BwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcE7AoEBAQEBAQEBAQEBAQE
+<a id="l_791"></a><span class="hl line">  791 </span>        BAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE7AoEBPwE/AT8BPwE/AT8BPwE/AT8BAT8BPwE
+<a id="l_792"></a><span class="hl line">  792 </span>        /AT8BPwE/AT8BPwE/AT8BPwE/OwE7AoE/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8
+<a id="l_793"></a><span class="hl line">  793 </span>        /Pz8/Pz8/PwECgoKBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQKCgoK
+<a id="l_794"></a><span class="hl line">  794 </span>        CgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoK
+<a id="l_795"></a><span class="hl line">  795 </span>        CgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoK
+<a id="l_796"></a><span class="hl line">  796 </span>        CgoKCgoKCgoKCgoKCgoKCgoKCgoKCv///////wAAwAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAA
+<a id="l_797"></a><span class="hl line">  797 </span>        AACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAA
+<a id="l_798"></a><span class="hl line">  798 </span>        AAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAA
+<a id="l_799"></a><span class="hl line">  799 </span>        AACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAA
+<a id="l_800"></a><span class="hl line">  800 </span>        AAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAA
+<a id="l_801"></a><span class="hl line">  801 </span>        AACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAA
+<a id="l_802"></a><span class="hl line">  802 </span>        AAAAAAAAgAAAAAABAADAAAAAAAMAAP///////wAA////////AAD///////8AAA==
+<a id="l_803"></a><span class="hl line">  803 </span>&lt;/value&gt;
+<a id="l_804"></a><span class="hl line">  804 </span>  &lt;/data&gt;
+<a id="l_805"></a><span class="hl line">  805 </span>&lt;/root&gt;
+</pre></div>
+
+<hr />
+<div class="yui-g">
+<div class="yui-u first">
+Powered by <a href="http://viewvc.tigris.org/">ViewVC 1.0.5</a>
+</div>
+<div class="yui-u" style="text-align: right">
+<strong><a href="/viewvc-static/help_log.html">ViewVC Help</a></strong>
+</div>
+</div>
+</div>
+<div id="ft">
+<div class="yui-g">
+<div class="yui-u first">
+Copyright &copy; 1999-2009 <a href="http://sourceforge.com" title="Network which provides and promotes Open Source software downloads, development, discussion and news.">SourceForge, Inc.</a> All rights reserved.
+<br />
+<span id="icons">
+<span>follow us on</span><a class="twitter" href="http://twitter.com/sourceforge">Twitter</a>
+<a class="feed" href="/export/rss2_projnews.php?group_id=141424&amp;rss_fulltext=1">RSS</a>
+<a class="linkedin" href="http://www.linkedin.com/companies/sourceforge-inc.">LinkedIn</a>
+</span>
+</div>
+<div class="yui-u">
+<div class="yui-gb">
+<div class="yui-u first" style="width: 23%;">
+<a href="http://sourceforge.net/sitestatus">Site&nbsp;Status</a><br />
+<a href="http://sourceforge.net/support/getsupport.php">Support</a><br />
+<a href="http://p.sf.net/sourceforge/terms">Legal</a><br />
+</div>
+<div class="yui-u" style="width: 38%;">
+<a href="http://p.sf.net/sourceforge/rssfeeds">Syndication&nbsp;Feeds&nbsp;/&nbsp;RSS</a><br />
+<a href="http://sourceforge.net/community/">Community</a><br />
+<a href="http://sourceforge.net/services/buy/index.php">Marketplace</a><br />
+</div>
+<div class="yui-u" style="width: 33%;">
+<a href="http://p.sf.net/sourceforge/about">About&nbsp;SourceForge.net</a><br />
+<a href="http://sourceforge.com">About&nbsp;SourceForge,&nbsp;Inc.</a><br />
+<a href="http://web.sourceforge.com/media_kit.php">Advertising</a><br />
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-32013-37");
+pageTracker._setDomainName(".sourceforge.net");
+pageTracker._trackPageview();
+</script>
+</body>
+</html>
+

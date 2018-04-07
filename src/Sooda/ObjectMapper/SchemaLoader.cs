@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,61 +27,62 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using Sooda.Schema;
-using System;
-using System.Collections;
-using System.IO;
-using System.Xml;
-using System.Xml.Serialization;
-
 namespace Sooda.ObjectMapper
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Reflection;
+    using System.Xml;
+    using System.Xml.Serialization;
+    using Schema;
+
     public class SchemaLoader
     {
-        private static readonly Hashtable assembly2SchemaInfo = new Hashtable();
+        private static readonly Dictionary<Assembly, SchemaInfo> Assembly2SchemaInfo =
+            new Dictionary<Assembly, SchemaInfo>();
 
-        public static SchemaInfo GetSchemaFromAssembly(System.Reflection.Assembly ass)
+        public static SchemaInfo GetSchemaFromAssembly(Assembly ass)
         {
-            SchemaInfo schemaInfo = (SchemaInfo) assembly2SchemaInfo[ass];
+            SchemaInfo schemaInfo;
 
-            if (schemaInfo == null)
+            if (!Assembly2SchemaInfo.TryGetValue(ass, out schemaInfo))
             {
-                lock (typeof(SchemaLoader))
+                lock (typeof (SchemaLoader))
                 {
-                    schemaInfo = (SchemaInfo) assembly2SchemaInfo[ass];
+                    if (Assembly2SchemaInfo.TryGetValue(ass, out schemaInfo)) return schemaInfo;
+
+                    foreach (string name in ass.GetManifestResourceNames())
+                    {
+                        if (name.EndsWith("_DBSchema.bin"))
+                        {
+                            var bf = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                            using (Stream resourceStream = ass.GetManifestResourceStream(name))
+                            {
+                                if (resourceStream != null) schemaInfo = (SchemaInfo) bf.Deserialize(resourceStream);
+                                if (schemaInfo != null) schemaInfo.Resolve();
+                            }
+                            break;
+                        }
+                        if (!name.EndsWith("_DBSchema.xml")) continue;
+                        using (Stream resourceStream = ass.GetManifestResourceStream(name))
+                        {
+                            var ser = new XmlSerializer(typeof (SchemaInfo));
+                            if (resourceStream != null)
+                            {
+                                var reader = new XmlTextReader(resourceStream);
+
+                                schemaInfo = (SchemaInfo) ser.Deserialize(reader);
+                                schemaInfo.Resolve();
+                            }
+                        }
+                        break;
+                    }
                     if (schemaInfo == null)
                     {
-                        foreach (string name in ass.GetManifestResourceNames())
-                        {
-                            if (name.EndsWith("_DBSchema.bin"))
-                            {
-                                System.Runtime.Serialization.Formatters.Binary.BinaryFormatter bf = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                                using (Stream resourceStream = ass.GetManifestResourceStream(name))
-                                {
-                                    schemaInfo = (SchemaInfo) bf.Deserialize(resourceStream);
-                                    schemaInfo.Resolve();
-                                }
-                                break;
-                            }
-                            if (name.EndsWith("_DBSchema.xml"))
-                            {
-                                using (Stream resourceStream = ass.GetManifestResourceStream(name))
-                                {
-                                    XmlSerializer ser = new XmlSerializer(typeof(SchemaInfo));
-                                    XmlTextReader reader = new XmlTextReader(resourceStream);
-
-                                    schemaInfo = (SchemaInfo) ser.Deserialize(reader);
-                                    schemaInfo.Resolve();
-                                }
-                                break;
-                            }
-                        }
-                        if (schemaInfo == null)
-                        {
-                            throw new InvalidOperationException("_DBSchema.xml not embedded in " + ass.CodeBase);
-                        }
-                        assembly2SchemaInfo[ass] = schemaInfo;
+                        throw new InvalidOperationException("_DBSchema.xml not embedded in " + ass.CodeBase);
                     }
+                    Assembly2SchemaInfo[ass] = schemaInfo;
                 }
             }
             return schemaInfo;

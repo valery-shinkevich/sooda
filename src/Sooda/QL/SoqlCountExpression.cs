@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,23 +27,24 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System.Collections;
-using System.IO;
-
-
 namespace Sooda.QL
 {
+    using System.Collections;
+    using System.IO;
+
     public class SoqlCountExpression : SoqlExpression, ISoqlSelectAliasProvider
     {
         public SoqlPathExpression Path;
         public string CollectionName;
 
-        public SoqlCountExpression() { }
+        public SoqlCountExpression()
+        {
+        }
 
         public SoqlCountExpression(SoqlPathExpression path, string collectionName)
         {
-            this.Path = path;
-            this.CollectionName = collectionName;
+            Path = path;
+            CollectionName = collectionName;
         }
 
         // visitor pattern
@@ -55,9 +55,9 @@ namespace Sooda.QL
 
         public void WriteDefaultSelectAlias(TextWriter output)
         {
-            if (this.Path != null)
+            if (Path != null)
             {
-                this.Path.WriteDefaultSelectAlias(output);
+                Path.WriteDefaultSelectAlias(output);
                 output.Write('_');
             }
             output.Write(CollectionName);
@@ -68,9 +68,9 @@ namespace Sooda.QL
         {
             object val;
 
-            if (this.Path != null)
+            if (Path != null)
             {
-                val = this.Path.Evaluate(context);
+                val = Path.Evaluate(context);
             }
             else
             {
@@ -79,7 +79,7 @@ namespace Sooda.QL
             if (val == null)
                 return null;
 
-            IList sol = (IList)val.GetType().GetProperty(CollectionName).GetValue(val, null);
+            IList sol = (IList) val.GetType().GetProperty(CollectionName).GetValue(val, null);
             return sol.Count;
         }
     }

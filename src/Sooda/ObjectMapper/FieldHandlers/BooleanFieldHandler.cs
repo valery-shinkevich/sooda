@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,21 +27,20 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.Data;
-
 namespace Sooda.ObjectMapper.FieldHandlers
 {
+    using System;
+    using System.Data;
+
     public class BooleanFieldHandler : SoodaFieldHandler
     {
-        public BooleanFieldHandler(bool nullable) : base(nullable) { }
+        public BooleanFieldHandler(bool nullable) : base(nullable)
+        {
+        }
 
         protected override string TypeName
         {
-            get
-            {
-                return "bool";
-            }
+            get { return "bool"; }
         }
 
         public override object RawRead(IDataRecord record, int pos)
@@ -75,7 +73,8 @@ namespace Sooda.ObjectMapper.FieldHandlers
             return (s == "true") ? true : false;
         }
 
-        private static object _zeroValue = false;
+        private static readonly object _zeroValue = false;
+
         public override object ZeroValue()
         {
             return _zeroValue;
@@ -83,12 +82,12 @@ namespace Sooda.ObjectMapper.FieldHandlers
 
         public override Type GetFieldType()
         {
-            return typeof(bool);
+            return typeof (bool);
         }
 
         public override Type GetSqlType()
         {
-            return typeof(System.Data.SqlTypes.SqlBoolean);
+            return typeof (System.Data.SqlTypes.SqlBoolean);
         }
 
         public override void SetupDBParameter(IDbDataParameter parameter, object value)
@@ -103,28 +102,26 @@ namespace Sooda.ObjectMapper.FieldHandlers
         {
             if (fieldValue == null)
                 return System.Data.SqlTypes.SqlBoolean.Null;
-            else
-                return new System.Data.SqlTypes.SqlBoolean((Boolean)fieldValue);
+            return new System.Data.SqlTypes.SqlBoolean((Boolean) fieldValue);
         }
 
         public static bool GetNotNullValue(object val)
         {
             if (val == null)
                 throw new InvalidOperationException("Attempt to read a non-null value that isn't set yet");
-            return (bool)val;
+            return (bool) val;
         }
 
         public static bool? GetNullableValue(object fieldValue)
         {
             if (fieldValue == null)
                 return null;
-            else
-                return (bool)fieldValue;
+            return (bool) fieldValue;
         }
 
         public override Type GetNullableType()
         {
-            return typeof(bool?);
+            return typeof (bool?);
         }
     }
 }

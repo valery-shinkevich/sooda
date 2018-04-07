@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,129 +27,91 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using Sooda.ObjectMapper.FieldHandlers;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Xml.Serialization;
-
 namespace Sooda.Schema
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Xml.Serialization;
+    using ObjectMapper.FieldHandlers;
+
     /// <summary>
     /// Stores database table schema information
     /// </summary>
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://www.sooda.org/schemas/SoodaSchema.xsd")]
+    [XmlType(Namespace = "http://www.sooda.org/schemas/SoodaSchema.xsd")]
     [Serializable]
     public class ClassInfo : IFieldContainer
     {
-        [XmlAttribute("datasource")]
-        public string DataSourceName;
+        [XmlAttribute("datasource")] public string DataSourceName;
 
-        [XmlElement("description")]
-        public string Description;
+        [XmlAttribute("description")] public string Description;
 
-        [System.Xml.Serialization.XmlElementAttribute("table")]
-        public List<TableInfo> LocalTables;
+        [XmlElement("table")] public List<TableInfo> LocalTables;
 
-        [System.Xml.Serialization.XmlElementAttribute("collectionOneToMany")]
+        [XmlElement("collectionOneToMany")] // ReSharper disable once InconsistentNaming
         public CollectionOnetoManyInfo[] Collections1toN;
 
-        [System.Xml.Serialization.XmlElementAttribute("collectionManyToMany")]
-        public CollectionManyToManyInfo[] CollectionsNtoN;
+        [XmlElement("collectionManyToMany")] public CollectionManyToManyInfo[] CollectionsNtoN;
 
-        [XmlIgnore]
-        [NonSerialized]
-        public List<CollectionBaseInfo> UnifiedCollections = new List<CollectionBaseInfo>();
+        [XmlIgnore] [NonSerialized] public List<CollectionBaseInfo> UnifiedCollections = new List<CollectionBaseInfo>();
 
-        [XmlIgnore]
-        [NonSerialized]
-        public List<CollectionBaseInfo> LocalCollections = new List<CollectionBaseInfo>();
+        [XmlIgnore] [NonSerialized] public List<CollectionBaseInfo> LocalCollections = new List<CollectionBaseInfo>();
 
-        [System.Xml.Serialization.XmlElementAttribute("const")]
-        public ConstantInfo[] Constants;
+        [XmlElement("const")] public ConstantInfo[] Constants;
 
-        private string _name = null;
+        private string _name;
 
-        [System.Xml.Serialization.XmlAnyAttribute()]
-        [NonSerialized]
-        public System.Xml.XmlAttribute[] Extensions;
+        [XmlAnyAttribute] [NonSerialized] public System.Xml.XmlAttribute[] Extensions;
 
-        [System.Xml.Serialization.XmlAttributeAttribute("defaultPrecommitValue")]
-        public string DefaultPrecommitValue;
+        [XmlAttribute("defaultPrecommitValue")] public string DefaultPrecommitValue;
 
-        [System.Xml.Serialization.XmlAttributeAttribute("name")]
+        [XmlAttribute("name")]
         public string Name
         {
-            get
-            {
-                return _name;
-            }
-            set
-            {
-                _name = value;
-            }
+            get { return _name; }
+            set { _name = value; }
         }
 
-        [System.Xml.Serialization.XmlAttributeAttribute("extBaseClassName")]
-        public string ExtBaseClassName;
+        [XmlAttribute("extBaseClassName")] public string ExtBaseClassName;
 
         private string[] _orderedFieldNames;
 
-        [System.Xml.Serialization.XmlAttributeAttribute("cached")]
-        [System.ComponentModel.DefaultValueAttribute(false)]
-        public bool Cached = false;
+        [XmlAttribute("cached")] [System.ComponentModel.DefaultValueAttribute(false)] public bool Cached;
 
-        [System.Xml.Serialization.XmlAttributeAttribute("cacheCollections")]
-        [System.ComponentModel.DefaultValueAttribute(false)]
-        public bool CacheCollections = false;
+        [XmlAttribute("cacheCollections")] [System.ComponentModel.DefaultValueAttribute(false)] public bool
+            CacheCollections;
 
-        [System.Xml.Serialization.XmlAttributeAttribute("cardinality")]
-        [System.ComponentModel.DefaultValueAttribute(ClassCardinality.Medium)]
-        public ClassCardinality Cardinality = ClassCardinality.Medium;
+        [XmlAttribute("cardinality")] [System.ComponentModel.DefaultValueAttribute(ClassCardinality.Medium)] public
+            ClassCardinality Cardinality = ClassCardinality.Medium;
 
-        [System.Xml.Serialization.XmlAttributeAttribute("triggers")]
-        [System.ComponentModel.DefaultValueAttribute(true)]
-        public bool Triggers = true;
+        [XmlAttribute("triggers")] [System.ComponentModel.DefaultValueAttribute(true)] public bool Triggers = true;
 
-        [System.Xml.Serialization.XmlAttributeAttribute("readOnly")]
-        [System.ComponentModel.DefaultValueAttribute(false)]
-        public bool ReadOnly = false;
+        [XmlAttribute("readOnly")] [System.ComponentModel.DefaultValueAttribute(false)] public bool ReadOnly;
 
-        [System.Xml.Serialization.XmlAttributeAttribute("label")]
-        public string LabelField = null;
+        [XmlAttribute("label")] public string LabelField;
 
-        [System.Xml.Serialization.XmlAttributeAttribute("subclassSelectorField")]
-        public string SubclassSelectorFieldName = null;
+        [XmlAttribute("MenuGroup")] public string MenuGroup;
 
-        [System.Xml.Serialization.XmlAttributeAttribute("subclassSelectorValue")]
-        public string SubclassSelectorStringValue = null;
+        [XmlAttribute("subclassSelectorField")] public string SubclassSelectorFieldName;
 
-        [System.Xml.Serialization.XmlAttributeAttribute("inheritFrom")]
-        public string InheritFrom = null;
+        [XmlAttribute("subclassSelectorValue")] public string SubclassSelectorStringValue;
 
-        [System.Xml.Serialization.XmlAttributeAttribute("keygen")]
-        public string KeyGenName;
+        [XmlAttribute("inheritFrom")] public string InheritFrom;
 
-        [System.Xml.Serialization.XmlAttributeAttribute("ignorePartial")]
-        [System.ComponentModel.DefaultValueAttribute(false)]
-        public bool IgnorePartial = false;
+        [XmlAttribute("keygen")] public string KeyGenName = "guid";
+
+        [XmlAttribute("ignorePartial")] [System.ComponentModel.DefaultValueAttribute(false)] public bool IgnorePartial;
 
         // array of FieldInfo's that point to this class
-        [XmlIgnore()]
-        [NonSerialized]
-        public List<FieldInfo> OuterReferences;
+        [XmlIgnore] [NonSerialized] public List<FieldInfo> OuterReferences;
 
-        [XmlIgnore()]
-        [NonSerialized]
-        public FieldInfo SubclassSelectorField;
+        [XmlIgnore] [NonSerialized] public FieldInfo SubclassSelectorField;
 
-        [XmlIgnore()]
-        [NonSerialized]
-        public object SubclassSelectorValue;
+        [XmlIgnore] [NonSerialized] public object SubclassSelectorValue;
 
-        [System.Xml.Serialization.XmlAttributeAttribute("disableTypeCache")]
-        [System.ComponentModel.DefaultValueAttribute(false)]
-        public bool DisableTypeCache = false;
+        [XmlAttribute("disableTypeCache")] [System.ComponentModel.DefaultValueAttribute(false)] public bool
+            DisableTypeCache;
 
         public CollectionOnetoManyInfo FindCollectionOneToMany(string collectionName)
         {
@@ -191,7 +152,7 @@ namespace Sooda.Schema
             return 0;
         }
 
-        FieldInfo[] _primaryKeyFields = null;
+        private FieldInfo[] _primaryKeyFields;
 
         public FieldInfo[] GetPrimaryKeyFields()
         {
@@ -203,28 +164,17 @@ namespace Sooda.Schema
             return _primaryKeyFields[0];
         }
 
-        [NonSerialized]
-        private SchemaInfo parentSchema;
+        [NonSerialized] private SchemaInfo _parentSchema;
 
-        [NonSerialized]
-        [XmlIgnore]
-        public List<FieldInfo> LocalFields;
+        [NonSerialized] [XmlIgnore] public List<FieldInfo> LocalFields;
 
-        [NonSerialized]
-        [XmlIgnore]
-        public List<FieldInfo> UnifiedFields;
+        [NonSerialized] [XmlIgnore] public List<FieldInfo> UnifiedFields;
 
-        [NonSerialized]
-        [XmlIgnore]
-        public List<TableInfo> DatabaseTables;
+        [NonSerialized] [XmlIgnore] public List<TableInfo> DatabaseTables;
 
-        [NonSerialized]
-        [XmlIgnore]
-        public ClassInfo InheritsFromClass;
+        [NonSerialized] [XmlIgnore] public ClassInfo InheritsFromClass;
 
-        [NonSerialized]
-        [XmlIgnore]
-        public List<TableInfo> UnifiedTables;
+        [NonSerialized] [XmlIgnore] public List<TableInfo> UnifiedTables;
 
         public List<ClassInfo> GetSubclassesForSchema(SchemaInfo schema)
         {
@@ -233,14 +183,7 @@ namespace Sooda.Schema
 
         internal void ResolveInheritance(SchemaInfo schema)
         {
-            if (InheritFrom != null)
-            {
-                InheritsFromClass = schema.FindClassByName(InheritFrom);
-            }
-            else
-            {
-                InheritsFromClass = null;
-            }
+            InheritsFromClass = InheritFrom != null ? schema.FindClassByName(InheritFrom) : null;
         }
 
         internal void FlattenTables()
@@ -276,23 +219,24 @@ namespace Sooda.Schema
             {
                 // Console.WriteLine("Setting OrdinalInClass for {0}.{1} to {2}", Name, t.DBTableName, ordinalInClass);
                 t.OrdinalInClass = ordinalInClass++;
-                t.NameToken = this.Name + "#" + t.OrdinalInClass;
+                t.NameToken = Name + "#" + t.OrdinalInClass;
                 t.Rehash();
                 t.OwnerClass = this;
-                t.Resolve(this.Name, false);
+                t.Resolve(Name, false);
             }
 
             if (UnifiedTables.Count > 30)
             {
-                throw new SoodaSchemaException("Class " + Name + " is invalid, because it's based on more than 30 tables");
+                throw new SoodaSchemaException("Class " + Name +
+                                               " is invalid, because it's based on more than 30 tables. ");
             }
             // Console.WriteLine("<<< End of FlattenTables for {0}", Name);
         }
 
         internal void Resolve(SchemaInfo schema)
         {
-            if (parentSchema == null)
-                parentSchema = schema;
+            if (_parentSchema == null)
+                _parentSchema = schema;
 
             OuterReferences = new List<FieldInfo>();
 
@@ -300,7 +244,7 @@ namespace Sooda.Schema
 
             LocalFields = new List<FieldInfo>();
             int localOrdinal = 0;
-            int count = 0;
+            //int count = 0;
             foreach (TableInfo table in LocalTables)
             {
                 foreach (FieldInfo fi in table.Fields)
@@ -315,7 +259,7 @@ namespace Sooda.Schema
                         fi.ClassLocalOrdinal = localOrdinal++;
                     }
                 }
-                count++;
+                //   count++;
             }
 
             if (SubclassSelectorFieldName == null && InheritsFromClass != null)
@@ -382,11 +326,13 @@ namespace Sooda.Schema
             {
                 SubclassSelectorField = FindFieldByName(SubclassSelectorFieldName);
                 if (SubclassSelectorField == null)
-                    throw new SoodaSchemaException("subclassSelectorField points to invalid field name " + SubclassSelectorFieldName + " in " + Name);
+                    throw new SoodaSchemaException("subclassSelectorField points to invalid field name " +
+                                                   SubclassSelectorFieldName + " in " + Name);
             }
             else if (InheritFrom != null)
             {
-                throw new SoodaSchemaException(String.Format("Must use subclassSelectorFieldName when defining inherited class '{0}'", this.Name));
+                throw new SoodaSchemaException(
+                    String.Format("Must use subclassSelectorFieldName when defining inherited class '{0}'", Name));
             }
             if (SubclassSelectorStringValue != null)
             {
@@ -405,17 +351,12 @@ namespace Sooda.Schema
                         break;
 
                     default:
-                        throw new SoodaSchemaException("Field data type not supported for subclassSelectorValue: " + SubclassSelectorField.DataType);
+                        throw new SoodaSchemaException("Field data type not supported for subclassSelectorValue: " +
+                                                       SubclassSelectorField.DataType);
                 }
             }
 
-            List<FieldInfo> pkFields = new List<FieldInfo>();
-            foreach (FieldInfo fi in UnifiedFields)
-            {
-                if (fi.IsPrimaryKey)
-                    pkFields.Add(fi);
-            }
-            _primaryKeyFields = pkFields.ToArray();
+            _primaryKeyFields = UnifiedFields.Where(fi => fi.IsPrimaryKey).ToArray();
         }
 
         internal Array MergeArray(Array oldArray, Array merge)
@@ -423,80 +364,85 @@ namespace Sooda.Schema
             int oldSize = oldArray.Length;
             int mergeSize = merge.Length;
             int newSize = oldSize + mergeSize;
-            System.Type elementType = oldArray.GetType().GetElementType();
-            System.Array newArray = System.Array.CreateInstance(elementType, newSize);
-            System.Array.Copy(oldArray, 0, newArray, 0, oldSize);
-            System.Array.Copy(merge, 0, newArray, oldSize, mergeSize);
+            Type elementType = oldArray.GetType().GetElementType();
+            var newArray = Array.CreateInstance(elementType, newSize);
+            Array.Copy(oldArray, 0, newArray, 0, oldSize);
+            Array.Copy(merge, 0, newArray, oldSize, mergeSize);
             return newArray;
         }
 
         internal void Merge(ClassInfo merge)
         {
-            Hashtable mergeNames = new Hashtable();
-            foreach (TableInfo mti in this.LocalTables)
+            var mergeNames = new Hashtable();
+            foreach (TableInfo mti in LocalTables)
                 mergeNames.Add(mti.DBTableName, mti);
             foreach (TableInfo ti in merge.LocalTables)
             {
                 if (mergeNames.ContainsKey(ti.DBTableName))
-                    ((TableInfo)mergeNames[ti.DBTableName]).Merge(ti);
+                    ((TableInfo) mergeNames[ti.DBTableName]).Merge(ti);
                 else
                     LocalTables.Add(ti);
             }
             mergeNames.Clear();
 
-            if (this.Collections1toN != null)
+            if (Collections1toN != null)
             {
                 foreach (CollectionOnetoManyInfo ci in Collections1toN)
                     mergeNames.Add(ci.Name, ci);
             }
-            if (this.Collections1toN == null)
-                this.Collections1toN = merge.Collections1toN;
+            if (Collections1toN == null)
+                Collections1toN = merge.Collections1toN;
             else
             {
                 if (merge.Collections1toN != null)
                 {
                     foreach (CollectionOnetoManyInfo mci in merge.Collections1toN)
                         if (mergeNames.ContainsKey(mci.Name))
-                            throw new SoodaSchemaException(String.Format("Duplicate collection 1:N '{0}' found!", mci.Name));
-                    this.Collections1toN = (CollectionOnetoManyInfo[])MergeArray(this.Collections1toN, merge.Collections1toN);
+                            throw new SoodaSchemaException(String.Format("Duplicate collection 1:N '{0}' found!",
+                                mci.Name));
+                    Collections1toN =
+                        (CollectionOnetoManyInfo[]) MergeArray(Collections1toN, merge.Collections1toN);
                 }
             }
             mergeNames.Clear();
 
-            if (this.CollectionsNtoN != null)
+            if (CollectionsNtoN != null)
             {
                 foreach (CollectionManyToManyInfo ci in CollectionsNtoN)
                     mergeNames.Add(ci.Name, ci);
             }
-            if (this.CollectionsNtoN == null)
-                this.CollectionsNtoN = merge.CollectionsNtoN;
+            if (CollectionsNtoN == null)
+                CollectionsNtoN = merge.CollectionsNtoN;
             else
             {
                 if (merge.CollectionsNtoN != null)
                 {
                     foreach (CollectionManyToManyInfo mci in merge.CollectionsNtoN)
                         if (mergeNames.ContainsKey(mci.Name))
-                            throw new SoodaSchemaException(String.Format("Duplicate collection N:N '{0}' found!", mci.Name));
-                    this.CollectionsNtoN = (CollectionManyToManyInfo[])MergeArray(this.CollectionsNtoN, merge.CollectionsNtoN);
+                            throw new SoodaSchemaException(String.Format("Duplicate collection N:N '{0}' found!",
+                                mci.Name));
+                    CollectionsNtoN =
+                        (CollectionManyToManyInfo[]) MergeArray(CollectionsNtoN, merge.CollectionsNtoN);
                 }
             }
             mergeNames.Clear();
 
-            if (this.Constants != null)
+            if (Constants != null)
             {
                 foreach (ConstantInfo ci in Constants)
                     mergeNames.Add(ci.Name, ci);
             }
-            if (this.Constants == null)
-                this.Constants = merge.Constants;
+            if (Constants == null)
+                Constants = merge.Constants;
             else
             {
                 if (merge.Constants != null)
                 {
                     foreach (ConstantInfo mci in merge.Constants)
                         if (mergeNames.ContainsKey(mci.Name))
-                            throw new SoodaSchemaException(String.Format("Duplicate constant name '{0}' found!", mci.Name));
-                    this.Constants = (ConstantInfo[])MergeArray(this.Constants, merge.Constants);
+                            throw new SoodaSchemaException(String.Format("Duplicate constant name '{0}' found!",
+                                mci.Name));
+                    Constants = (ConstantInfo[]) MergeArray(Constants, merge.Constants);
                 }
             }
         }
@@ -504,17 +450,19 @@ namespace Sooda.Schema
         internal void MergeTables()
         {
             DatabaseTables = new List<TableInfo>();
-            Dictionary<string, TableInfo> mergedTables = new Dictionary<string, TableInfo>();
+            var mergedTables = new Dictionary<string, TableInfo>();
 
             foreach (TableInfo table in UnifiedTables)
             {
                 TableInfo mt;
                 if (!mergedTables.TryGetValue(table.DBTableName, out mt))
                 {
-                    mt = new TableInfo();
-                    mt.DBTableName = table.DBTableName;
-                    mt.TableUsageType = table.TableUsageType;
-                    mt.OrdinalInClass = -1;
+                    mt = new TableInfo
+                    {
+                        DBTableName = table.DBTableName,
+                        OrdinalInClass = -1,
+                        TableUsageType = table.TableUsageType
+                    };
                     mt.Rehash();
                     mergedTables[table.DBTableName] = mt;
                     DatabaseTables.Add(mt);
@@ -551,12 +499,14 @@ namespace Sooda.Schema
                 {
                     ClassInfo ci = schema.FindClassByName(cinfo.ClassName);
                     if (ci == null)
-                        throw new SoodaSchemaException("Collection " + Name + "." + cinfo.Name + " cannot find class " + cinfo.ClassName);
+                        throw new SoodaSchemaException("Collection " + Name + "." + cinfo.Name + " cannot find class " +
+                                                       cinfo.ClassName);
 
                     FieldInfo fi = ci.FindFieldByName(cinfo.ForeignFieldName);
 
                     if (fi == null)
-                        throw new SoodaSchemaException("Collection " + Name + "." + cinfo.Name + " cannot find field " + cinfo.ClassName + "." + cinfo.ForeignFieldName);
+                        throw new SoodaSchemaException("Collection " + Name + "." + cinfo.Name + " cannot find field " +
+                                                       cinfo.ClassName + "." + cinfo.ForeignFieldName);
 
                     schema.AddBackRefCollection(fi, cinfo.Name);
                     cinfo.ForeignField2 = fi;
@@ -594,33 +544,22 @@ namespace Sooda.Schema
                 if (pcv == null && fi.ReferencedClass != null)
                     pcv = fi.ReferencedClass.DefaultPrecommitValue;
 
-                if (pcv == null)
-                {
-                    fi.PrecommitTypedValue = Schema.GetDefaultPrecommitValueForDataType(fi.DataType);
-                }
-                else
-                {
-                    fi.PrecommitTypedValue = FieldHandlerFactory.GetFieldHandler(fi.DataType).RawDeserialize(pcv);
-                }
+                fi.PrecommitTypedValue = pcv == null
+                    ? Schema.GetDefaultPrecommitValueForDataType(fi.DataType)
+                    : FieldHandlerFactory.GetFieldHandler(fi.DataType).RawDeserialize(pcv);
             }
         }
 
         public DataSourceInfo GetDataSource()
         {
-            return parentSchema.GetDataSourceInfo(DataSourceName);
+            return _parentSchema.GetDataSourceInfo(DataSourceName);
         }
 
-        [XmlIgnore()]
+        [XmlIgnore]
         public SchemaInfo Schema
         {
-            get
-            {
-                return parentSchema;
-            }
-            set
-            {
-                parentSchema = value;
-            }
+            get { return _parentSchema; }
+            set { _parentSchema = value; }
         }
 
         public List<FieldInfo> GetAllFields()
@@ -635,24 +574,15 @@ namespace Sooda.Schema
 
         public FieldInfo FindFieldByName(string fieldName)
         {
-            foreach (TableInfo ti in UnifiedTables)
-            {
-                FieldInfo fi = ti.FindFieldByName(fieldName);
-                if (fi != null)
-                    return fi;
-            }
-            return null;
+            return UnifiedTables.Select(ti => ti.FindFieldByName(fieldName))
+                .FirstOrDefault(fi => fi != null);
         }
 
+        // ReSharper disable once InconsistentNaming
         public FieldInfo FindFieldByDBName(string fieldName)
         {
-            foreach (TableInfo ti in UnifiedTables)
-            {
-                FieldInfo fi = ti.FindFieldByDBName(fieldName);
-                if (fi != null)
-                    return fi;
-            }
-            return null;
+            return UnifiedTables.Select(ti => ti.FindFieldByDBName(fieldName))
+                .FirstOrDefault(fi => fi != null);
         }
 
         public bool ContainsField(string fieldName)
@@ -662,10 +592,7 @@ namespace Sooda.Schema
 
         public ClassInfo GetRootClass()
         {
-            if (InheritsFromClass != null)
-                return InheritsFromClass.GetRootClass();
-            else
-                return this;
+            return InheritsFromClass != null ? InheritsFromClass.GetRootClass() : this;
         }
 
         public bool IsAbstractClass()
@@ -675,11 +602,7 @@ namespace Sooda.Schema
 
         public string GetLabel()
         {
-            if (LabelField != null)
-                return LabelField;
-            if (InheritsFromClass != null)
-                return InheritsFromClass.GetLabel();
-            return null;
+            return LabelField ?? (InheritsFromClass != null ? InheritsFromClass.GetLabel() : null);
         }
 
         public string GetSafeDataSourceName()

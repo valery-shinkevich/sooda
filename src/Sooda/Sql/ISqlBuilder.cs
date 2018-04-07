@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,18 +27,20 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using Sooda.Schema;
-using System;
-using System.Data;
-using System.IO;
-
 namespace Sooda.Sql
 {
+    using System;
+    using System.Data;
+    using System.IO;
+    using Schema;
+
     public interface ISqlBuilder
     {
-        string GetSQLDataType(Sooda.Schema.FieldInfo fi);
-        string GetSQLOrderBy(Sooda.Schema.FieldInfo fi, bool start);
+        // ReSharper disable InconsistentNaming
+        string GetSQLDataType(FieldInfo fi);
+        string GetSQLOrderBy(FieldInfo fi, bool start);
         string GetDDLCommandTerminator();
+        // ReSharper restore InconsistentNaming
         SqlOuterJoinSyntax OuterJoinSyntax { get; }
         SqlTopSupportMode TopSupport { get; }
         int MaxIdentifierLength { get; }
@@ -56,7 +57,13 @@ namespace Sooda.Sql
         void GenerateSoodaDynamicField(TextWriter tw, string terminator);
         string QuoteIdentifier(string s);
         string GetTruncatedIdentifier(string identifier);
-        bool HandleFatalException(IDbConnection connection, Exception e);
-        bool IsNullValue(object val, Sooda.Schema.FieldInfo fi);
+        bool IsFatalException(IDbConnection connection, Exception e);
+        bool IsNullValue(object val, FieldInfo fi);
+
+        //wash{
+        string GenerateCreateTable(TableInfo tableInfo);
+        string GeneratePrimaryKey(TableInfo tableInfo);
+        string GenerateForeignKeys(TableInfo tableInfo);
+        //}wash
     }
 }

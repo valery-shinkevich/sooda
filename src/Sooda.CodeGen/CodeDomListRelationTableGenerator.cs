@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,82 +27,80 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using Sooda.Schema;
-using System;
-using System.CodeDom;
-using System.Xml;
-
 namespace Sooda.CodeGen
 {
+    using System;
+    using System.CodeDom;
+    using System.Xml;
+    using Schema;
+
     public class CodeDomListRelationTableGenerator : CodeDomHelpers
     {
-        private RelationInfo relationInfo;
+        private readonly RelationInfo _relationInfo;
 
         public CodeDomListRelationTableGenerator(RelationInfo ri)
         {
-            this.relationInfo = ri;
+            _relationInfo = ri;
         }
 
         public CodeConstructor Constructor_1()
         {
-            CodeConstructor ctor = new CodeConstructor();
-            ctor.Attributes = MemberAttributes.Public;
-            ctor.BaseConstructorArgs.Add(new CodePrimitiveExpression(relationInfo.Table.DBTableName));
-            ctor.BaseConstructorArgs.Add(new CodePrimitiveExpression(relationInfo.Table.Fields[0].DBColumnName));
-            ctor.BaseConstructorArgs.Add(new CodePrimitiveExpression(relationInfo.Table.Fields[1].DBColumnName));
+            var ctor = new CodeConstructor
+            {
+                Attributes = MemberAttributes.Public
+            };
+            ctor.BaseConstructorArgs.Add(new CodePrimitiveExpression(_relationInfo.Table.DBTableName));
+            ctor.BaseConstructorArgs.Add(new CodePrimitiveExpression(_relationInfo.Table.Fields[0].DBColumnName));
+            ctor.BaseConstructorArgs.Add(new CodePrimitiveExpression(_relationInfo.Table.Fields[1].DBColumnName));
             ctor.BaseConstructorArgs.Add(new CodeFieldReferenceExpression(null, "theRelationInfo"));
 
             return ctor;
         }
+
         public CodeMemberMethod Method_DeserializeTupleLeft()
         {
             // public virtual public CLASS_NAMEList GetSnapshot() { return new CLASS_NAMEListSnapshot(this, 0, Length); }
-            CodeMemberMethod method = new CodeMemberMethod();
-            method.Name = "DeserializeTupleLeft";
-            method.ReturnType = new CodeTypeReference(typeof(Object));
-            method.Parameters.Add(new CodeParameterDeclarationExpression(typeof(XmlReader), "reader"));
+            var method = new CodeMemberMethod
+            {
+                Name = "DeserializeTupleLeft",
+                ReturnType = new CodeTypeReference(typeof (Object))
+            };
+            method.Parameters.Add(new CodeParameterDeclarationExpression(typeof (XmlReader), "reader"));
             method.Attributes = MemberAttributes.Family | MemberAttributes.Override;
 
-            string typeWrapper = relationInfo.Table.Fields[0].GetNullableFieldHandler().GetType().FullName;
+            var typeWrapper = _relationInfo.Table.Fields[0].GetNullableFieldHandler().GetType().FullName;
 
             method.Statements.Add(
                 new CodeMethodReturnStatement(
                     new CodeMethodInvokeExpression(
                         new CodeTypeReferenceExpression(typeWrapper),
-                        "DeserializeFromString",
-                        new CodeExpression[]
-                        {
-                            new CodeMethodInvokeExpression(
-                                new CodeArgumentReferenceExpression("reader"),
-                                "GetAttribute",
-                                new CodePrimitiveExpression("r1"))
-                        }
-                    )));
+                        "DeserializeFromString", new CodeMethodInvokeExpression(
+                            new CodeArgumentReferenceExpression("reader"),
+                            "GetAttribute",
+                            new CodePrimitiveExpression("r1")))));
             return method;
         }
+
         public CodeMemberMethod Method_DeserializeTupleRight()
         {
-            CodeMemberMethod method = new CodeMemberMethod();
-            method.Name = "DeserializeTupleRight";
-            method.ReturnType = new CodeTypeReference(typeof(Object));
-            method.Parameters.Add(new CodeParameterDeclarationExpression(typeof(XmlReader), "reader"));
+            var method = new CodeMemberMethod
+            {
+                Name = "DeserializeTupleRight",
+                ReturnType = new CodeTypeReference(typeof (Object))
+            };
+            method.Parameters.Add(new CodeParameterDeclarationExpression(typeof (XmlReader), "reader"));
             method.Attributes = MemberAttributes.Family | MemberAttributes.Override;
 
-            string typeWrapper = relationInfo.Table.Fields[1].GetNullableFieldHandler().GetType().FullName;
+            var typeWrapper = _relationInfo.Table.Fields[1].GetNullableFieldHandler().GetType().FullName;
 
             method.Statements.Add(
                 new CodeMethodReturnStatement(
                     new CodeMethodInvokeExpression(
                         new CodeTypeReferenceExpression(typeWrapper),
-                        "DeserializeFromString",
-                        new CodeExpression[]
-                        {
-                            new CodeMethodInvokeExpression(
-                                new CodeArgumentReferenceExpression("reader"),
-                                "GetAttribute",
-                                new CodePrimitiveExpression("r2"))
-                        }
-                    )));
+                        "DeserializeFromString", new CodeMethodInvokeExpression(
+                            new CodeArgumentReferenceExpression("reader"),
+                            "GetAttribute",
+                            new CodePrimitiveExpression("r2")))));
             return method;
         }
     }

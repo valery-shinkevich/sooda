@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,28 +27,29 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using Sooda.QL;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
 namespace Sooda
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using QL;
+
     public class SoodaObjectExpressionComparer : IComparer
     {
-        class ExpressionCompareInfo
+        private class ExpressionCompareInfo
         {
             public ExpressionCompareInfo(SoqlExpression expression, SortOrder sortOrder)
             {
-                this.Expression = expression;
-                this.SortOrder = sortOrder;
+                Expression = expression;
+                SortOrder = sortOrder;
             }
 
             public readonly SoqlExpression Expression;
             public readonly SortOrder SortOrder;
         }
 
-        class EvaluateContext : ISoqlEvaluateContext
+        private class EvaluateContext : ISoqlEvaluateContext
         {
             private SoodaObject _rootObject;
 
@@ -74,28 +74,26 @@ namespace Sooda
             }
         }
 
-        private readonly List<ExpressionCompareInfo> expressions = new List<ExpressionCompareInfo>();
-        private EvaluateContext _context1 = new EvaluateContext();
-        private EvaluateContext _context2 = new EvaluateContext();
-
-        public SoodaObjectExpressionComparer() { }
+        private readonly List<ExpressionCompareInfo> _expressions = new List<ExpressionCompareInfo>();
+        private readonly EvaluateContext _context1 = new EvaluateContext();
+        private readonly EvaluateContext _context2 = new EvaluateContext();
 
         int IComparer.Compare(object o1, object o2)
         {
-            SoodaObject dbo1 = o1 as SoodaObject;
-            SoodaObject dbo2 = o2 as SoodaObject;
+            var dbo1 = o1 as SoodaObject;
+            var dbo2 = o2 as SoodaObject;
 
             return Compare(dbo1, dbo2);
         }
 
         public void AddExpression(SoqlExpression expression, SortOrder sortOrder)
         {
-            expressions.Add(new ExpressionCompareInfo(expression, sortOrder));
+            _expressions.Add(new ExpressionCompareInfo(expression, sortOrder));
         }
 
         public void AddExpressions(SoodaObjectExpressionComparer other)
         {
-            expressions.AddRange(other.expressions);
+            _expressions.AddRange(other._expressions);
         }
 
         public int Compare(SoodaObject dbo1, SoodaObject dbo2)
@@ -103,7 +101,7 @@ namespace Sooda
             _context1.SetRootObject(dbo1);
             _context2.SetRootObject(dbo2);
 
-            foreach (ExpressionCompareInfo eci in expressions)
+            foreach (ExpressionCompareInfo eci in _expressions)
             {
                 object v1 = eci.Expression.Evaluate(_context1);
                 object v2 = eci.Expression.Evaluate(_context2);
@@ -111,10 +109,7 @@ namespace Sooda
                 int result = DoCompare(v1, v2);
                 if (result != 0)
                 {
-                    if (eci.SortOrder == SortOrder.Ascending)
-                        return result;
-                    else
-                        return -result;
+                    return eci.SortOrder == SortOrder.Ascending ? result : -result;
                 }
             }
 
@@ -125,50 +120,31 @@ namespace Sooda
         {
             if (v1 == null)
             {
-                if (v2 == null)
-                    return 0;
-                else
-                    return -1;  // null is less than anything
-            };
+                return v2 == null ? 0 : -1;
+            }
 
             if (v2 == null)
             {
-                return 1;   // not null is greater than anything
+                return 1; // not null is greater than anything
             }
 
-            return ((IComparable)v1).CompareTo(v2);
+            return ((IComparable) v1).CompareTo(v2);
         }
 
         private static int PrimaryKeyCompare(SoodaObject dbo1, SoodaObject dbo2)
         {
-            return ((IComparable)dbo1.GetPrimaryKeyValue()).CompareTo(dbo2.GetPrimaryKeyValue());
+            return ((IComparable) dbo1.GetPrimaryKeyValue()).CompareTo(dbo2.GetPrimaryKeyValue());
         }
 
 
         public SoqlExpression[] OrderByExpressions
         {
-            get
-            {
-                ArrayList al = new ArrayList();
-                foreach (ExpressionCompareInfo eci in expressions)
-                {
-                    al.Add(eci.Expression);
-                }
-                return (SoqlExpression[])al.ToArray(typeof(SoqlExpression));
-            }
+            get { return _expressions.Select(eci => eci.Expression).ToArray(); }
         }
 
         public SortOrder[] SortOrders
         {
-            get
-            {
-                ArrayList al = new ArrayList();
-                foreach (ExpressionCompareInfo eci in expressions)
-                {
-                    al.Add(eci.SortOrder);
-                }
-                return (SortOrder[])al.ToArray(typeof(SortOrder));
-            }
+            get { return _expressions.Select(eci => eci.SortOrder).ToArray(); }
         }
     }
 }

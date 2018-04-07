@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,17 +27,17 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.Collections;
-using System.Text;
-
 namespace Sooda
 {
+    using System;
+    using System.Collections;
+    using System.Text;
+
     public enum SortOrder
     {
         None,
         Ascending,
-        Descending,
+        Descending
     }
 
     public class SoodaObjectFieldComparer : IComparer
@@ -48,14 +47,14 @@ namespace Sooda
 
         public SoodaObjectFieldComparer(string propertyName, SortOrder sortOrder)
         {
-            this._propertyChain = propertyName.Split('.');
-            this._sortOrder = sortOrder;
+            _propertyChain = propertyName.Split('.');
+            _sortOrder = sortOrder;
         }
 
         public SoodaObjectFieldComparer(string[] propertyChain, SortOrder sortOrder)
         {
-            this._propertyChain = propertyChain;
-            this._sortOrder = sortOrder;
+            _propertyChain = propertyChain;
+            _sortOrder = sortOrder;
         }
 
         public override string ToString()
@@ -85,13 +84,12 @@ namespace Sooda
 
             if (_sortOrder == SortOrder.Ascending)
                 return DoCompare(v1, v2, dbo1, dbo2);
-            else
-                return -DoCompare(v1, v2, dbo1, dbo2);
+            return -DoCompare(v1, v2, dbo1, dbo2);
         }
 
         private static int PrimaryKeyCompare(SoodaObject dbo1, SoodaObject dbo2)
         {
-            return ((IComparable)dbo1.GetPrimaryKeyValue()).CompareTo(dbo2.GetPrimaryKeyValue());
+            return ((IComparable) dbo1.GetPrimaryKeyValue()).CompareTo(dbo2.GetPrimaryKeyValue());
         }
 
         private static int DoCompare(object v1, object v2, SoodaObject dbo1, SoodaObject dbo2)
@@ -100,20 +98,19 @@ namespace Sooda
             {
                 if (v2 == null)
                     return PrimaryKeyCompare(dbo1, dbo2);
-                else
-                    return -1;  // null is less than anything
-            };
+                return -1; // null is less than anything
+            }
+            ;
 
             if (v2 == null)
             {
-                return 1;   // not null is greater than anything
+                return 1; // not null is greater than anything
             }
 
-            int v = ((IComparable)v1).CompareTo(v2);
+            int v = ((IComparable) v1).CompareTo(v2);
             if (v == 0)
                 return PrimaryKeyCompare(dbo1, dbo2);
-            else
-                return v;
+            return v;
         }
     }
 }

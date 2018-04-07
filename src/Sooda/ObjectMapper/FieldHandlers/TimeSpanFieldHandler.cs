@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,23 +27,21 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.Data;
-
-using System.Globalization;
-
 namespace Sooda.ObjectMapper.FieldHandlers
 {
+    using System;
+    using System.Data;
+    using System.Globalization;
+
     public class TimeSpanFieldHandler : SoodaFieldHandler
     {
-        public TimeSpanFieldHandler(bool nullable) : base(nullable) { }
+        public TimeSpanFieldHandler(bool nullable) : base(nullable)
+        {
+        }
 
         protected override string TypeName
         {
-            get
-            {
-                return "timespan";
-            }
+            get { return "timespan"; }
         }
 
         public override object RawRead(IDataRecord record, int pos)
@@ -78,6 +75,7 @@ namespace Sooda.ObjectMapper.FieldHandlers
         }
 
         private static readonly object _zeroValue = TimeSpan.Zero;
+
         public override object ZeroValue()
         {
             return _zeroValue;
@@ -85,7 +83,7 @@ namespace Sooda.ObjectMapper.FieldHandlers
 
         public override Type GetFieldType()
         {
-            return typeof(TimeSpan);
+            return typeof (TimeSpan);
         }
 
         public override Type GetSqlType()
@@ -110,15 +108,12 @@ namespace Sooda.ObjectMapper.FieldHandlers
 
         public static TimeSpan? GetNullableValue(object fieldValue)
         {
-            if (fieldValue == null)
-                return null;
-            else
-                return (TimeSpan) fieldValue;
+            return fieldValue == null ? (TimeSpan?) null : (TimeSpan) fieldValue;
         }
 
         public override Type GetNullableType()
         {
-            return typeof(TimeSpan?);
+            return typeof (TimeSpan?);
         }
     }
 }

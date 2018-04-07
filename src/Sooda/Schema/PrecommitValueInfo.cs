@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2015 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,39 +27,34 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using Sooda.ObjectMapper.FieldHandlers;
-using System;
-
 namespace Sooda.Schema
 {
+    using System;
     using System.Xml.Serialization;
+    using ObjectMapper.FieldHandlers;
 
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://www.sooda.org/schemas/SoodaSchema.xsd")]
+    [XmlType(Namespace = "http://www.sooda.org/schemas/SoodaSchema.xsd")]
     [Serializable]
     public class PrecommitValueInfo
     {
-        [XmlAttribute("dataType")]
-        public FieldDataType DataType;
+        [XmlAttribute("dataType")] public FieldDataType DataType;
 
-        [XmlAttribute("value")]
-        public string ValueText;
+        [XmlAttribute("value")] public string ValueText;
 
-        bool _haveValue = false;
-        object _value;
+        private bool _haveValue = false;
+        private object _value;
 
         public object Value
         {
             get
             {
-                if (!_haveValue) {
+                if (!_haveValue)
                     _value = CalculateValue();
-                    _haveValue = true;
-                }
                 return _value;
             }
         }
 
-        object CalculateValue()
+        private object CalculateValue()
         {
             return FieldHandlerFactory.GetFieldHandler(DataType).RawDeserialize(ValueText);
         }

@@ -27,15 +27,15 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using Sooda.QL;
-using Sooda.Schema;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
 namespace Sooda.ObjectMapper
 {
-    public abstract class SoodaObjectCollectionBase : IList, ISoodaObjectList
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using QL;
+    using Schema;
+
+    public abstract class SoodaObjectCollectionBase : ISoodaObjectList
     {
         protected readonly SoodaTransaction transaction;
         protected readonly ClassInfo classInfo;
@@ -82,22 +82,13 @@ namespace Sooda.ObjectMapper
 
         public bool IsReadOnly
         {
-            get
-            {
-                return true;
-            }
+            get { return true; }
         }
 
         object IList.this[int index]
         {
-            get
-            {
-                return GetItem(index);
-            }
-            set
-            {
-                throw new NotSupportedException();
-            }
+            get { return GetItem(index); }
+            set { throw new NotSupportedException(); }
         }
 
         public void RemoveAt(int index)
@@ -120,39 +111,27 @@ namespace Sooda.ObjectMapper
             if (items == null)
                 LoadData();
             int pos;
-            if (items.TryGetValue((SoodaObject) value, out pos))
-                return pos;
-            else
-                return -1;
+            return items.TryGetValue((SoodaObject) value, out pos) ? pos : -1;
         }
 
         public bool IsFixedSize
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
         }
 
         public bool IsSynchronized
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
         }
 
         public int PagedCount
         {
-            get { return this.Length; }
+            get { return Length; }
         }
 
         public int Count
         {
-            get
-            {
-                return this.Length;
-            }
+            get { return Length; }
         }
 
         public void CopyTo(Array array, int index)
@@ -164,10 +143,7 @@ namespace Sooda.ObjectMapper
 
         public object SyncRoot
         {
-            get
-            {
-                return this;
-            }
+            get { return this; }
         }
 
         public ISoodaObjectList GetSnapshot()
@@ -182,7 +158,7 @@ namespace Sooda.ObjectMapper
 
         public ISoodaObjectList SelectLast(int n)
         {
-            return new SoodaObjectListSnapshot(this, this.Length - n, n);
+            return new SoodaObjectListSnapshot(this, Length - n, n);
         }
 
         public ISoodaObjectList SelectRange(int from, int to)

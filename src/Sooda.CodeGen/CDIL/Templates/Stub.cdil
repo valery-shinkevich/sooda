@@ -7,9 +7,29 @@ constructor(SoodaTransaction tran)
     baseArg(arg(tran))
 begin
 #ifnot HasBaseClass
-    call this.InitNewObject();
+    call this.InitNewObject()
 #endif
 end
+
+#ifnot HasBaseClass
+constructor(SoodaTransaction tran, Object key)
+    attributes Public
+    baseArg(arg(tran))
+begin
+
+    call this.SetPrimaryKeyValue(arg(key))
+end
+#endif
+
+#if HasBaseClass
+constructor(SoodaTransaction tran, Object key)
+    attributes Public
+    baseArg(arg(tran))
+    baseArg(arg(key))
+begin   
+end
+#endif
+
 
 constructor(SoodaConstructor c)
     attributes Public
@@ -24,7 +44,7 @@ method Get${ClassName}FieldValuesForRead(System.Int32 requiredTable)
 #if ArrayFieldValues
     returns SoodaObjectFieldValues
 #else
-    returns ${ClassName}_Values
+	returns ${ClassName}_Values
 #endif
 begin
 #if ArrayFieldValues
@@ -78,11 +98,11 @@ end
 method InitNewObject()
     attributes Assembly,Family,Override
 begin
-    if defaultscope.GetTransaction().IsKeyGeneratorDisabled('${ClassName}')
-    then
-        return;
-    endif;
-    call this.SetPrimaryKeyValue(defaultscope.GetKeyGenerator().GetNextKeyValue())
+	if defaultscope.GetTransaction().IsKeyGeneratorDisabled('${ClassName}')
+		then
+ 	  		return;
+		endif;
+	call this.SetPrimaryKeyValue(defaultscope.GetKeyGenerator().GetNextKeyValue())
 end
 
 #endif
@@ -90,7 +110,7 @@ end
 #ifnot HasKeyGen
 
 method InitNewObject()
-    attributes Assembly,Family,Override
+     attributes Assembly,Family,Override
 begin
     call this.RegisterObjectInTransaction()
 end

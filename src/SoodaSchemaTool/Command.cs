@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -30,9 +29,8 @@
 
 namespace SoodaSchemaTool
 {
-    public abstract class Command
-    {
-
-        public abstract int Run(string[] args);
-    }
+	public abstract class Command
+	{
+	    public abstract int Run(string[] args);
+	}
 }

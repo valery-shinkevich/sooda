@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -32,13 +31,30 @@ namespace Sooda.CodeGen
 {
     public class NullProjectFile : IProjectFile
     {
-        public NullProjectFile() { }
+        public virtual void CreateNew(string outputNamespace, string assemblyName)
+        {
+        }
 
-        public virtual void CreateNew(string outputNamespace, string assemblyName) { }
-        void IProjectFile.LoadFrom(string fileName) { }
-        void IProjectFile.SaveTo(string fileName) { }
-        void IProjectFile.AddCompileUnit(string relativeFileName) { }
-        void IProjectFile.AddResource(string relativeFileName) { }
+        void IProjectFile.LoadFrom(string fileName)
+        {
+        }
+
+        void IProjectFile.SaveTo(string fileName)
+        {
+        }
+
+        void IProjectFile.AddCompileUnit(string relativeFileName)
+        {
+        }
+
+        void IProjectFile.AddCompileUnit(string relativeFileName, string dependentFileName)
+        {
+        }
+
+        void IProjectFile.AddResource(string relativeFileName)
+        {
+        }
+
         string IProjectFile.GetProjectFileName(string outNamespace)
         {
             return outNamespace + ".nullproject";

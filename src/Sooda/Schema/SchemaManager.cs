@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,27 +27,25 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
-using System.Xml;
-using System.Xml.Serialization;
-
 namespace Sooda.Schema
 {
-    public static class SchemaManager
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Reflection;
+    using System.Xml;
+    using System.Xml.Serialization;
+
+    public sealed class SchemaManager
     {
+        // ReSharper disable once InconsistentNaming
         public static string NamespaceURI
         {
-            get
-            {
-                return "http://www.sooda.org/schemas/SoodaSchema.xsd";
-            }
+            get { return "http://www.sooda.org/schemas/SoodaSchema.xsd"; }
         }
 
         public static Stream GetSchemaXsdStream()
         {
-            Assembly ass = typeof(SchemaManager).Assembly;
+            Assembly ass = typeof (SchemaManager).Assembly;
             foreach (string name in ass.GetManifestResourceNames())
             {
                 if (name.EndsWith(".SoodaSchema.xsd"))
@@ -64,19 +61,25 @@ namespace Sooda.Schema
             return new XmlTextReader(GetSchemaXsdStream());
         }
 
-        public static void ProcessIncludes(SchemaInfo resultSchema, List<IncludeInfo> includes, string baseDirectoryForIncludes)
+        public static void ProcessIncludes(SchemaInfo resultSchema, List<IncludeInfo> includes,
+            string baseDirectoryForIncludes)
         {
-            if (includes == null)
+            if (includes == null || includes.Count == 0)
                 return;
 
             foreach (IncludeInfo ii in includes)
             {
-                string includeFileName = Path.Combine(baseDirectoryForIncludes, ii.SchemaFile);
-                SchemaInfo includedSchema = ReadAndValidateSchema(new XmlTextReader(includeFileName), Path.GetDirectoryName(includeFileName), ii);
-                resultSchema.MergeIncludedSchema(includedSchema);
-                includedSchema.AssemblyName = ii.AssemblyName;
-                includedSchema.Namespace = ii.Namespace;
-                ii.Schema = includedSchema;
+                if (ii.SchemaFile != null)
+                {
+                    string includeFileName = Path.Combine(baseDirectoryForIncludes, ii.SchemaFile);
+                    SchemaInfo includedSchema = ReadAndValidateSchema(new XmlTextReader(includeFileName),
+                        Path.GetDirectoryName(includeFileName), ii);
+
+                    resultSchema.MergeIncludedSchema(includedSchema);
+                    includedSchema.AssemblyName = ii.AssemblyName;
+                    includedSchema.Namespace = ii.Namespace;
+                    ii.Schema = includedSchema;
+                }
             }
         }
 
@@ -85,7 +88,8 @@ namespace Sooda.Schema
             return ReadAndValidateSchema(reader, baseDirectoryForIncludes, null);
         }
 
-        public static SchemaInfo ReadAndValidateSchema(XmlReader reader, string baseDirectoryForIncludes, IncludeInfo include)
+        public static SchemaInfo ReadAndValidateSchema(XmlReader reader, string baseDirectoryForIncludes,
+            IncludeInfo include)
         {
 #if SOODA_NO_VALIDATING_READER
             XmlSerializer ser = new XmlSerializer(typeof(Sooda.Schema.SchemaInfo));
@@ -95,24 +99,27 @@ namespace Sooda.Schema
             XmlReaderSettings readerSettings = new XmlReaderSettings();
             readerSettings.ValidationType = ValidationType.Schema;
             readerSettings.Schemas.Add(NamespaceURI, GetSchemaXsdStreamXmlReader());
+
             XmlReader validatingReader = XmlReader.Create(reader, readerSettings);
 
-            XmlSerializer ser = new XmlSerializer(typeof(Sooda.Schema.SchemaInfo));
-            SchemaInfo schemaInfo = (SchemaInfo)ser.Deserialize(validatingReader);
+            XmlSerializer ser = new XmlSerializer(typeof (SchemaInfo));
+            SchemaInfo schemaInfo = (SchemaInfo) ser.Deserialize(validatingReader);
 #endif
 
             if (baseDirectoryForIncludes != null)
             {
                 ProcessIncludes(schemaInfo, schemaInfo.Includes, baseDirectoryForIncludes);
             }
-
             if (include == null)
+            {
                 schemaInfo.Resolve();
+            }
             else if (!string.IsNullOrEmpty(include.AssemblyName))
             {
                 foreach (ClassInfo ci in schemaInfo.Classes)
                     ci.Schema = schemaInfo;
             }
+
             return schemaInfo;
         }
     }

@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,23 +27,21 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.Data;
-
-using System.Globalization;
-
 namespace Sooda.ObjectMapper.FieldHandlers
 {
+    using System;
+    using System.Data;
+    using System.Globalization;
+
     public class Int32FieldHandler : SoodaFieldHandler
     {
-        public Int32FieldHandler(bool nullable) : base(nullable) { }
+        public Int32FieldHandler(bool nullable) : base(nullable)
+        {
+        }
 
         protected override string TypeName
         {
-            get
-            {
-                return "int32";
-            }
+            get { return "int32"; }
         }
 
         public override object RawRead(IDataRecord record, int pos)
@@ -77,7 +74,8 @@ namespace Sooda.ObjectMapper.FieldHandlers
             return Int32.Parse(s, CultureInfo.InvariantCulture);
         }
 
-        private static readonly object _zeroValue = (int)0;
+        private static readonly object _zeroValue = 0;
+
         public override object ZeroValue()
         {
             return _zeroValue;
@@ -85,12 +83,12 @@ namespace Sooda.ObjectMapper.FieldHandlers
 
         public override Type GetFieldType()
         {
-            return typeof(Int32);
+            return typeof (Int32);
         }
 
         public override Type GetSqlType()
         {
-            return typeof(System.Data.SqlTypes.SqlInt32);
+            return typeof (System.Data.SqlTypes.SqlInt32);
         }
 
         public override void SetupDBParameter(IDbDataParameter parameter, object value)
@@ -105,28 +103,24 @@ namespace Sooda.ObjectMapper.FieldHandlers
         {
             if (fieldValue == null)
                 return System.Data.SqlTypes.SqlInt32.Null;
-            else
-                return new System.Data.SqlTypes.SqlInt32((Int32)fieldValue);
+            return new System.Data.SqlTypes.SqlInt32((Int32) fieldValue);
         }
 
         public static int GetNotNullValue(object val)
         {
             if (val == null)
                 throw new InvalidOperationException("Attempt to read a non-null value that isn't set yet");
-            return (Int32)val;
+            return (Int32) val;
         }
 
         public static Int32? GetNullableValue(object fieldValue)
         {
-            if (fieldValue == null)
-                return null;
-            else
-                return (Int32)fieldValue;
+            return fieldValue == null ? (int?) null : (Int32) fieldValue;
         }
 
         public override Type GetNullableType()
         {
-            return typeof(Int32?);
+            return typeof (Int32?);
         }
     }
 }

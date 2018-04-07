@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,10 +27,10 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using Sooda.Schema;
-
 namespace Sooda.QL
 {
+    using Schema;
+
     public static class Soql
     {
         public static SoqlParameterLiteralExpression Param(int parameterPos)
@@ -44,7 +43,8 @@ namespace Sooda.QL
             return new SoqlRawExpression(text);
         }
 
-        public static SoqlBooleanExpression ClassRestriction(SoqlPathExpression path, SchemaInfo schema, ClassInfo classInfo)
+        public static SoqlBooleanExpression ClassRestriction(SoqlPathExpression path, SchemaInfo schema,
+            ClassInfo classInfo)
         {
             // returns no additional filter clause for parent (master-parent) class
             if (classInfo.InheritsFromClass == null)
@@ -71,7 +71,7 @@ namespace Sooda.QL
             SoqlBooleanExpression restriction = new SoqlBooleanInExpression(
                 new SoqlPathExpression(path, classInfo.SubclassSelectorField.Name),
                 literals
-            );
+                );
 
             return restriction;
         }

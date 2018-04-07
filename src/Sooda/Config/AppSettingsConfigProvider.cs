@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,15 +27,25 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System.Configuration;
-
 namespace Sooda.Config
 {
+    using System.Configuration;
+
     public class AppSettingsConfigProvider : ISoodaConfigProvider
     {
+        #region ISoodaConfigProvider Members
+
         public string GetString(string key)
         {
             return ConfigurationManager.AppSettings[key];
         }
+
+
+        public void SetString(string key, string value)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        #endregion
     }
 }

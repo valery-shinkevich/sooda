@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2015 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,39 +27,28 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.Collections.Generic;
-
 namespace Sooda.Schema
 {
+    using System;
+    using System.Collections.Generic;
     using System.Xml.Serialization;
 
     [XmlType(Namespace = "http://www.sooda.org/schemas/SoodaSchema.xsd")]
     [Serializable]
     public class RelationInfo : IFieldContainer
     {
-        [XmlAttribute("datasource")]
-        public string DataSourceName = null;
+        [XmlAttribute("datasource")] public string DataSourceName;
 
         private string _name;
 
         [XmlAttribute("name")]
         public string Name
         {
-            get
-            {
-                return _name;
-            }
-            set
-            {
-                _name = value;
-            }
+            get { return _name; }
+            set { _name = value; }
         }
 
-        [XmlElement("table")]
-        public TableInfo Table = new TableInfo();
-
-        public RelationInfo() { }
+        [XmlElement("table")] public TableInfo Table = new TableInfo();
 
         public ClassInfo GetRef1ClassInfo()
         {
@@ -72,16 +60,12 @@ namespace Sooda.Schema
             return Table.Fields[1].ReferencedClass;
         }
 
-        [NonSerialized]
-        private SchemaInfo parentSchema;
+        [NonSerialized] private SchemaInfo parentSchema;
 
         [XmlIgnore]
         public SchemaInfo Schema
         {
-            get
-            {
-                return parentSchema;
-            }
+            get { return parentSchema; }
         }
 
         internal void Resolve(SchemaInfo schemaInfo)
@@ -94,17 +78,17 @@ namespace Sooda.Schema
 
             parentSchema = schemaInfo;
 
-            Table.Resolve(this.Name, true);
+            Table.Resolve(Name, true);
             Table.Rehash();
 
             Table.Fields[0].ReferencedClass = schemaInfo.FindClassByName(Table.Fields[0].References);
             if (Table.Fields[0].ReferencedClass == null)
-                throw new SoodaSchemaException("Class " + Table.Fields[0].References + " not found in " + this.Name + "." + Table.Fields[0].Name);
+                throw new SoodaSchemaException("Class " + Table.Fields[0].References + " not found in " + Name + "." +
+                                               Table.Fields[0].Name);
             Table.Fields[1].ReferencedClass = schemaInfo.FindClassByName(Table.Fields[1].References);
             if (Table.Fields[1].ReferencedClass == null)
-                throw new SoodaSchemaException("Class " + Table.Fields[1].References + " not found in " + this.Name + "." + Table.Fields[1].Name);
-            foreach (FieldInfo fi in Table.Fields)
-                fi.ParentRelation = this;
+                throw new SoodaSchemaException("Class " + Table.Fields[1].References + " not found in " + Name + "." +
+                                               Table.Fields[1].Name);
         }
 
         public DataSourceInfo GetDataSource()
@@ -131,6 +115,5 @@ namespace Sooda.Schema
         {
             return Table.Fields;
         }
-
     }
 }

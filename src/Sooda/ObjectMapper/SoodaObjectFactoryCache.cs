@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,16 +27,18 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using Sooda.Collections;
-
-using Sooda.Logging;
-
 namespace Sooda.ObjectMapper
 {
+    using Collections;
+    using Logging;
+
     public class SoodaObjectFactoryCache : ISoodaObjectFactoryCache
     {
-        readonly StringToObjectToSoodaObjectFactoryAssociation _classes = new StringToObjectToSoodaObjectFactoryAssociation();
-        readonly Logger logger = LogManager.GetLogger("Sooda.FactoryCache");
+        private readonly StringToObjectToSoodaObjectFactoryAssociation _classes =
+            new StringToObjectToSoodaObjectFactoryAssociation();
+            //private StringToStringToISoodaObjectFactoryAssociation _classes = new StringToStringToISoodaObjectFactoryAssociation();
+
+        private readonly Logger _logger = LogManager.GetLogger("Sooda.FactoryCache");
 
         private ObjectToSoodaObjectFactoryAssociation GetObjectFactoryDictionaryForClass(string className)
         {
@@ -73,15 +74,16 @@ namespace Sooda.ObjectMapper
         public ISoodaObjectFactory FindObjectFactory(string className, object primaryKeyValue)
         {
             ISoodaObjectFactory fact = FindObjectWithKey(className, primaryKeyValue);
-            if (logger.IsDebugEnabled)
+            if (_logger.IsDebugEnabled)
             {
                 if (fact == null)
                 {
-                    logger.Debug("{0}[{1}] not found in the factory cache", className, primaryKeyValue);
+                    _logger.Debug("{0}[{1}] not found in the factory cache", className, primaryKeyValue);
                 }
                 else
                 {
-                    logger.Debug("{0}[{1}] found in factory cache as {2}", className, primaryKeyValue, fact.GetClassInfo().Name);
+                    _logger.Debug("{0}[{1}] found in factory cache as {2}", className, primaryKeyValue,
+                        fact.GetClassInfo().Name);
                 }
             }
             return fact;
@@ -89,16 +91,17 @@ namespace Sooda.ObjectMapper
 
         public void SetObjectFactory(string className, object primaryKeyValue, ISoodaObjectFactory factory)
         {
-            if (logger.IsDebugEnabled)
+            if (_logger.IsDebugEnabled)
             {
-                logger.Debug("Adding {0}[{1}]={2} to the factory cache", className, primaryKeyValue, factory.GetClassInfo().Name);
+                _logger.Debug("Adding {0}[{1}]={2} to the factory cache", className, primaryKeyValue,
+                    factory.GetClassInfo().Name);
             }
             AddObjectWithKey(className, primaryKeyValue, factory);
         }
 
         public void Invalidate()
         {
-            logger.Debug("Invalidating factory cache");
+            _logger.Debug("Invalidating factory cache");
             _classes.Clear();
         }
     }

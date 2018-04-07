@@ -396,9 +396,7 @@ namespace SoodaQuery {
                 comboBoxOleDbDriver.Text = "";
                 break;
                 case providerNameOracle:
-#pragma warning disable 618
                     textBoxConnectionType.Text = typeof(OracleConnection).AssemblyQualifiedName;
-#pragma warning restore 618
                     textBoxConnectionType.ReadOnly = true;
                     buttonFetchDbList.Enabled = false;
                     labelOleDbDriver.Enabled = false;
@@ -406,6 +404,8 @@ namespace SoodaQuery {
                     comboBoxOleDbDriver.Text = "";
                     break;
 
+
+#if !SOODA_NO_ODBC
 
             case providerNameODBC:
                 textBoxConnectionType.Text = typeof(System.Data.Odbc.OdbcConnection).AssemblyQualifiedName;
@@ -415,6 +415,7 @@ namespace SoodaQuery {
                 comboBoxOleDbDriver.Enabled = false;
                 comboBoxOleDbDriver.Text = "";
                 break;
+#endif
 
             case providerNameOleDB:
                 textBoxConnectionType.Text = typeof(System.Data.OleDb.OleDbConnection).AssemblyQualifiedName;
@@ -447,7 +448,11 @@ namespace SoodaQuery {
             listBoxProviders.Items.Add(providerNameSqlServer);
             listBoxProviders.Items.Add(providerNameOracle);
             listBoxProviders.Items.Add(providerNameOleDB);
+#if !SOODA_NO_ODBC
+
             listBoxProviders.Items.Add(providerNameODBC);
+#endif
+
             listBoxProviders.Items.Add(providerNameCustom);
             listBoxProviders.SelectedItem = providerNameSqlServer;
         }

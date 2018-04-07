@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,22 +27,21 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.Data;
-using System.Globalization;
-
 namespace Sooda.ObjectMapper.FieldHandlers
 {
+    using System;
+    using System.Data;
+    using System.Globalization;
+
     public class DecimalFieldHandler : SoodaFieldHandler
     {
-        public DecimalFieldHandler(bool nullable) : base(nullable) { }
+        public DecimalFieldHandler(bool nullable) : base(nullable)
+        {
+        }
 
         protected override string TypeName
         {
-            get
-            {
-                return "decimal";
-            }
+            get { return "decimal"; }
         }
 
         public override object RawRead(IDataRecord record, int pos)
@@ -76,7 +74,8 @@ namespace Sooda.ObjectMapper.FieldHandlers
             return Decimal.Parse(s, CultureInfo.InvariantCulture);
         }
 
-        private static readonly object _zeroValue = (decimal)0.0m;
+        private static readonly object _zeroValue = 0.0m;
+
         public override object ZeroValue()
         {
             return _zeroValue;
@@ -84,12 +83,12 @@ namespace Sooda.ObjectMapper.FieldHandlers
 
         public override Type GetFieldType()
         {
-            return typeof(Decimal);
+            return typeof (Decimal);
         }
 
         public override Type GetSqlType()
         {
-            return typeof(System.Data.SqlTypes.SqlDecimal);
+            return typeof (System.Data.SqlTypes.SqlDecimal);
         }
 
         public override void SetupDBParameter(IDbDataParameter parameter, object value)
@@ -104,28 +103,24 @@ namespace Sooda.ObjectMapper.FieldHandlers
         {
             if (fieldValue == null)
                 return System.Data.SqlTypes.SqlDecimal.Null;
-            else
-                return new System.Data.SqlTypes.SqlDecimal((Decimal)fieldValue);
+            return new System.Data.SqlTypes.SqlDecimal((Decimal) fieldValue);
         }
 
         public static decimal GetNotNullValue(object val)
         {
             if (val == null)
                 throw new InvalidOperationException("Attempt to read a non-null value that isn't set yet");
-            return (decimal)val;
+            return (decimal) val;
         }
 
         public static decimal? GetNullableValue(object fieldValue)
         {
-            if (fieldValue == null)
-                return null;
-            else
-                return (decimal)fieldValue;
+            return fieldValue == null ? (decimal?) null : (decimal) fieldValue;
         }
 
         public override Type GetNullableType()
         {
-            return typeof(decimal?);
+            return typeof (decimal?);
         }
     }
 }

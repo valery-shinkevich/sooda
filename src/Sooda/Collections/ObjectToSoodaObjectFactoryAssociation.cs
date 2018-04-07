@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -36,14 +35,6 @@ namespace Sooda.Collections
     public class ObjectToSoodaObjectFactoryAssociation : System.Collections.DictionaryBase
     {
         /// <summary>
-        /// Initializes a new empty instance of the ObjectToSoodaObjectFactoryAssociation class
-        /// </summary>
-        public ObjectToSoodaObjectFactoryAssociation()
-        {
-            // empty
-        }
-
-        /// <summary>
         /// Gets or sets the ISoodaObjectFactory associated with the given object
         /// </summary>
         /// <param name="key">
@@ -51,14 +42,8 @@ namespace Sooda.Collections
         /// </param>
         public virtual ISoodaObjectFactory this[object key]
         {
-            get
-            {
-                return (ISoodaObjectFactory)this.Dictionary[key];
-            }
-            set
-            {
-                this.Dictionary[key] = value;
-            }
+            get { return (ISoodaObjectFactory) Dictionary[key]; }
+            set { Dictionary[key] = value; }
         }
 
         /// <summary>
@@ -72,7 +57,7 @@ namespace Sooda.Collections
         /// </param>
         public virtual void Add(object key, ISoodaObjectFactory value)
         {
-            this.Dictionary.Add(key, value);
+            Dictionary.Add(key, value);
         }
 
         /// <summary>
@@ -87,7 +72,7 @@ namespace Sooda.Collections
         /// </returns>
         public virtual bool Contains(object key)
         {
-            return this.Dictionary.Contains(key);
+            return Dictionary.Contains(key);
         }
 
         /// <summary>
@@ -102,7 +87,7 @@ namespace Sooda.Collections
         /// </returns>
         public virtual bool ContainsKey(object key)
         {
-            return this.Dictionary.Contains(key);
+            return Dictionary.Contains(key);
         }
 
         /// <summary>
@@ -117,7 +102,7 @@ namespace Sooda.Collections
         /// </returns>
         public virtual bool ContainsValue(ISoodaObjectFactory value)
         {
-            foreach (ISoodaObjectFactory item in this.Dictionary.Values)
+            foreach (ISoodaObjectFactory item in Dictionary.Values)
             {
                 if (item == value)
                     return true;
@@ -133,7 +118,7 @@ namespace Sooda.Collections
         /// </param>
         public virtual void Remove(object key)
         {
-            this.Dictionary.Remove(key);
+            Dictionary.Remove(key);
         }
 
         /// <summary>
@@ -141,10 +126,7 @@ namespace Sooda.Collections
         /// </summary>
         public virtual System.Collections.ICollection Keys
         {
-            get
-            {
-                return this.Dictionary.Keys;
-            }
+            get { return Dictionary.Keys; }
         }
 
         /// <summary>
@@ -152,10 +134,7 @@ namespace Sooda.Collections
         /// </summary>
         public virtual System.Collections.ICollection Values
         {
-            get
-            {
-                return this.Dictionary.Values;
-            }
+            get { return Dictionary.Values; }
         }
     }
 }

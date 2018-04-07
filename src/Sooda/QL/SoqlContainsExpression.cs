@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,24 +27,25 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-
-
 namespace Sooda.QL
 {
+    using System;
+
     public class SoqlContainsExpression : SoqlBooleanExpression
     {
         public SoqlPathExpression Path;
         public string CollectionName;
         public SoqlExpression Expr;
 
-        public SoqlContainsExpression() { }
+        public SoqlContainsExpression()
+        {
+        }
 
         public SoqlContainsExpression(SoqlPathExpression path, string collectionName, SoqlExpression expr)
         {
-            this.Path = path;
-            this.CollectionName = collectionName;
-            this.Expr = expr;
+            Path = path;
+            CollectionName = collectionName;
+            Expr = expr;
         }
 
         // visitor pattern
@@ -58,6 +58,5 @@ namespace Sooda.QL
         {
             throw new NotImplementedException();
         }
-
     }
 }

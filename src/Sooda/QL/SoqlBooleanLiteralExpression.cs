@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,22 +27,23 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System.Xml.Serialization;
-
 namespace Sooda.QL
 {
+    using System.Xml.Serialization;
+
     public class SoqlBooleanLiteralExpression : SoqlBooleanExpression, ISoqlConstantExpression, ILiteralModifiers
     {
-        [XmlAttribute("boolValue")]
-        public bool Value;
+        [XmlAttribute("boolValue")] public bool Value;
 
-        private SoqlLiteralValueModifiers _modifiers = null;
+        private SoqlLiteralValueModifiers _modifiers;
 
-        public SoqlBooleanLiteralExpression() { }
+        public SoqlBooleanLiteralExpression()
+        {
+        }
 
         public SoqlBooleanLiteralExpression(bool val)
         {
-            this.Value = val;
+            Value = val;
         }
 
         public SoqlLiteralValueModifiers Modifiers
@@ -60,7 +60,7 @@ namespace Sooda.QL
 
         public object GetConstantValue()
         {
-            return this.Value;
+            return Value;
         }
 
         public override object Evaluate(ISoqlEvaluateContext context)
@@ -77,6 +77,5 @@ namespace Sooda.QL
         {
             get { return new SoqlBooleanLiteralExpression(false); }
         }
-
     }
 }

@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,13 +27,13 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.Collections;
-using System.Data;
-using System.IO;
-
 namespace Sooda.Caching
 {
+    using System;
+    using System.Collections;
+    using System.Data;
+    using System.IO;
+
     public class LruCacheEventArgs : EventArgs
     {
         public readonly object Key;
@@ -51,7 +50,7 @@ namespace Sooda.Caching
 
     public class LruCache
     {
-        class LruCacheNode
+        private class LruCacheNode
         {
             public LruCacheNode Previous;
             public LruCacheNode Next;
@@ -66,8 +65,8 @@ namespace Sooda.Caching
         }
 
         private Hashtable _hash = new Hashtable();
-        private LruCacheNode _lruHead = null;
-        private LruCacheNode _lruTail = null;
+        private LruCacheNode _lruHead;
+        private LruCacheNode _lruTail;
         private int _maxItems;
         private DateTime _nextSweepTime = DateTime.MinValue;
         private TimeSpan _sweepEvery;
@@ -123,7 +122,7 @@ namespace Sooda.Caching
 
                 CheckForPeriodicSweep(now);
 
-                LruCacheNode node = (LruCacheNode)_hash[key];
+                LruCacheNode node = (LruCacheNode) _hash[key];
                 if (node == null)
                     return null;
                 if (now >= node.ExpirationTime)
@@ -249,7 +248,7 @@ namespace Sooda.Caching
         {
             lock (this)
             {
-                LruCacheNode node = (LruCacheNode)_hash[key];
+                LruCacheNode node = (LruCacheNode) _hash[key];
                 if (node != null)
                     RemoveNode(node);
             }
@@ -287,7 +286,7 @@ namespace Sooda.Caching
             {
                 //Dump("Before Set()");
                 CheckForPeriodicSweep(DateTime.Now);
-                LruCacheNode node = (LruCacheNode)_hash[key];
+                LruCacheNode node = (LruCacheNode) _hash[key];
                 if (node == null)
                 {
                     Add(key, value, expirationTimeout, slidingExpiration);
@@ -361,7 +360,8 @@ namespace Sooda.Caching
 
             for (LruCacheNode node = _lruHead; node != null; node = node.Next)
             {
-                Console.WriteLine("{0} = {1} (used:{2} expire:{3})", node.Key, node.Value, node.UsedCount, node.ExpirationTime);
+                Console.WriteLine("{0} = {1} (used:{2} expire:{3})", node.Key, node.Value, node.UsedCount,
+                    node.ExpirationTime);
                 if (node.Previous != null && node.Previous.Next != node)
                     throw new Exception("LRU assertion failed #1");
                 if (node.Previous == null && node != _lruHead)
@@ -385,14 +385,14 @@ namespace Sooda.Caching
             lock (this)
             {
                 DataTable dt = dataSet.Tables.Add(tableName);
-                dt.Columns.Add("LruPosition",typeof(int));
-                dt.Columns.Add("Class",typeof(string));
-                dt.Columns.Add("Key",typeof(string));
-                dt.Columns.Add("Value",typeof(string));
-                dt.Columns.Add("AddedTime",typeof(DateTime));
-                dt.Columns.Add("LastAccessTime",typeof(DateTime));
-                dt.Columns.Add("ExpirationTime",typeof(DateTime));
-                dt.Columns.Add("UsedCount",typeof(int));
+                dt.Columns.Add("LruPosition", typeof (int));
+                dt.Columns.Add("Class", typeof (string));
+                dt.Columns.Add("Key", typeof (string));
+                dt.Columns.Add("Value", typeof (string));
+                dt.Columns.Add("AddedTime", typeof (DateTime));
+                dt.Columns.Add("LastAccessTime", typeof (DateTime));
+                dt.Columns.Add("ExpirationTime", typeof (DateTime));
+                dt.Columns.Add("UsedCount", typeof (int));
 
                 int pos = 0;
 

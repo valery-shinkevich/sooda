@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,16 +27,16 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-
 namespace Sooda
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Text;
+
     public class SoodaObjectMultiFieldComparer : IComparer
     {
-        class FieldCompareInfo
+        private class FieldCompareInfo
         {
             public FieldCompareInfo(string[] propertyChain, SortOrder sortOrder)
             {
@@ -54,7 +53,7 @@ namespace Sooda
             StringBuilder sb = new StringBuilder();
             sb.Append("multifieldcomparer[");
             bool first = true;
-            foreach (FieldCompareInfo fci in fields)
+            foreach (FieldCompareInfo fci in _fields)
             {
                 if (!first)
                     sb.Append(',');
@@ -67,9 +66,7 @@ namespace Sooda
             return sb.ToString();
         }
 
-        private readonly List<FieldCompareInfo> fields = new List<FieldCompareInfo>();
-
-        public SoodaObjectMultiFieldComparer() { }
+        private readonly List<FieldCompareInfo> _fields = new List<FieldCompareInfo>();
 
         int IComparer.Compare(object o1, object o2)
         {
@@ -81,17 +78,17 @@ namespace Sooda
 
         public void AddField(string field, SortOrder sortOrder)
         {
-            fields.Add(new FieldCompareInfo(field.Split('.'), sortOrder));
+            _fields.Add(new FieldCompareInfo(field.Split('.'), sortOrder));
         }
 
         public void AddField(string[] field, SortOrder sortOrder)
         {
-            fields.Add(new FieldCompareInfo(field, sortOrder));
+            _fields.Add(new FieldCompareInfo(field, sortOrder));
         }
 
         public int Compare(SoodaObject dbo1, SoodaObject dbo2)
         {
-            foreach (FieldCompareInfo fci in fields)
+            foreach (FieldCompareInfo fci in _fields)
             {
                 object v1 = dbo1.Evaluate(fci.propertyChain, false);
                 object v2 = dbo2.Evaluate(fci.propertyChain, false);
@@ -101,8 +98,7 @@ namespace Sooda
                 {
                     if (fci.sortOrder == SortOrder.Ascending)
                         return result;
-                    else
-                        return -result;
+                    return -result;
                 }
             }
 
@@ -115,21 +111,21 @@ namespace Sooda
             {
                 if (v2 == null)
                     return 0;
-                else
-                    return -1;  // null is less than anything
-            };
+                return -1; // null is less than anything
+            }
+            ;
 
             if (v2 == null)
             {
-                return 1;   // not null is greater than anything
+                return 1; // not null is greater than anything
             }
 
-            return ((IComparable)v1).CompareTo(v2);
+            return ((IComparable) v1).CompareTo(v2);
         }
 
         private static int PrimaryKeyCompare(SoodaObject dbo1, SoodaObject dbo2)
         {
-            return ((IComparable)dbo1.GetPrimaryKeyValue()).CompareTo(dbo2.GetPrimaryKeyValue());
+            return ((IComparable) dbo1.GetPrimaryKeyValue()).CompareTo(dbo2.GetPrimaryKeyValue());
         }
     }
 }

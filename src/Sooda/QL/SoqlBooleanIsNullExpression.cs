@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -35,12 +34,14 @@ namespace Sooda.QL
         public SoqlExpression Expr;
         public bool NotNull;
 
-        public SoqlBooleanIsNullExpression() { }
+        public SoqlBooleanIsNullExpression()
+        {
+        }
 
         public SoqlBooleanIsNullExpression(SoqlExpression expr, bool notnull)
         {
-            this.Expr = expr;
-            this.NotNull = notnull;
+            Expr = expr;
+            NotNull = notnull;
         }
 
         // visitor pattern
@@ -51,16 +52,11 @@ namespace Sooda.QL
 
         public override object Evaluate(ISoqlEvaluateContext context)
         {
-            object val = this.Expr.Evaluate(context);
+            var val = Expr.Evaluate(context);
+            //if (val == null)
+            //    return null;
 
-            if (NotNull)
-            {
-                return val != null;
-            }
-            else
-            {
-                return val == null;
-            }
+            return NotNull ? val != null : val == null;
         }
     }
 }

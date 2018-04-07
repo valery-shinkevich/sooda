@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,10 +27,10 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-
 namespace Sooda.ObjectMapper
 {
+    using System;
+
     [AttributeUsage(AttributeTargets.Class)]
     public sealed class SoodaObjectFactoryAttribute : Attribute
     {
@@ -40,8 +39,8 @@ namespace Sooda.ObjectMapper
 
         public SoodaObjectFactoryAttribute(string className, Type type)
         {
-            this.ClassName = className;
-            this.Type = type;
+            ClassName = className;
+            Type = type;
         }
     }
 }

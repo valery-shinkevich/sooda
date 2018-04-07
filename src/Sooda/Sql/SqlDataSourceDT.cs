@@ -1,5 +1,5 @@
-//
-// Copyright (c) 2007-2014 Piotr Fusik <piotr@fusik.info>
+﻿//
+// Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
 //
 // All rights reserved.
 //
@@ -27,6 +27,7 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
+
 #if !MONO
 
 namespace Sooda.Sql
@@ -36,39 +37,37 @@ namespace Sooda.Sql
     /// How? By not using ADO.Net transaction when there is active external transaction.
     /// No changes other from that.
     /// </summary>
+    // ReSharper disable once InconsistentNaming
     public class SqlDataSourceDT : SqlDataSource
     {
-
-        public SqlDataSourceDT(string name) : base(name)
+        public SqlDataSourceDT(string name)
+            : base(name)
         {
         }
 
-        public SqlDataSourceDT(Sooda.Schema.DataSourceInfo dataSourceInfo) : this(dataSourceInfo.Name)
+        public SqlDataSourceDT(Schema.DataSourceInfo dataSourceInfo)
+            : this(dataSourceInfo.Name)
         {
         }
 
-        static bool InExternalTransaction()
+        private static bool InExternalTransaction()
         {
-            if (System.Transactions.Transaction.Current != null)
-            {
-                //TransactionStatus ts = System.Transactions.Transaction.Current.TransactionInformation.Status;
-                //if (ts == System.Transactions.TransactionStatus.Active || ts == System.Transactions.TransactionStatus.InDoubt)
-                return true;
-            }
-            return false;
+            return System.Transactions.Transaction.Current != null;
+            //TransactionStatus ts = System.Transactions.Transaction.Current.TransactionInformation.Status;
+            //if (ts == System.Transactions.TransactionStatus.Active || ts == System.Transactions.TransactionStatus.InDoubt)                
         }
 
         protected override void BeginTransaction()
         {
             if (Transaction != null)
-                logger.Warn("Previous transaction has not been closed");
+                Logger.Warn("Previous transaction has not been closed");
             if (InExternalTransaction())
             {
-                logger.Debug("External transaction exists, will not start ADO transaction");
+                Logger.Debug("External transaction exists, will not start ADO transaction");
             }
             else
             {
-                logger.Debug("Starting new ADO.Net transaction");
+                Logger.Debug("Starting new ADO.Net transaction");
                 base.BeginTransaction();
             }
         }

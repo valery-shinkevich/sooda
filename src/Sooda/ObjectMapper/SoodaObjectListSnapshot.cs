@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,17 +27,17 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using Sooda.Caching;
-using Sooda.Logging;
-using Sooda.QL;
-using Sooda.Schema;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
 namespace Sooda.ObjectMapper
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using Caching;
+    using Logging;
+    using QL;
+    using Schema;
+
     public class SoodaObjectListSnapshot : ISoodaObjectList
     {
         private static readonly Logger logger = LogManager.GetLogger("Sooda.ListSnapshot");
@@ -73,13 +72,14 @@ namespace Sooda.ObjectMapper
             }
         }
 
-        public SoodaObjectListSnapshot(IList list, SoqlBooleanExpression filterExpression) : this(list, new SoodaWhereClause(filterExpression))
+        public SoodaObjectListSnapshot(IList list, SoqlBooleanExpression filterExpression)
+            : this(list, new SoodaWhereClause(filterExpression))
         {
         }
 
         public SoodaObjectListSnapshot(IList list, int first, int length)
         {
-            this.classInfo = null;
+            _classInfo = null;
 
             int start = first;
             if (start < 0)
@@ -95,7 +95,7 @@ namespace Sooda.ObjectMapper
             {
                 items.Add(list[start + i]);
             }
-            count = items.Count;
+            _pagedCount = items.Count;
         }
 
         public SoodaObjectListSnapshot(IList list, IComparer comp)
@@ -106,12 +106,12 @@ namespace Sooda.ObjectMapper
                 items.Add(list[i]);
             }
             items.Sort(comp);
-            count = items.Count;
+            _pagedCount = items.Count;
         }
 
         public SoodaObjectListSnapshot(SoodaTransaction tran, SoodaObjectFilter filter, ClassInfo ci)
         {
-            this.classInfo = ci;
+            _classInfo = ci;
             List<WeakSoodaObject> al = tran.GetObjectsByClassName(ci.Name);
 
             if (al != null)
@@ -120,12 +120,14 @@ namespace Sooda.ObjectMapper
                 // the filter expression may materialize new objects
                 // during checking. This way we avoid "collection modified" exception
 
-                List<SoodaObject> clonedArray = new List<SoodaObject>();
+                var clonedArray = new List<SoodaObject>();
                 foreach (WeakSoodaObject wr in al)
                 {
                     SoodaObject obj = wr.TargetSoodaObject;
                     if (obj != null)
+                    {
                         clonedArray.Add(obj);
+                    }
                 }
 
                 foreach (SoodaObject obj in clonedArray)
@@ -135,42 +137,39 @@ namespace Sooda.ObjectMapper
                         items.Add(obj);
                     }
                 }
-                count = items.Count;
+                _pagedCount = items.Count;
             }
         }
 
         protected void AddObjectToSnapshot(SoodaObject o)
         {
             items.Add(o);
-            count = items.Count;
+            _pagedCount = items.Count;
         }
 
-        public SoodaObjectListSnapshot(SoodaTransaction t, SoodaWhereClause whereClause, SoodaOrderBy orderBy, int startIdx, int pageCount, SoodaSnapshotOptions options, ClassInfo ci)
+        public SoodaObjectListSnapshot(SoodaTransaction t, SoodaWhereClause whereClause, SoodaOrderBy orderBy,
+            int startIdx, int pageCount, SoodaSnapshotOptions options, ClassInfo ci)
         {
-            this.classInfo = ci;
+            _classInfo = ci;
             string[] involvedClasses = null;
 
-            bool useCache;
-            if ((options & SoodaSnapshotOptions.NoCache) != 0)
-                useCache = false;
-            else if ((options & SoodaSnapshotOptions.Cache) != 0)
-                useCache = true;
-            else
-                useCache = t.CachingPolicy.ShouldCacheCollection(ci, whereClause, orderBy, startIdx, pageCount);
+            var useCache = (options & SoodaSnapshotOptions.NoCache) == 0 &&
+                           ((options & SoodaSnapshotOptions.Cache) != 0 ||
+                            t.CachingPolicy.ShouldCacheCollection(ci, whereClause, orderBy, startIdx, pageCount));
 
             if (whereClause != null && whereClause.WhereExpression != null)
             {
-                if ((options & SoodaSnapshotOptions.NoWriteObjects) == 0 || useCache)
+                if (((options & SoodaSnapshotOptions.NoWriteObjects) == 0) || useCache)
                 {
                     try
                     {
-                        GetInvolvedClassesVisitor gic = new GetInvolvedClassesVisitor(classInfo);
+                        var gic = new GetInvolvedClassesVisitor(_classInfo);
                         gic.GetInvolvedClasses(whereClause.WhereExpression);
                         involvedClasses = gic.ClassNames;
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        // logger.Warn("{0}", ex);
+                        logger.Warn("{0}", ex);
                         // cannot detect involved classes (probably because of RAWQUERY)
                         // - precommit all objects
                         // if we get here, involvedClasses remains set to null
@@ -181,7 +180,7 @@ namespace Sooda.ObjectMapper
             {
                 // no where clause
 
-                involvedClasses = new string[] { ci.Name };
+                involvedClasses = new[] {ci.Name};
             }
 
             if ((options & SoodaSnapshotOptions.NoWriteObjects) == 0)
@@ -190,20 +189,22 @@ namespace Sooda.ObjectMapper
             LoadList(t, whereClause, orderBy, startIdx, pageCount, options, involvedClasses, useCache);
         }
 
-        private void LoadList(SoodaTransaction transaction, SoodaWhereClause whereClause, SoodaOrderBy orderBy, int startIdx, int pageCount, SoodaSnapshotOptions options, string[] involvedClassNames, bool useCache)
+        private void LoadList(SoodaTransaction transaction, SoodaWhereClause whereClause, SoodaOrderBy orderBy,
+            int startIdx, int pageCount, SoodaSnapshotOptions options, string[] involvedClassNames, bool useCache)
         {
-            ISoodaObjectFactory factory = transaction.GetFactory(classInfo);
+            ISoodaObjectFactory factory = transaction.GetFactory(_classInfo);
             string cacheKey = null;
 
             if (useCache)
             {
                 // cache makes sense only on clean database
-                if (!transaction.HasBeenPrecommitted(classInfo))
+                if (!transaction.HasBeenPrecommitted(_classInfo))
                 {
-                    cacheKey = SoodaCache.GetCollectionKey(classInfo, whereClause);
+                    cacheKey = SoodaCache.GetCollectionKey(_classInfo, whereClause);
                 }
 
                 IEnumerable keysCollection = transaction.LoadCollectionFromCache(cacheKey, logger);
+
                 if (keysCollection != null)
                 {
                     foreach (object o in keysCollection)
@@ -218,11 +219,12 @@ namespace Sooda.ObjectMapper
                     {
                         items.Sort(orderBy.GetComparer());
                     }
-                    count = items.Count;
+
+                    _pagedCount = items.Count;
 
                     if (startIdx > 0)
                     {
-                        if (startIdx < count)
+                        if (startIdx < _pagedCount)
                             items.RemoveRange(0, startIdx);
                         else
                             items.Clear();
@@ -237,20 +239,27 @@ namespace Sooda.ObjectMapper
                 }
             }
 
-            SoodaDataSource ds = transaction.OpenDataSource(classInfo.GetDataSource());
+            var ds = transaction.OpenDataSource(_classInfo.GetDataSource());
+
+            var dsIsOpened = ds.IsOpen; //+wash
+            if (!dsIsOpened) ds.Open(); //+wash
 
             if ((options & SoodaSnapshotOptions.KeysOnly) != 0)
             {
                 if (pageCount != -1)
                 {
-                    using (IDataReader reader = ds.LoadMatchingPrimaryKeys(transaction.Schema, classInfo, whereClause, orderBy, 0, -1))
+                    using (
+                        IDataReader reader = ds.LoadMatchingPrimaryKeys(transaction.Schema, _classInfo, whereClause,
+                            orderBy, 0, -1))
                     {
-                        count = 0;
+                        _pagedCount = 0;
                         while (reader.Read())
-                            count++;
+                            _pagedCount++;
                     }
                 }
-                using (IDataReader reader = ds.LoadMatchingPrimaryKeys(transaction.Schema, classInfo, whereClause, orderBy, startIdx, pageCount))
+                using (
+                    IDataReader reader = ds.LoadMatchingPrimaryKeys(transaction.Schema, _classInfo, whereClause, orderBy,
+                        startIdx, pageCount))
                 {
                     while (reader.Read())
                     {
@@ -258,67 +267,86 @@ namespace Sooda.ObjectMapper
                         items.Add(obj);
                     }
                     if (pageCount == -1)
-                        count = items.Count;
+                        _pagedCount = items.Count;
                 }
             }
             else
             {
                 if (pageCount != -1)
                 {
-                    using (IDataReader reader = ds.LoadMatchingPrimaryKeys(transaction.Schema, classInfo, whereClause, orderBy, 0, -1))
+                    using (
+                        IDataReader reader = ds.LoadMatchingPrimaryKeys(transaction.Schema, _classInfo, whereClause,
+                            orderBy, 0, -1))
                     {
-                        count = 0;
+                        _pagedCount = 0;
                         while (reader.Read())
-                            count++;
+                            _pagedCount++;
                     }
                 }
-
                 TableInfo[] loadedTables;
 
-                using (IDataReader reader = ds.LoadObjectList(transaction.Schema, classInfo, whereClause, orderBy, startIdx, pageCount, options, out loadedTables))
+                using (
+                    IDataReader reader = ds.LoadObjectList(transaction.Schema, _classInfo, whereClause, orderBy,
+                        startIdx,
+                        pageCount, options, out loadedTables))
                 {
                     while (reader.Read())
                     {
-                        SoodaObject obj = SoodaObject.GetRefFromRecordHelper(transaction, factory, reader, 0, loadedTables, 0);
-                        if ((options & SoodaSnapshotOptions.VerifyAfterLoad) != 0 && whereClause != null && !whereClause.Matches(obj, false))
-                            continue; // don't add the object
-                        items.Add(obj);
+                        try
+                        {
+                            SoodaObject obj = SoodaObject.GetRefFromRecordHelper(transaction, factory, reader, 0,
+                                loadedTables, 0);
+
+                            if ((options & SoodaSnapshotOptions.VerifyAfterLoad) == 0 || whereClause == null ||
+                                whereClause.Matches(obj, false))
+                            {
+                                items.Add(obj);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            //Debug.WriteLine(reader[0]);
+                            throw new Exception(reader[0].ToString(), ex);
+                        }
                     }
                     if (pageCount == -1)
-                        count = items.Count;
+                        _pagedCount = items.Count;
                 }
             }
 
-            if (cacheKey != null && useCache && startIdx == 0 && pageCount == -1 && involvedClassNames != null)
+            if (cacheKey != null /*&& useCache*/&& startIdx == 0 && pageCount == -1 && involvedClassNames != null)
             {
                 TimeSpan expirationTimeout;
                 bool slidingExpiration;
 
                 if (transaction.CachingPolicy.GetExpirationTimeout(
-                            classInfo, whereClause, orderBy, startIdx, pageCount, items.Count,
-                            out expirationTimeout, out slidingExpiration))
+                    _classInfo, whereClause, orderBy, startIdx, pageCount, items.Count,
+                    out expirationTimeout, out slidingExpiration))
                 {
-                    transaction.StoreCollectionInCache(cacheKey, classInfo, items, involvedClassNames, (options & SoodaSnapshotOptions.KeysOnly) == 0, expirationTimeout, slidingExpiration);
+                    transaction.StoreCollectionInCache(cacheKey, _classInfo, items, involvedClassNames,
+                        (options & SoodaSnapshotOptions.KeysOnly) == 0, expirationTimeout, slidingExpiration);
                 }
             }
+
+            if (!dsIsOpened) ds.Close(); //+wash
         }
 
         public SoodaObject GetItem(int pos)
         {
-            return (SoodaObject)items[pos];
+            return (SoodaObject) items[pos];
         }
 
         public int Add(object obj)
         {
             items.Add(obj);
-            count = items.Count;
-            return count;
+            _pagedCount = items.Count;
+            return _pagedCount;
         }
 
         public void Remove(object obj)
         {
             items.Remove(obj);
-            count = items.Count;
+            _pagedCount = items.Count;
         }
 
         public bool Contains(object obj)
@@ -332,8 +360,8 @@ namespace Sooda.ObjectMapper
         }
 
         private readonly ArrayList items = new ArrayList();
-        private ClassInfo classInfo;
-        private int count;
+        private readonly ClassInfo _classInfo;
+        private int _pagedCount;
 
         public bool IsReadOnly
         {
@@ -349,56 +377,55 @@ namespace Sooda.ObjectMapper
         public void RemoveAt(int index)
         {
             items.RemoveAt(index);
-            count = items.Count;
+            _pagedCount = items.Count;
         }
 
         public void Insert(int index, object value)
         {
             items.Insert(index, value);
-            count = items.Count;
+            _pagedCount = items.Count;
         }
 
         public void Clear()
         {
             items.Clear();
-            count = items.Count;
+            _pagedCount = items.Count;
         }
 
         public int IndexOf(object value)
         {
-            return items.IndexOf(value);
+            int i = -1;
+            if (value == null || items == null) return i;
+
+            foreach (SoodaObject item in items)
+            {
+                i++;
+                if (item.GetPrimaryKeyValue().Equals(((SoodaObject) value).GetPrimaryKeyValue()))
+                {
+                    return i;
+                }
+            }
+            return -1;
         }
 
         public bool IsFixedSize
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
         }
 
         public bool IsSynchronized
         {
-            get
-            {
-                return false;
-            }
-        }
-
-        public int Count
-        {
-            get
-            {
-                return items.Count;
-            }
+            get { return false; }
         }
 
         public int PagedCount
         {
-            get
-            {
-                return this.count;
-            }
+            get { return _pagedCount; }
+        }
+
+        public int Count
+        {
+            get { return items.Count; }
         }
 
         public void CopyTo(Array array, int index)
@@ -408,10 +435,7 @@ namespace Sooda.ObjectMapper
 
         public object SyncRoot
         {
-            get
-            {
-                return this;
-            }
+            get { return this; }
         }
 
         public ISoodaObjectList GetSnapshot()
@@ -426,7 +450,7 @@ namespace Sooda.ObjectMapper
 
         public ISoodaObjectList SelectLast(int n)
         {
-            return new SoodaObjectListSnapshot(this, this.Count - n, n);
+            return new SoodaObjectListSnapshot(this, Count - n, n);
         }
 
         public ISoodaObjectList SelectRange(int from, int to)

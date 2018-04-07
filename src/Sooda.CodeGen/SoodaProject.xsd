@@ -9,6 +9,7 @@
       <xs:element minOccurs="0" maxOccurs="1" name="output-namespace" type="xs:string" />
       <xs:element minOccurs="0" maxOccurs="1" name="output-path" type="xs:string" />
       <xs:element minOccurs="0" maxOccurs="1" name="output-partial-path" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="projectfiles-path" type="xs:string" />
       <xs:element minOccurs="1" maxOccurs="1" name="nullable-representation" type="tns:PrimitiveRepresentation" />
       <xs:element minOccurs="1" maxOccurs="1" name="not-null-representation" type="tns:PrimitiveRepresentation" />
       <xs:element minOccurs="0" maxOccurs="1" default="true" name="with-indexers" type="xs:boolean" />

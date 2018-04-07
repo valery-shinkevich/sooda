@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,40 +27,26 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-
 namespace Sooda
 {
+    using System;
+
     [AttributeUsage(AttributeTargets.Assembly)]
     public sealed class SoodaConfigAttribute : Attribute
     {
-        private string configFileName = null;
-        private Type configProviderType = null;
-
-        public SoodaConfigAttribute() { }
+        private string configFileName;
+        private Type configProviderType;
 
         public string XmlConfigFileName
         {
-            get
-            {
-                return configFileName;
-            }
-            set
-            {
-                configFileName = value;
-            }
+            get { return configFileName; }
+            set { configFileName = value; }
         }
 
         public Type ProviderType
         {
-            get
-            {
-                return configProviderType;
-            }
-            set
-            {
-                configProviderType = value;
-            }
+            get { return configProviderType; }
+            set { configProviderType = value; }
         }
     }
 }

@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,23 +27,21 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.Data;
-
-using System.Globalization;
-
 namespace Sooda.ObjectMapper.FieldHandlers
 {
+    using System;
+    using System.Data;
+    using System.Globalization;
+
     public class DateTimeFieldHandler : SoodaFieldHandler
     {
-        public DateTimeFieldHandler(bool nullable) : base(nullable) { }
+        public DateTimeFieldHandler(bool nullable) : base(nullable)
+        {
+        }
 
         protected override string TypeName
         {
-            get
-            {
-                return "datetime";
-            }
+            get { return "datetime"; }
         }
 
         public override object RawRead(IDataRecord record, int pos)
@@ -77,7 +74,8 @@ namespace Sooda.ObjectMapper.FieldHandlers
             return DateTime.Parse(s, CultureInfo.InvariantCulture);
         }
 
-        private static readonly object _zeroValue = DateTime.MinValue;
+        private static readonly object _zeroValue = new DateTime(1800, 1, 1);
+
         public override object ZeroValue()
         {
             return _zeroValue;
@@ -85,12 +83,12 @@ namespace Sooda.ObjectMapper.FieldHandlers
 
         public override Type GetFieldType()
         {
-            return typeof(DateTime);
+            return typeof (DateTime);
         }
 
         public override Type GetSqlType()
         {
-            return typeof(System.Data.SqlTypes.SqlDateTime);
+            return typeof (System.Data.SqlTypes.SqlDateTime);
         }
 
 
@@ -104,30 +102,26 @@ namespace Sooda.ObjectMapper.FieldHandlers
 
         public static System.Data.SqlTypes.SqlDateTime GetSqlNullableValue(object fieldValue)
         {
-            if (fieldValue == null)
-                return System.Data.SqlTypes.SqlDateTime.Null;
-            else
-                return new System.Data.SqlTypes.SqlDateTime((DateTime)fieldValue);
+            return fieldValue == null
+                ? System.Data.SqlTypes.SqlDateTime.Null
+                : new System.Data.SqlTypes.SqlDateTime((DateTime) fieldValue);
         }
 
         public static DateTime GetNotNullValue(object val)
         {
             if (val == null)
                 throw new InvalidOperationException("Attempt to read a non-null value that isn't set yet");
-            return (DateTime)val;
+            return (DateTime) val;
         }
 
         public static DateTime? GetNullableValue(object fieldValue)
         {
-            if (fieldValue == null)
-                return null;
-            else
-                return (DateTime)fieldValue;
+            return fieldValue == null ? (DateTime?) null : (DateTime) fieldValue;
         }
 
         public override Type GetNullableType()
         {
-            return typeof(DateTime?);
+            return typeof (DateTime?);
         }
     }
 }

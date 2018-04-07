@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,22 +27,22 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-
-using System.Xml.Serialization;
-
 namespace Sooda.QL
 {
+    using System;
+    using System.Xml.Serialization;
+
     public class SoqlRawExpression : SoqlBooleanExpression
     {
-        [XmlAttribute("rawText")]
-        public string Text;
+        [XmlAttribute("rawText")] public string Text;
 
-        public SoqlRawExpression() { }
+        public SoqlRawExpression()
+        {
+        }
 
         public SoqlRawExpression(string txt)
         {
-            this.Text = txt;
+            Text = txt;
         }
 
         // visitor pattern
@@ -56,6 +55,5 @@ namespace Sooda.QL
         {
             throw new NotSupportedException("Evaluate() not supported for RAW expressions.");
         }
-
     }
 }

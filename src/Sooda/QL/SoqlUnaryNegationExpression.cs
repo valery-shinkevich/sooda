@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -36,7 +35,9 @@ namespace Sooda.QL
     {
         public SoqlExpression par;
 
-        public SoqlUnaryNegationExpression() { }
+        public SoqlUnaryNegationExpression()
+        {
+        }
 
         public SoqlUnaryNegationExpression(SoqlExpression par)
         {
@@ -62,23 +63,21 @@ namespace Sooda.QL
                 return null;
 
             if (val is double)
-                return -(double)val;
+                return -(double) val;
             if (val is float)
-                return -(float)val;
+                return -(float) val;
             if (val is decimal)
-                return -(decimal)val;
+                return -(decimal) val;
             if (val is long)
-                return -(long)val;
+                return -(long) val;
             if (val is int)
-                return -(int)val;
+                return -(int) val;
             if (val is short)
-                return -(short)val;
+                return -(short) val;
             if (val is sbyte)
-                return -(sbyte)val;
+                return -(sbyte) val;
 
             throw new NotSupportedException("Unary negation is not supported on " + val.GetType().Name);
         }
-
     }
-
 }

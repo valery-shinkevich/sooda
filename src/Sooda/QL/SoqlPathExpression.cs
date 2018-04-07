@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,43 +27,45 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using Sooda.Schema;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Xml.Serialization;
-
 namespace Sooda.QL
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Reflection;
+    using System.Xml.Serialization;
+    using Schema;
+    using FieldInfo = Schema.FieldInfo;
+
     public class SoqlPathExpression : SoqlExpression, ISoqlSelectAliasProvider
     {
         public SoqlPathExpression Left;
 
-        [XmlIgnore]
-        public SoqlPathExpression Next;
+        [XmlIgnore] public SoqlPathExpression Next;
 
-        [XmlAttribute("property")]
-        public string PropertyName;
+        [XmlAttribute("property")] public string PropertyName;
 
-        private System.Reflection.PropertyInfo _propInfoCache = null;
+        //     private System.Reflection.PropertyInfo _propInfoCache = null;
 
-        public SoqlPathExpression() { }
+        public SoqlPathExpression()
+        {
+        }
 
         public SoqlPathExpression(string propertyName)
         {
-            this.PropertyName = propertyName;
+            PropertyName = propertyName;
         }
 
         public SoqlPathExpression(string p1, string p2)
         {
-            this.Left = new SoqlPathExpression(p1);
-            this.PropertyName = p2;
+            Left = new SoqlPathExpression(p1);
+            PropertyName = p2;
         }
 
         public SoqlPathExpression(string p1, string p2, string p3)
         {
-            this.Left = new SoqlPathExpression(p1, p2);
-            this.PropertyName = p3;
+            Left = new SoqlPathExpression(p1, p2);
+            PropertyName = p3;
         }
 
         public SoqlPathExpression(string[] parts)
@@ -75,14 +76,14 @@ namespace Sooda.QL
             {
                 l = new SoqlPathExpression(l, parts[i]);
             }
-            this.PropertyName = parts[parts.Length - 1];
-            this.Left = l;
+            PropertyName = parts[parts.Length - 1];
+            Left = l;
         }
 
         public SoqlPathExpression(SoqlPathExpression left, string propertyName)
         {
-            this.Left = left;
-            this.PropertyName = propertyName;
+            Left = left;
+            PropertyName = propertyName;
         }
 
         public void WriteDefaultSelectAlias(TextWriter output)
@@ -131,26 +132,34 @@ namespace Sooda.QL
         {
             object val;
 
-            if (this.Left == null)
+            if (Left == null)
             {
                 val = context.GetRootObject();
             }
             else
             {
-                val = this.Left.Evaluate(context);
+                val = Left.Evaluate(context);
             }
 
             if (val == null)
                 return null;
 
-            if (_propInfoCache == null)
-            {
-                _propInfoCache = val.GetType().GetProperty(PropertyName);
-                if (_propInfoCache == null)
-                    throw new SoodaException(PropertyName + " not found in " + val.GetType().Name);
-            }
+            //if (_propInfoCache == null)
+            //{
+            //    _propInfoCache = val.GetType().GetProperty(PropertyName);
+            //    if (_propInfoCache == null)
+            //        throw new SoodaException(PropertyName + " not found in " + val.GetType().Name);
+            //}
 
-            return _propInfoCache.GetValue(val, null);
+            //try
+            //{
+            //    return _propInfoCache.GetValue(val, null);
+            //}
+            //catch (Exception tex)
+            //{
+            //    Console.WriteLine(tex);
+            return val.GetType().InvokeMember(PropertyName, BindingFlags.GetProperty, null, val, null);
+            //}
         }
     }
 }

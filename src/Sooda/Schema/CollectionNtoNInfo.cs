@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -37,44 +36,41 @@ namespace Sooda.Schema
     [Serializable]
     public class CollectionManyToManyInfo : CollectionBaseInfo
     {
+        [System.Xml.Serialization.XmlAttributeAttribute("relation")] public string Relation;
 
-        [System.Xml.Serialization.XmlAttributeAttribute("relation")]
-        public string Relation;
+        [System.Xml.Serialization.XmlAttributeAttribute("masterField")] [DefaultValue(-1)] public int MasterField = -1;
 
-        [System.Xml.Serialization.XmlAttributeAttribute("masterField")]
-        [DefaultValue(-1)]
-        public int MasterField = -1;
+        [System.Xml.Serialization.XmlAttributeAttribute("foreignField")] public string ForeignField;
 
-        [System.Xml.Serialization.XmlAttributeAttribute("foreignField")]
-        public string ForeignField;
-
-        private RelationInfo relationInfo = null;
+        private RelationInfo _relationInfo;
 
         public RelationInfo GetRelationInfo()
         {
-            return relationInfo;
+            return _relationInfo;
         }
 
         internal void Resolve(SchemaInfo schemaInfo)
         {
-            relationInfo = schemaInfo.FindRelationByName(Relation);
-            if (relationInfo == null)
+            _relationInfo = schemaInfo.FindRelationByName(Relation);
+            if (_relationInfo == null)
                 throw new SoodaSchemaException("Relation " + Relation + " not found.");
 
             if (ForeignField != null)
             {
-                if (relationInfo.Table.Fields[0].Name == ForeignField)
+                if (_relationInfo.Table.Fields[0].Name == ForeignField)
                     MasterField = 1;
                 else
                     MasterField = 0;
             }
             if (MasterField == -1)
-                throw new SoodaConfigException("You need to set either masterField or foreignField in <collectionManyToMany name='" + this.Name + "' />");
+                throw new SoodaConfigException(
+                    "You need to set either masterField or foreignField in <collectionManyToMany name='" + Name +
+                    "' />");
         }
 
         public override ClassInfo GetItemClass()
         {
-            return relationInfo.Table.Fields[MasterField].ReferencedClass;
+            return _relationInfo.Table.Fields[MasterField].ReferencedClass;
         }
     }
 }

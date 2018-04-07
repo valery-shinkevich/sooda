@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,13 +27,13 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using Sooda.QL.TypedWrappers;
-using System;
-using System.Collections;
-using System.IO;
-
 namespace Sooda.QL
 {
+    using System;
+    using System.Collections;
+    using System.IO;
+    using TypedWrappers;
+
     /// <summary>
     /// Summary description for SoqlPrettyPrinter.
     /// </summary>
@@ -92,6 +91,8 @@ namespace Sooda.QL
                 case SoqlBinaryOperator.Concat:
                     Output.Write("||");
                     break;
+                default:
+                    throw new NotImplementedException("Not imlemented binary operator " + op);
             }
         }
 
@@ -122,16 +123,17 @@ namespace Sooda.QL
                 Output.Write("0=1");
                 return;
             }
-
             v.Left.Accept(this);
             Output.Write(" in ");
             if (v.Right.Count != 1 || !(v.Right[0] is SoqlQueryExpression))
                 Output.Write('(');
 
+
             for (int i = 0; i < v.Right.Count; ++i)
             {
                 if (i > 0)
                     Output.Write(',');
+
                 v.Right[i].Accept(this);
             }
             if (v.Right.Count != 1 || !(v.Right[0] is SoqlQueryExpression))
@@ -208,6 +210,23 @@ namespace Sooda.QL
                     Output.Write("like");
                     break;
 
+                case SoqlRelationalOperator.LTrimEqual:
+                    Output.Write("= ltrim(");
+                    break;
+
+                case SoqlRelationalOperator.RTrimEqual:
+                    Output.Write("= rtrim(");
+                    break;
+
+                case SoqlRelationalOperator.TrimEqual:
+                    Output.Write("= rtrim(ltrim(");
+                    break;
+
+                case SoqlRelationalOperator.RemoveSharp:
+                    Output.Write("= REPLACE(");
+                    break;
+
+
                 default:
                     throw new NotImplementedException(op.ToString());
             }
@@ -257,13 +276,13 @@ namespace Sooda.QL
             if (v.LiteralValue is String)
             {
                 Output.Write('\'');
-                Output.Write(((string)v.LiteralValue).Replace("'", "''"));
+                Output.Write(((string) v.LiteralValue).Replace("'", "''"));
                 Output.Write('\'');
             }
             else if (v.LiteralValue is DateTime)
             {
                 Output.Write('\'');
-                Output.Write(((DateTime)v.LiteralValue).ToString("yyyyMMdd HH:mm:ss"));
+                Output.Write(((DateTime) v.LiteralValue).ToString("yyyyMMdd HH:mm:ss"));
                 Output.Write('\'');
             }
             else if (v.LiteralValue == null)
@@ -289,13 +308,13 @@ namespace Sooda.QL
                 if (parameterValue is String)
                 {
                     Output.Write('\'');
-                    Output.Write(((string)parameterValue).Replace("'", "''"));
+                    Output.Write(((string) parameterValue).Replace("'", "''"));
                     Output.Write('\'');
                 }
                 else if (parameterValue is DateTime)
                 {
                     Output.Write('\'');
-                    Output.Write(((DateTime)parameterValue).ToString("yyyyMMdd HH:mm:ss"));
+                    Output.Write(((DateTime) parameterValue).ToString("yyyyMMdd HH:mm:ss"));
                     Output.Write('\'');
                 }
                 else
@@ -347,7 +366,8 @@ namespace Sooda.QL
             }
 
             Output.Write(v.CollectionName);
-            Output.Write(".Count");
+            Output.Write('.');
+            Output.Write("Count");
         }
 
         public virtual void Visit(SoqlSoodaClassExpression v)
@@ -391,7 +411,7 @@ namespace Sooda.QL
                 if (v.SelectExpressions.Count > 0)
                 {
                     WriteIndentString();
-                    Output.Write("select   ");
+                    Output.Write("select ");
                     if (v.Distinct)
                         Output.Write("distinct ");
                     for (int i = 0; i < v.SelectExpressions.Count; ++i)
@@ -409,11 +429,7 @@ namespace Sooda.QL
                                 Output.Write(',');
                             }
                         }
-                        if (v.SelectExpressions[i] is SoqlQueryExpression)
-                            Output.Write('(');
                         v.SelectExpressions[i].Accept(this);
-                        if (v.SelectExpressions[i] is SoqlQueryExpression)
-                            Output.Write(')');
                         if (v.SelectAliases[i].Length > 0)
                         {
                             Output.Write(" as ");
@@ -556,7 +572,7 @@ namespace Sooda.QL
             Output.Write(" end");
         }
 
-        static readonly char[] LikeMetacharacters = { '%', '_', '[' };
+        private static readonly char[] LikeMetacharacters = {'%', '_', '['};
 
         public virtual void Visit(SoqlStringContainsExpression v)
         {
@@ -582,7 +598,7 @@ namespace Sooda.QL
             Output.Write(suffix);
         }
 
-        void Sooda.QL.ISoqlVisitor.Visit(SoqlCastExpression v)
+        void ISoqlVisitor.Visit(SoqlCastExpression v)
         {
             Output.Write("cast(");
             v.source.Accept(this);
@@ -590,6 +606,7 @@ namespace Sooda.QL
             Output.Write(v.type);
             Output.Write(')');
         }
+
 
         public TextWriter Output;
         public int IndentLevel = -1;
@@ -599,7 +616,7 @@ namespace Sooda.QL
         {
             if (IndentOutput)
             {
-                for (int i = 0; i < IndentLevel * IndentStep; ++i)
+                for (int i = 0; i < IndentLevel*IndentStep; ++i)
                     Output.Write(' ');
             }
         }

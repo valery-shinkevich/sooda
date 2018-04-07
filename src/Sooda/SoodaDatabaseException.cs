@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,17 +27,28 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.Runtime.Serialization;
-
 namespace Sooda
 {
+    using System;
+    using System.Runtime.Serialization;
+
     [Serializable]
     public class SoodaDatabaseException : SoodaException
     {
-        public SoodaDatabaseException() : this(null, null) { }
-        public SoodaDatabaseException(string msg) : this(msg, null) { }
-        public SoodaDatabaseException(string msg, Exception inner) : base(msg, inner) { }
-        protected SoodaDatabaseException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        public SoodaDatabaseException() : this(null, null)
+        {
+        }
+
+        public SoodaDatabaseException(string msg) : this(msg, null)
+        {
+        }
+
+        public SoodaDatabaseException(string msg, Exception inner) : base(msg, inner)
+        {
+        }
+
+        protected SoodaDatabaseException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
     }
 }

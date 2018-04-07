@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,12 +27,10 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-
-using System.CodeDom;
-
-
 namespace Sooda.CodeGen
 {
+    using System.CodeDom;
+
     public class CodeDomHelpers
     {
         // protec
@@ -54,10 +51,7 @@ namespace Sooda.CodeGen
 
         protected static CodeThisReferenceExpression This
         {
-            get
-            {
-                return new CodeThisReferenceExpression();
-            }
+            get { return new CodeThisReferenceExpression(); }
         }
 
         protected static CodeConditionStatement If(CodeExpression cond, CodeStatement[] thenStats)
@@ -65,7 +59,8 @@ namespace Sooda.CodeGen
             return new CodeConditionStatement(cond, thenStats);
         }
 
-        protected static CodeConditionStatement If(CodeExpression cond, CodeStatement[] thenStats, CodeStatement[] elseStats)
+        protected static CodeConditionStatement If(CodeExpression cond, CodeStatement[] thenStats,
+            CodeStatement[] elseStats)
         {
             return new CodeConditionStatement(cond, thenStats, elseStats);
         }
@@ -116,11 +111,13 @@ namespace Sooda.CodeGen
                     case "private":
                         attr = attr | MemberAttributes.Private;
                         break;
-                };
+                }
+                ;
             }
 
             return attr;
         }
+
         public static void SetPropertySignature(CodeMemberProperty prop, string txt)
         {
             string[] parts = txt.Split(' ');

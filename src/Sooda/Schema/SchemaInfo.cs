@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2015 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,19 +27,20 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using Sooda.ObjectMapper.FieldHandlers;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Text;
-using System.Threading;
-using System.Xml.Serialization;
 
-[assembly: System.CLSCompliant(true)]
+[assembly: CLSCompliant(true)]
 
 namespace Sooda.Schema
 {
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Linq;
+    using System.Text;
+    using System.Threading;
+    using System.Xml.Serialization;
+    using ObjectMapper.FieldHandlers;
+
     [XmlType(Namespace = "http://www.sooda.org/schemas/SoodaSchema.xsd")]
     [XmlRoot("schema", Namespace = "http://www.sooda.org/schemas/SoodaSchema.xsd", IsNullable = false)]
     [Serializable]
@@ -48,53 +48,39 @@ namespace Sooda.Schema
     {
         public static readonly string XmlNamespace = "http://www.sooda.org/schemas/SoodaSchema.xsd";
 
-        [XmlElement("namespace")]
-        public string Namespace;
+        [XmlElement("namespace")] public string Namespace;
 
-        [XmlElement("assembly")]
-        public string AssemblyName;
+        [XmlElement("assembly")] public string AssemblyName;
 
-        [XmlElement("include", typeof(IncludeInfo))]
-        public List<IncludeInfo> Includes = new List<IncludeInfo>();
+        [XmlElement("include", typeof (IncludeInfo))] public List<IncludeInfo> Includes = new List<IncludeInfo>();
 
-        [XmlElement("datasource", typeof(DataSourceInfo))]
-        public List<DataSourceInfo> DataSources = new List<DataSourceInfo>();
+        [XmlElement("datasource", typeof (DataSourceInfo))] public List<DataSourceInfo> DataSources =
+            new List<DataSourceInfo>();
 
-        [XmlElement("class", typeof(ClassInfo))]
-        public List<ClassInfo> Classes = new List<ClassInfo>();
+        [XmlElement("class", typeof (ClassInfo))] public List<ClassInfo> Classes = new List<ClassInfo>();
 
-        [XmlElement("defaultPrecommitValues")]
-        [System.ComponentModel.DefaultValue(DefaultPrecommitValues.Zero)]
-        public DefaultPrecommitValues DefaultPrecommitValues = DefaultPrecommitValues.Zero;
+        [XmlElement("enum", typeof (EnumInfo))] public EnumInfoCollection Enums = new EnumInfoCollection();
 
-        [XmlElement("precommitValue", typeof(PrecommitValueInfo))]
-        public List<PrecommitValueInfo> PrecommitValues = new List<PrecommitValueInfo>();
+        [XmlElement("defaultPrecommitValues")] [System.ComponentModel.DefaultValue(true)] public bool
+            DefaultPrecommitValues = true;
 
-        [XmlIgnore]
-        public List<ClassInfo> LocalClasses;
+        [XmlElement("precommitValue", typeof (PrecommitValueInfo))] public List<PrecommitValueInfo> PrecommitValues =
+            new List<PrecommitValueInfo>();
 
-        [XmlIgnore]
-        public List<RelationInfo> LocalRelations;
+        [XmlIgnore] public List<ClassInfo> LocalClasses;
 
-        [System.Xml.Serialization.XmlAnyAttribute()]
-        [NonSerialized]
-        public System.Xml.XmlAttribute[] Extensions;
+        [XmlIgnore] public List<RelationInfo> LocalRelations;
 
-        [XmlElement("relation", typeof(RelationInfo))]
-        public List<RelationInfo> Relations = new List<RelationInfo>();
+        [XmlAnyAttribute] [NonSerialized] public System.Xml.XmlAttribute[] Extensions;
 
-        [XmlIgnore]
-        [NonSerialized]
-        private Dictionary<string, List<ClassInfo>> _subclasses;
+        [XmlElement("relation", typeof (RelationInfo))] public List<RelationInfo> Relations = new List<RelationInfo>();
 
-        [XmlIgnore]
-        [NonSerialized]
-        private Dictionary<string, StringCollection> _backRefCollections;
+        [XmlIgnore] [NonSerialized] private Dictionary<string, List<ClassInfo>> _subclasses;
+
+        [XmlIgnore] [NonSerialized] private Dictionary<string, StringCollection> _backRefCollections;
 
 #if DOTNET35
-        [XmlIgnore]
-        [NonSerialized]
-        internal ReaderWriterLock _rwLock;
+        [XmlIgnore] [NonSerialized] internal ReaderWriterLock RwLock;
 #endif
 
         public bool Contains(string className)
@@ -107,7 +93,9 @@ namespace Sooda.Schema
             if (Classes == null)
                 return null;
 
-            return (ClassInfo)classNameHash[className];
+            ClassInfo ci;
+            _classNameHash.TryGetValue(className, out ci);
+            return ci;
         }
 
         public RelationInfo FindRelationByName(string relationName)
@@ -115,7 +103,9 @@ namespace Sooda.Schema
             if (Relations == null)
                 return null;
 
-            return (RelationInfo)relationNameHash[relationName];
+            RelationInfo rel;
+            _relationNameHash.TryGetValue(relationName, out rel);
+            return rel;
         }
 
         public IFieldContainer FindContainerByName(string name)
@@ -137,10 +127,8 @@ namespace Sooda.Schema
             Rehash();
         }
 
-        [NonSerialized]
-        private Hashtable classNameHash;
-        [NonSerialized]
-        private Hashtable relationNameHash;
+        [NonSerialized] private Dictionary<string, ClassInfo> _classNameHash;
+        [NonSerialized] private Dictionary<string, RelationInfo> _relationNameHash;
 
         public void Include(SchemaInfo schema)
         {
@@ -179,8 +167,10 @@ namespace Sooda.Schema
             if (Includes == null)
                 Includes = new List<IncludeInfo>();
 
-            classNameHash = new Hashtable(StringComparer.OrdinalIgnoreCase);
-            relationNameHash = new Hashtable(StringComparer.OrdinalIgnoreCase);
+            _classNameHash = new Dictionary<string, ClassInfo>(StringComparer.OrdinalIgnoreCase);
+                // Hashtable(StringComparer.OrdinalIgnoreCase);
+            _relationNameHash = new Dictionary<string, RelationInfo>(StringComparer.OrdinalIgnoreCase);
+                // Hashtable(StringComparer.OrdinalIgnoreCase);
             Rehash();
 
             _backRefCollections = new Dictionary<string, StringCollection>();
@@ -189,6 +179,7 @@ namespace Sooda.Schema
             {
                 ci.ResolveInheritance(this);
             }
+
             Resolve(Classes);
 
             if (Relations != null)
@@ -204,7 +195,6 @@ namespace Sooda.Schema
                 dsi.Resolve();
             }
 
-
             LocalClasses = new List<ClassInfo>();
             foreach (ClassInfo ci in Classes)
             {
@@ -212,11 +202,12 @@ namespace Sooda.Schema
                     LocalClasses.Add(ci);
             }
             LocalRelations = new List<RelationInfo>();
-            foreach (RelationInfo ri in Relations)
-            {
-                if (ri.Schema == this)
-                    LocalRelations.Add(ri);
-            }
+            if (Relations != null)
+                foreach (RelationInfo ri in Relations)
+                {
+                    if (ri.Schema == this)
+                        LocalRelations.Add(ri);
+                }
 
             _subclasses = new Dictionary<string, List<ClassInfo>>();
 
@@ -229,7 +220,7 @@ namespace Sooda.Schema
             {
                 for (ClassInfo ci = ci0.InheritsFromClass; ci != null; ci = ci.InheritsFromClass)
                 {
-                    _subclasses[ci.Name].Add(ci0);
+                    (_subclasses[ci.Name]).Add(ci0);
                 }
             }
         }
@@ -243,21 +234,21 @@ namespace Sooda.Schema
 
         private void Rehash()
         {
-            classNameHash.Clear();
-            relationNameHash.Clear();
+            _classNameHash.Clear();
+            _relationNameHash.Clear();
             if (Classes != null)
             {
                 foreach (ClassInfo ci in Classes)
                 {
                     if (ci.Name != null)
-                        classNameHash[ci.Name] = ci;
+                        _classNameHash[ci.Name] = ci;
                 }
             }
             if (Relations != null)
             {
                 foreach (RelationInfo ri in Relations)
                 {
-                    relationNameHash[ri.Name] = ri;
+                    _relationNameHash[ri.Name] = ri;
                 }
             }
         }
@@ -272,18 +263,21 @@ namespace Sooda.Schema
                 if (dsi.Name == name)
                     return dsi;
             }
-            throw new SoodaSchemaException("Data source " + name + " not found. Available data sources: " + GetAvailableDataSources());
+            throw new SoodaSchemaException("Data source " + name + " not found. Available data sources: " +
+                                           GetAvailableDataSources());
         }
 
         private string GetAvailableDataSources()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
-            foreach (DataSourceInfo dsi in DataSources)
+            foreach (var dsi in DataSources)
             {
                 if (sb.Length > 0)
                     sb.Append(',');
-                sb.Append(dsi.Name + ": " + dsi.DataSourceType);
+                sb.Append(dsi.Name);
+                sb.Append(": ");
+                sb.Append(dsi.DataSourceType);
             }
 
             return sb.ToString();
@@ -291,18 +285,15 @@ namespace Sooda.Schema
 
         internal void MergeIncludedSchema(SchemaInfo includedSchema)
         {
-            // merge classes, relations and datasources
-
+// merge classes, relations and datasources
             if (includedSchema.Classes != null)
             {
-                Dictionary<string, ClassInfo> classNames = new Dictionary<string, ClassInfo>();
-                foreach (ClassInfo nci in includedSchema.Classes)
-                    classNames.Add(nci.Name, nci);
+                var classNames = includedSchema.Classes.ToDictionary(nci => nci.Name);
 
-                List<ClassInfo> newClasses = new List<ClassInfo>();
-                if (this.Classes != null)
+                var newClasses = new List<ClassInfo>();
+                if (Classes != null)
                 {
-                    foreach (ClassInfo ci in this.Classes)
+                    foreach (ClassInfo ci in Classes)
                     {
                         newClasses.Add(ci);
                         ClassInfo ci2;
@@ -313,44 +304,32 @@ namespace Sooda.Schema
                         }
                     }
                 }
+                newClasses.AddRange(classNames.Values);
 
-                foreach (ClassInfo ci in classNames.Values)
-                {
-                    newClasses.Add(ci);
-                }
-
-                this.Classes = newClasses;
+                Classes = newClasses;
             }
 
             if (includedSchema.Relations != null)
             {
-                List<RelationInfo> newRelations = new List<RelationInfo>();
+                var newRelations = includedSchema.Relations.ToList();
 
-                foreach (RelationInfo ci in includedSchema.Relations)
+                if (Relations != null)
                 {
-                    newRelations.Add(ci);
+                    newRelations.AddRange(Relations);
                 }
 
-                if (this.Relations != null)
-                {
-                    foreach (RelationInfo ci in this.Relations)
-                    {
-                        newRelations.Add(ci);
-                    }
-                }
-
-                this.Relations = newRelations;
+                Relations = newRelations;
             }
 
             if (includedSchema.DataSources != null)
             {
-                Dictionary<string, DataSourceInfo> sourceNames = new Dictionary<string, DataSourceInfo>();
+                var sourceNames = new Dictionary<string, DataSourceInfo>();
 
-                List<DataSourceInfo> newDataSources = new List<DataSourceInfo>();
+                var newDataSources = new List<DataSourceInfo>();
 
-                if (this.DataSources != null)
+                if (DataSources != null)
                 {
-                    foreach (DataSourceInfo ci in this.DataSources)
+                    foreach (DataSourceInfo ci in DataSources)
                     {
                         newDataSources.Add(ci);
                         sourceNames.Add(ci.Name, ci);
@@ -366,31 +345,24 @@ namespace Sooda.Schema
                         newDataSources.Add(ci);
                 }
 
-                this.DataSources = newDataSources;
+                DataSources = newDataSources;
             }
         }
-
-        public static readonly object NullPrecommitValue = new object();
 
         public object GetDefaultPrecommitValueForDataType(FieldDataType dataType)
         {
             if (PrecommitValues != null)
             {
-                foreach (PrecommitValueInfo value in PrecommitValues)
-                    if (dataType == value.DataType)
-                        return value.Value;
+                // ReSharper disable once ForCanBeConvertedToForeach
+                for (int i = 0; i < PrecommitValues.Count; ++i)
+                    if (dataType == PrecommitValues[i].DataType)
+                        return PrecommitValues[i].Value;
             }
-            switch (DefaultPrecommitValues)
+            if (DefaultPrecommitValues)
             {
-                case DefaultPrecommitValues.None:
-                    return null;
-                case DefaultPrecommitValues.Zero:
-                    return FieldHandlerFactory.GetFieldHandler(dataType).DefaultPrecommitValue();
-                case DefaultPrecommitValues.Null:
-                    return NullPrecommitValue;
-                default:
-                    throw new NotImplementedException(DefaultPrecommitValues.ToString());
+                return FieldHandlerFactory.GetFieldHandler(dataType).DefaultPrecommitValue();
             }
+            return null;
         }
 
         public StringCollection GetBackRefCollections(FieldInfo fi)

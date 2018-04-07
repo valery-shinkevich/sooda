@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,50 +27,49 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.Data;
-
 namespace Sooda.Sql
 {
+    using System;
+    using System.Data;
+
     internal class DbParameterConverter
     {
         public static void ConvertParameter(IDbDataParameter par, object val)
         {
             Type t = val.GetType();
 
-            if (t == typeof(Int32))
+            if (t == typeof (Int32))
             {
                 par.Value = val;
                 par.DbType = DbType.Int32;
                 return;
             }
 
-            if (t == typeof(String))
+            if (t == typeof (String))
             {
                 par.Value = val;
                 par.DbType = DbType.String;
                 return;
             }
 
-            if (t == typeof(DateTime))
+            if (t == typeof (DateTime))
             {
                 par.Value = val;
                 par.DbType = DbType.String;
                 return;
             }
 
-            if (t == typeof(Int64))
+            if (t == typeof (Int64))
             {
                 par.Value = val;
                 par.DbType = DbType.Int64;
                 return;
             }
 
-            if (t == typeof(Boolean))
+            if (t == typeof (Boolean))
             {
                 par.Value = val;
                 par.DbType = DbType.Boolean;
-                return;
             }
         }
     }

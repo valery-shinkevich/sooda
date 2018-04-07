@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,16 +27,16 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using Sooda.QL;
-using System.Collections;
-
 namespace Sooda
 {
-    public interface ISoodaObjectList : System.Collections.IList
+    using System.Collections;
+    using QL;
+
+    public interface ISoodaObjectList : IList
     {
         SoodaObject GetItem(int pos);
-        int PagedCount { get; }
 
+        int PagedCount { get; }
         ISoodaObjectList GetSnapshot();
         ISoodaObjectList SelectFirst(int n);
         ISoodaObjectList SelectLast(int n);

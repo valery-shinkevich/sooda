@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,23 +27,21 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.Data;
-
-using System.Globalization;
-
 namespace Sooda.ObjectMapper.FieldHandlers
 {
+    using System;
+    using System.Data;
+    using System.Globalization;
+
     public class Int64FieldHandler : SoodaFieldHandler
     {
-        public Int64FieldHandler(bool nullable) : base(nullable) { }
+        public Int64FieldHandler(bool nullable) : base(nullable)
+        {
+        }
 
         protected override string TypeName
         {
-            get
-            {
-                return "int64";
-            }
+            get { return "int64"; }
         }
 
         public override object RawRead(IDataRecord record, int pos)
@@ -78,7 +75,8 @@ namespace Sooda.ObjectMapper.FieldHandlers
             return Int64.Parse(s, CultureInfo.InvariantCulture);
         }
 
-        private static readonly object _zeroValue = (Int64)0;
+        private static readonly object _zeroValue = (Int64) 0;
+
         public override object ZeroValue()
         {
             return _zeroValue;
@@ -86,12 +84,12 @@ namespace Sooda.ObjectMapper.FieldHandlers
 
         public override Type GetFieldType()
         {
-            return typeof(Int64);
+            return typeof (Int64);
         }
 
         public override Type GetSqlType()
         {
-            return typeof(System.Data.SqlTypes.SqlInt64);
+            return typeof (System.Data.SqlTypes.SqlInt64);
         }
 
         public override void SetupDBParameter(IDbDataParameter parameter, object value)
@@ -106,28 +104,24 @@ namespace Sooda.ObjectMapper.FieldHandlers
         {
             if (fieldValue == null)
                 return System.Data.SqlTypes.SqlInt64.Null;
-            else
-                return new System.Data.SqlTypes.SqlInt64((Int64)fieldValue);
+            return new System.Data.SqlTypes.SqlInt64((Int64) fieldValue);
         }
 
         public static Int64 GetNotNullValue(object val)
         {
             if (val == null)
                 throw new InvalidOperationException("Attempt to read a non-null value that isn't set yet");
-            return (Int64)val;
+            return (Int64) val;
         }
 
         public static Int64? GetNullableValue(object fieldValue)
         {
-            if (fieldValue == null)
-                return null;
-            else
-                return (Int64)fieldValue;
+            return fieldValue == null ? (long?) null : (Int64) fieldValue;
         }
 
         public override Type GetNullableType()
         {
-            return typeof(Int64?);
+            return typeof (Int64?);
         }
     }
 }

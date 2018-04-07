@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -29,34 +28,32 @@
 //
 
 
-using Sooda.Schema;
-
 namespace Sooda.Caching
 {
+    using Schema;
+
     public class SoodaCacheSmallPolicy : SimpleCachingPolicy
     {
         public override bool ShouldCacheObject(SoodaObject theObject)
         {
             if (theObject.GetClassInfo().Cardinality == ClassCardinality.Small)
                 return true;
-            else
-                return false;
+            return false;
         }
 
-        public override bool ShouldCacheCollection(ClassInfo classInfo, SoodaWhereClause whereClause, SoodaOrderBy orderBy, int startIdx, int pageCount)
+        public override bool ShouldCacheCollection(ClassInfo classInfo, SoodaWhereClause whereClause,
+            SoodaOrderBy orderBy, int startIdx, int pageCount)
         {
             if (classInfo.Cardinality == ClassCardinality.Small)
                 return true;
-            else
-                return false;
+            return false;
         }
 
         public override bool ShouldCacheRelation(RelationInfo relation, ClassInfo classInfo)
         {
             if (classInfo.Cardinality == ClassCardinality.Small)
                 return true;
-            else
-                return false;
+            return false;
         }
     }
 }

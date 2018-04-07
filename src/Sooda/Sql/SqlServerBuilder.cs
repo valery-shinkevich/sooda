@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,17 +27,16 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using Sooda.Schema;
-using System;
-using System.Data;
-using System.Data.SqlClient;
-
 namespace Sooda.Sql
 {
+    using System;
+    using System.Data;
+    using System.Data.SqlClient;
+    using System.Globalization;
+    using Schema;
+
     public class SqlServerBuilder : SqlBuilderNamedArg
     {
-        public SqlServerBuilder() { }
-
         public override string StringConcatenationOperator
         {
             get { return "+"; }
@@ -49,57 +47,55 @@ namespace Sooda.Sql
             return Environment.NewLine + "GO" + Environment.NewLine + Environment.NewLine;
         }
 
-        public override string GetSQLDataType(Sooda.Schema.FieldInfo fi)
+        public override string GetSQLDataType(FieldInfo fi)
         {
-            switch (fi.DataType)
+            return GetSQLDataType(fi.DataType, fi.Size, fi.Precision, fi.IsIdentity);
+        }
+
+        public string GetSQLDataType(FieldDataType datatype, int size, int precision, bool identity)
+        {
+            switch (datatype)
             {
                 case FieldDataType.Integer:
-                    return "int";
+                    return identity ? "int identity" : "int";
+
+                case FieldDataType.Money:
+                    return "money";
 
                 case FieldDataType.AnsiString:
-                    if (fi.Size > 4000)
-                        return "text";
-                    else
-                        return "varchar(" + fi.Size + ")";
+                    return "varchar(" + (size > 4000 || size < 0 ? "max" : size.ToString(CultureInfo.InvariantCulture)) +
+                           ")";
 
                 case FieldDataType.String:
-                    if (fi.Size > 4000)
-                        return "ntext";
-                    else
-                        return "nvarchar(" + fi.Size + ")";
+                    return "nvarchar(" + (size > 4000 || size < 0 ? "max" : size.ToString(CultureInfo.InvariantCulture)) +
+                           ")";
 
                 case FieldDataType.Decimal:
-                    if (fi.Size < 0)
-                        return "decimal";
-                    else if (fi.Precision < 0)
-                        return "decimal(" + fi.Size + ")";
-                    else
-                        return "decimal(" + fi.Size + "," + fi.Precision + ")";
+                    return size < 0
+                        ? "decimal"
+                        : (precision < 0 ? "decimal(" + size + ")" : "decimal(" + size + "," + precision + ")");
 
                 case FieldDataType.Guid:
                     return "uniqueidentifier";
 
                 case FieldDataType.Double:
-                    if (fi.Size < 0)
-                        return "float";
-                    else if (fi.Precision < 0)
-                        return "float(" + fi.Size + ")";
-                    else
-                        return "float(" + fi.Size + "," + fi.Precision + ")";
+                    return size < 0
+                        ? "double"
+                        : (precision < 0 ? "double(" + size + ")" : "double(" + size + "," + precision + ")");
 
                 case FieldDataType.Float:
-                    if (fi.Size < 0)
-                        return "float";
-                    else if (fi.Precision < 0)
-                        return "float(" + fi.Size + ")";
-                    else
-                        return "float(" + fi.Size + "," + fi.Precision + ")";
+                    return size < 0
+                        ? "float"
+                        : (precision < 0 ? "float(" + size + ")" : "float(" + size + "," + precision + ")");
 
                 case FieldDataType.DateTime:
                     return "datetime";
 
+                case FieldDataType.Date:
+                    return "date";
+
                 case FieldDataType.Image:
-                    return "image";
+                    return "varbinary(max)";
 
                 case FieldDataType.Long:
                     return "bigint";
@@ -113,17 +109,21 @@ namespace Sooda.Sql
                 case FieldDataType.Boolean:
                     return "bit";
 
+                case FieldDataType.RowVersion:
+                    return "timestamp";
+
                 case FieldDataType.Blob:
                     return "varbinary(max)";
 
                 default:
-                    throw new NotImplementedException(String.Format("Datatype {0} not supported for this database", fi.DataType.ToString()));
+                    throw new NotImplementedException(String.Format("Datatype {0} not supported for this database",
+                        datatype));
             }
         }
 
         protected override string GetNameForParameter(int pos)
         {
-            return "@p" + pos.ToString();
+            return "@p" + pos;
         }
 
         public override string QuoteIdentifier(string s)
@@ -132,9 +132,9 @@ namespace Sooda.Sql
             {
                 char c = s[i];
                 if (!(c >= 'A' && c <= 'Z')
-                 && !(c >= 'a' && c <= 'z')
-                 && !(c >= '0' && c <= '9')
-                 && c != '_')
+                    && !(c >= 'a' && c <= 'z')
+                    && !(c >= '0' && c <= '9')
+                    && c != '_')
                     return "[" + s + "]";
             }
             return s;
@@ -144,17 +144,14 @@ namespace Sooda.Sql
         {
             get
             {
-                return SqlTopSupportMode.MSSQLRowNum;
+                return SqlTopSupportMode.MsSqlRowNum;
                 // return SqlTopSupportMode.MSSQL2012;
             }
         }
 
         public override int MaxIdentifierLength
         {
-            get
-            {
-                return 128;
-            }
+            get { return 128; }
         }
 
         public override string EndInsert(string tableName)
@@ -167,34 +164,32 @@ namespace Sooda.Sql
             return "set identity_insert " + tableName + " on ";
         }
 
-        public override string GetSQLOrderBy(Sooda.Schema.FieldInfo fi, bool start)
+        public override string GetSQLOrderBy(FieldInfo fi, bool start)
         {
             switch (fi.DataType)
             {
                 case FieldDataType.AnsiString:
                     if (fi.Size > 4000)
                         return start ? "convert(varchar(3999), " : ")";
-                    else
-                        return "";
+                    return "";
 
                 case FieldDataType.String:
                     if (fi.Size > 4000)
                         return start ? "convert(nvarchar(3999), " : ")";
-                    else
-                        return "";
+                    return "";
 
                 default:
                     return "";
             }
         }
 
-        public override string GetAlterTableStatement(Sooda.Schema.TableInfo tableInfo)
+        public override string GetAlterTableStatement(TableInfo tableInfo)
         {
             string ident = GetTruncatedIdentifier(String.Format("PK_{0}", tableInfo.DBTableName));
             return String.Format("alter table {0} add constraint {1} primary key", tableInfo.DBTableName, ident);
         }
 
-        public override bool HandleFatalException(IDbConnection connection, Exception e)
+        public override bool IsFatalException(IDbConnection connection, Exception e)
         {
             SqlConnection.ClearAllPools();
             return false;

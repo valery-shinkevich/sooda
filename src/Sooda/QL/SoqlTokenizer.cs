@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,11 +27,11 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.Text;
-
 namespace Sooda.QL
 {
+    using System;
+    using System.Text;
+
     public enum SoqlTokenType
     {
         EOF,
@@ -71,46 +70,34 @@ namespace Sooda.QL
 
         LastPunct,
         Invalid,
-        Asterisk = Mul,
+        Asterisk = Mul
     };
 
     public class SqlTokenizer
     {
-        private string _inputString = null;
-        private int _position = 0;
-        private int _tokenPosition = 0;
+        private string _inputString;
+        private int _position;
+        private int _tokenPosition;
 
-        SoqlTokenType _tokenType;
-        string _tokenValue;
-        string _tokenValueLowercase;
+        private SoqlTokenType _tokenType;
+        private string _tokenValue;
+        private string _tokenValueLowercase;
         public bool IgnoreWhiteSpace = true;
 
         public int TokenPosition
         {
-            get
-            {
-                return _tokenPosition;
-            }
+            get { return _tokenPosition; }
         }
 
         public SoqlTokenType TokenType
         {
-            get
-            {
-                return _tokenType;
-            }
-            set
-            {
-                _tokenType = value;
-            }
+            get { return _tokenType; }
+            set { _tokenType = value; }
         }
 
         public string TokenValue
         {
-            get
-            {
-                return _tokenValue;
-            }
+            get { return _tokenValue; }
         }
 
         public string StringTokenValue
@@ -123,18 +110,17 @@ namespace Sooda.QL
             }
         }
 
-        public SqlTokenizer() { }
-
-        void SkipWhitespace()
+        private void SkipWhitespace()
         {
             int ch;
 
             while ((ch = PeekChar()) != -1)
             {
-                if (!Char.IsWhiteSpace((char)ch))
+                if (!Char.IsWhiteSpace((char) ch))
                     break;
                 ReadChar();
-            };
+            }
+            ;
         }
 
         public void InitTokenizer(string s)
@@ -146,34 +132,29 @@ namespace Sooda.QL
             GetNextToken();
         }
 
-        int PeekChar()
+        private int PeekChar()
         {
             if (_position < _inputString.Length)
             {
-                return (int)_inputString[_position];
+                return _inputString[_position];
             }
-            else
-            {
-                return -1;
-            }
+            return -1;
         }
 
-        int ReadChar()
+        private int ReadChar()
         {
             if (_position < _inputString.Length)
             {
-                return (int)_inputString[_position++];
+                return _inputString[_position++];
             }
-            else
-            {
-                return -1;
-            }
+            return -1;
         }
 
         public void Expect(SoqlTokenType type)
         {
             if (_tokenType != type)
-                throw new SoqlException("Expected token of type: " + type + ", got " + _tokenType + " (" + _tokenValue + ").", TokenPosition);
+                throw new SoqlException(
+                    "Expected token of type: " + type + ", got " + _tokenType + " (" + _tokenValue + ").", TokenPosition);
 
             GetNextToken();
         }
@@ -193,9 +174,9 @@ namespace Sooda.QL
         public string EatKeyword()
         {
             if (_tokenType != SoqlTokenType.Keyword)
-                throw new SoqlException("Identifier expected", TokenPosition);
-
-            string s = (string)_tokenValue;
+                throw new SoqlException("Identifier expected - '" + _tokenValue + "'", TokenPosition);
+            //Console.Write(_tokenValue);
+            string s = _tokenValue;
             GetNextToken();
             return s;
         }
@@ -242,12 +223,12 @@ namespace Sooda.QL
             {
                 if (tokens[i] is string)
                 {
-                    if (IsKeyword((string)tokens[i]))
+                    if (IsKeyword((string) tokens[i]))
                         return true;
                 }
                 else
                 {
-                    if (_tokenType == (SoqlTokenType)tokens[i])
+                    if (_tokenType == (SoqlTokenType) tokens[i])
                         return true;
                 }
             }
@@ -259,7 +240,7 @@ namespace Sooda.QL
             return (_tokenType >= SoqlTokenType.FirstPunct && _tokenType < SoqlTokenType.LastPunct);
         }
 
-        struct CharToTokenType
+        private struct CharToTokenType
         {
             public char ch;
             public SoqlTokenType tokenType;
@@ -271,41 +252,42 @@ namespace Sooda.QL
             }
         }
 
-        static CharToTokenType[] charToTokenType =
-            {
-                new CharToTokenType('+', SoqlTokenType.Add),
-                new CharToTokenType('-', SoqlTokenType.Sub),
-                new CharToTokenType('*', SoqlTokenType.Mul),
-                new CharToTokenType('/', SoqlTokenType.Div),
-                new CharToTokenType('%', SoqlTokenType.Mod),
-                new CharToTokenType('<', SoqlTokenType.LT),
-                new CharToTokenType('>', SoqlTokenType.GT),
-                new CharToTokenType('=', SoqlTokenType.EQ),
-                new CharToTokenType('(', SoqlTokenType.LeftParen),
-                new CharToTokenType(')', SoqlTokenType.RightParen),
-                new CharToTokenType('{', SoqlTokenType.LeftCurlyBrace),
-                new CharToTokenType('}', SoqlTokenType.RightCurlyBrace),
-                new CharToTokenType('@', SoqlTokenType.At),
-                new CharToTokenType('.', SoqlTokenType.Dot),
-                new CharToTokenType(',', SoqlTokenType.Comma),
-                new CharToTokenType('!', SoqlTokenType.Not),
-                new CharToTokenType('?', SoqlTokenType.QuestionMark),
-                new CharToTokenType(':', SoqlTokenType.Colon),
-            };
+        private static CharToTokenType[] charToTokenType =
+        {
+            new CharToTokenType('+', SoqlTokenType.Add),
+            new CharToTokenType('-', SoqlTokenType.Sub),
+            new CharToTokenType('*', SoqlTokenType.Mul),
+            new CharToTokenType('/', SoqlTokenType.Div),
+            new CharToTokenType('%', SoqlTokenType.Mod),
+            new CharToTokenType('<', SoqlTokenType.LT),
+            new CharToTokenType('>', SoqlTokenType.GT),
+            new CharToTokenType('=', SoqlTokenType.EQ),
+            new CharToTokenType('(', SoqlTokenType.LeftParen),
+            new CharToTokenType(')', SoqlTokenType.RightParen),
+            new CharToTokenType('{', SoqlTokenType.LeftCurlyBrace),
+            new CharToTokenType('}', SoqlTokenType.RightCurlyBrace),
+            new CharToTokenType('@', SoqlTokenType.At),
+            new CharToTokenType('.', SoqlTokenType.Dot),
+            new CharToTokenType(',', SoqlTokenType.Comma),
+            new CharToTokenType('!', SoqlTokenType.Not),
+            new CharToTokenType('?', SoqlTokenType.QuestionMark),
+            new CharToTokenType(':', SoqlTokenType.Colon)
+        };
 
-        static SoqlTokenType[] charIndexToTokenType = new SoqlTokenType[128];
+        private static SoqlTokenType[] charIndexToTokenType = new SoqlTokenType[128];
 
         static SqlTokenizer()
         {
             for (int i = 0; i < 128; ++i)
             {
                 charIndexToTokenType[i] = SoqlTokenType.Invalid;
-            };
+            }
+            ;
 
             foreach (CharToTokenType cht in charToTokenType)
             {
                 // Console.WriteLine("Setting up {0} to {1}", cht.ch, cht.tokenType);
-                charIndexToTokenType[(int)cht.ch] = cht.tokenType;
+                charIndexToTokenType[cht.ch] = cht.tokenType;
             }
         }
 
@@ -317,7 +299,8 @@ namespace Sooda.QL
             if (IgnoreWhiteSpace)
             {
                 SkipWhitespace();
-            };
+            }
+            ;
 
             _tokenPosition = _position;
 
@@ -328,7 +311,7 @@ namespace Sooda.QL
                 return;
             }
 
-            char ch = (char)i;
+            char ch = (char) i;
 
             if (!IgnoreWhiteSpace && Char.IsWhiteSpace(ch))
             {
@@ -337,12 +320,13 @@ namespace Sooda.QL
 
                 while ((ch2 = PeekChar()) != -1)
                 {
-                    if (!Char.IsWhiteSpace((char)ch2))
+                    if (!Char.IsWhiteSpace((char) ch2))
                         break;
 
-                    sb.Append((char)ch2);
+                    sb.Append((char) ch2);
                     ReadChar();
-                };
+                }
+                ;
 
                 TokenType = SoqlTokenType.Whitespace;
                 _tokenValue = sb.ToString();
@@ -359,17 +343,19 @@ namespace Sooda.QL
 
                 while ((i = PeekChar()) != -1)
                 {
-                    ch = (char)i;
+                    ch = (char) i;
 
                     if (Char.IsDigit(ch) || (ch == '.'))
                     {
-                        s += (char)ReadChar();
+                        s += (char) ReadChar();
                     }
                     else
                     {
                         break;
-                    };
-                };
+                    }
+                    ;
+                }
+                ;
 
                 _tokenValue = s;
                 return;
@@ -386,13 +372,13 @@ namespace Sooda.QL
 
                 while ((i = PeekChar()) != -1)
                 {
-                    ch = (char)i;
+                    ch = (char) i;
 
-                    s += (char)ReadChar();
+                    s += (char) ReadChar();
 
                     if (ch == '\'')
                     {
-                        if (PeekChar() == (int)'\'')
+                        if (PeekChar() == '\'')
                         {
                             s += '\'';
                             ReadChar();
@@ -400,33 +386,36 @@ namespace Sooda.QL
                         else
                             break;
                     }
-                };
+                }
+                ;
 
                 _tokenValue = s;
                 return;
             }
 
-            if (ch == '_' || Char.IsLetter(ch))
+            if (ch == '_' || ch == '@' || Char.IsLetter(ch))
             {
                 TokenType = SoqlTokenType.Keyword;
 
                 StringBuilder sb = new StringBuilder();
 
-                sb.Append((char)ch);
+                sb.Append(ch);
 
                 ReadChar();
 
                 while ((i = PeekChar()) != -1)
                 {
-                    if ((char)i == '_' || Char.IsLetterOrDigit((char)i))
+                    if ((char) i == '_' || ch == '@' || Char.IsLetterOrDigit((char) i))
                     {
-                        sb.Append((char)ReadChar());
+                        sb.Append((char) ReadChar());
                     }
                     else
                     {
                         break;
-                    };
-                };
+                    }
+                    ;
+                }
+                ;
 
                 _tokenValue = sb.ToString();
                 _tokenValueLowercase = _tokenValue.ToLower();
@@ -436,7 +425,7 @@ namespace Sooda.QL
             ReadChar();
             _tokenValue = ch.ToString();
 
-            if (ch == '<' && PeekChar() == (int)'>')
+            if (ch == '<' && PeekChar() == '>')
             {
                 TokenType = SoqlTokenType.NE;
                 _tokenValue = "<>";
@@ -444,7 +433,7 @@ namespace Sooda.QL
                 return;
             }
 
-            if (ch == '!' && PeekChar() == (int)'=')
+            if (ch == '!' && PeekChar() == '=')
             {
                 TokenType = SoqlTokenType.NE;
                 _tokenValue = "!=";
@@ -452,7 +441,7 @@ namespace Sooda.QL
                 return;
             }
 
-            if (ch == '&' && PeekChar() == (int)'&')
+            if (ch == '&' && PeekChar() == '&')
             {
                 TokenType = SoqlTokenType.And;
                 _tokenValue = "&&";
@@ -460,7 +449,7 @@ namespace Sooda.QL
                 return;
             }
 
-            if (ch == '|' && PeekChar() == (int)'|')
+            if (ch == '|' && PeekChar() == '|')
             {
                 TokenType = SoqlTokenType.Or;
                 _tokenValue = "||";
@@ -468,7 +457,7 @@ namespace Sooda.QL
                 return;
             }
 
-            if (ch == '<' && PeekChar() == (int)'=')
+            if (ch == '<' && PeekChar() == '=')
             {
                 TokenType = SoqlTokenType.LE;
                 _tokenValue = "<=";
@@ -476,7 +465,7 @@ namespace Sooda.QL
                 return;
             }
 
-            if (ch == '>' && PeekChar() == (int)'=')
+            if (ch == '>' && PeekChar() == '=')
             {
                 TokenType = SoqlTokenType.GE;
                 _tokenValue = ">=";
@@ -484,7 +473,7 @@ namespace Sooda.QL
                 return;
             }
 
-            if (ch == '=' && PeekChar() == (int)'=')
+            if (ch == '=' && PeekChar() == '=')
             {
                 TokenType = SoqlTokenType.EQ;
                 _tokenValue = "==";
@@ -502,10 +491,7 @@ namespace Sooda.QL
                     _tokenValue = new String(ch, 1);
                     return;
                 }
-                else
-                {
-                    throw new Exception("Invalid punctuation: " + ch);
-                }
+                throw new Exception("Invalid punctuation: " + ch);
             }
             throw new Exception("Invalid token: " + ch);
         }

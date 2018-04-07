@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -30,12 +29,18 @@
 
 namespace Sooda.ObjectMapper.KeyGenerators
 {
+    using Schema;
+
+    ///<Summary>
+    ///Bigint key generator
+    ///</Summary>
     public class TableBasedGeneratorBigint : TableBasedGeneratorBase, IPrimaryKeyGenerator
     {
-        long currentValue = 0;
-        long maxValue = 0;
+        private long _currentValue;
+        private long _maxValue;
 
-        public TableBasedGeneratorBigint(string keyName, Sooda.Schema.DataSourceInfo dataSourceInfo) : base(keyName, dataSourceInfo)
+        public TableBasedGeneratorBigint(string keyName, DataSourceInfo dataSourceInfo)
+            : base(keyName, dataSourceInfo)
         {
         }
 
@@ -43,12 +48,11 @@ namespace Sooda.ObjectMapper.KeyGenerators
         {
             lock (this)
             {
-                if (currentValue >= maxValue)
-                {
-                    currentValue = AcquireNextRange();
-                    maxValue = currentValue + poolSize;
-                }
-                return currentValue++;
+                if (_currentValue < _maxValue) return _currentValue++;
+
+                _currentValue = AcquireNextRange();
+                _maxValue = _currentValue + PoolSize;
+                return _currentValue++;
             }
         }
     }

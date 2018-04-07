@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -29,21 +28,22 @@
 //
 
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace SoodaSchemaTool
 {
+    using System.Collections.Generic;
+
     public class CommandFactory
-    {
-        private static readonly Dictionary<string, Type> _commands = new Dictionary<string, Type>();
+	{
+        private static readonly Dictionary<string, Type> Commands = new Dictionary<string, Type>();
 
         public static Command CreateCommand(string name)
         {
             Type t;
-            if (!_commands.TryGetValue(name, out t))
+            if (!Commands.TryGetValue(name, out t))
                 throw new Exception("Unknown command: " + name);
-            Command command = (Command)Activator.CreateInstance(t);
+            Command command = (Command) Activator.CreateInstance(t);
             return command;
         }
 
@@ -51,17 +51,17 @@ namespace SoodaSchemaTool
         {
             foreach (Type t in Assembly.GetCallingAssembly().GetTypes())
             {
-                CommandAttribute ca = (CommandAttribute) Attribute.GetCustomAttribute(t, typeof(CommandAttribute));
+                CommandAttribute ca = (CommandAttribute) Attribute.GetCustomAttribute(t, typeof (CommandAttribute));
                 if (ca != null)
                 {
-                    _commands[ca.Name] = t;
+                    Commands[ca.Name] = t;
                 }
             }
         }
 
         public static IEnumerable<Type> RegisteredTypes
         {
-            get { return _commands.Values; }
+            get { return Commands.Values; }
         }
     }
 }

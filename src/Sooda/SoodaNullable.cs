@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,10 +27,10 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System.Data.SqlTypes;
-
 namespace Sooda
 {
+    using System.Data.SqlTypes;
+
     public class SoodaNullable
     {
         // non-generic methods to extract the value of a nullable type and box it
@@ -39,81 +38,83 @@ namespace Sooda
         {
             if (a.IsNull)
                 return null;
-            else
-                return a.Value;
+            return a.Value;
         }
+
         public static object Box(SqlInt32 a)
         {
             if (a.IsNull)
                 return null;
-            else
-                return a.Value;
+            return a.Value;
         }
+
         public static object Box(SqlInt64 a)
         {
             if (a.IsNull)
                 return null;
-            else
-                return a.Value;
+            return a.Value;
         }
+
         public static object Box(SqlString a)
         {
             if (a.IsNull)
                 return null;
-            else
-                return a.Value;
+            return a.Value;
         }
+
         public static object Box(SqlSingle a)
         {
             if (a.IsNull)
                 return null;
-            else
-                return a.Value;
+            return a.Value;
         }
+
         public static object Box(SqlDouble a)
         {
             if (a.IsNull)
                 return null;
-            else
-                return a.Value;
+            return a.Value;
         }
+
         public static object Box(SqlDateTime a)
         {
             if (a.IsNull)
                 return null;
-            else
-                return a.Value;
+            return a.Value;
         }
+
         public static object Box(SqlGuid a)
         {
             if (a.IsNull)
                 return null;
-            else
-                return a.Value;
+            return a.Value;
         }
+
         public static object Box(SqlDecimal a)
         {
             if (a.IsNull)
                 return null;
-            else
-                return a.Value;
+            return a.Value;
         }
+
         public static object Box(SqlBoolean a)
         {
             if (a.IsNull)
                 return null;
-            else
-                return a.Value;
+            return a.Value;
         }
+
         public static object Box(SqlBinary a)
         {
             if (a.IsNull)
                 return null;
-            else
-                return a.Value;
+            return a.Value;
         }
 
         // this catches all of the remaining values
-        public static object Box(object a) { return a; }
+        public static object Box(object a)
+        {
+            return a;
+        }
     }
 }

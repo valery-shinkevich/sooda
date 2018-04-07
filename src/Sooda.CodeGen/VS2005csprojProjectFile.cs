@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,18 +27,23 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System.Xml;
-
 namespace Sooda.CodeGen
 {
+    using System.Xml;
+
     public class VS2005csprojProjectFile : VS2005ProjectFileBase
     {
-        public VS2005csprojProjectFile() : base(".csproj", "Sooda.CodeGen.Templates.vs2005.CSharp.csproj") { }
+        public VS2005csprojProjectFile() : base(".csproj", "Sooda.CodeGen.Templates.vs2005.CSharp.csproj")
+        {
+        }
+
         public override void CreateNew(string outputNamespace, string assemblyName)
         {
             base.CreateNew(outputNamespace, assemblyName);
-            XmlElement el = SelectElement(doc, "msbuild:Project/msbuild:PropertyGroup/msbuild:RootNamespace");
-            if (IsEmpty(el))
+            XmlElement el =
+                (XmlElement)
+                    doc.SelectSingleNode("msbuild:Project/msbuild:PropertyGroup/msbuild:RootNamespace", namespaceManager);
+            if (el != null && el.InnerText.Trim() == "")
             {
                 el.InnerText = outputNamespace;
             }

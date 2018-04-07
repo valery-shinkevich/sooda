@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,10 +27,10 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-
 namespace Sooda
 {
+    using System;
+
     /// <summary>
     /// Specifies options for serializing transactions and objects to XML.
     /// </summary>
@@ -58,6 +57,6 @@ namespace Sooda
         /// </summary>
         IncludeDebugInfo = 0x4,
 
-        Canonical = 0x8,
+        Canonical = 0x8
     }
 }

@@ -1,6 +1,5 @@
-//
+﻿//
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,31 +27,35 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.Collections;
-using System.Reflection;
-
 namespace Sooda
 {
+    using System.Collections.Generic;
+    using System.Reflection;
+
     ///Reflection based implementation, with caching
     public abstract class SoodaObjectReflectionCachingFieldValues : SoodaObjectReflectionBasedFieldValues
     {
-        static readonly Hashtable _fieldCache = new Hashtable();
+        private static readonly Dictionary<string, FieldInfo> FieldCache = new Dictionary<string, FieldInfo>();
 
         protected override FieldInfo GetField(string name)
         {
-            Type t = GetType();
-            string key = t.FullName + "." + name;
-            FieldInfo fi = (FieldInfo) _fieldCache[key];
-            if (fi != null) return fi;
-            lock (_fieldCache)
+            var t = GetType();
+            var key = t.FullName + "." + name;
+            FieldInfo fi;
+            if (FieldCache.TryGetValue(key, out fi))
             {
-                fi = (FieldInfo) _fieldCache[key];
-                if (fi != null) return fi;
+                return fi;
+            }
+            lock (FieldCache)
+            {
+                if (FieldCache.TryGetValue(key, out fi))
+                {
+                    return fi;
+                }
                 fi = t.GetField(name);
                 if (fi != null)
                 {
-                    _fieldCache[key] = fi;
+                    FieldCache[key] = fi;
                 }
                 return fi;
             }

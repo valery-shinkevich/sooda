@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -33,8 +32,7 @@ using System.Reflection;
 [assembly: AssemblyTitle("Sooda Code Generator")]
 [assembly: AssemblyDescription("Sooda Code Generator Library")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Sooda Community - sooda.sourceforge.net")]
+[assembly: AssemblyCompany("Sooda Community - www.sooda.org")]
 [assembly: AssemblyProduct("Sooda - Simple Object Oriented Database Access")]
 [assembly: AssemblyCopyright("Copyright (c) 2002-2006 by Jaroslaw Kowalski")]
 [assembly: AssemblyCulture("")]
-

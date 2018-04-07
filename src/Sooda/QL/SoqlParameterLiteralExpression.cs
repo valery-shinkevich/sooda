@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,27 +27,28 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System.Xml.Serialization;
-
 namespace Sooda.QL
 {
+    using System.Xml.Serialization;
+
     public class SoqlParameterLiteralExpression : SoqlExpression, ILiteralModifiers
     {
-        [XmlAttribute("position")]
-        public readonly int ParameterPosition;
-        private SoqlLiteralValueModifiers _modifiers = null;
+        [XmlAttribute("position")] public readonly int ParameterPosition;
+        private SoqlLiteralValueModifiers _modifiers;
 
-        public SoqlParameterLiteralExpression() { }
+        public SoqlParameterLiteralExpression()
+        {
+        }
 
         public SoqlParameterLiteralExpression(int parameterPos)
         {
-            this.ParameterPosition = parameterPos;
+            ParameterPosition = parameterPos;
         }
 
         public SoqlParameterLiteralExpression(int parameterPos, SoqlLiteralValueModifiers modifiers)
         {
-            this.ParameterPosition = parameterPos;
-            this.Modifiers = modifiers;
+            ParameterPosition = parameterPos;
+            Modifiers = modifiers;
         }
 
         public SoqlLiteralValueModifiers Modifiers
@@ -65,8 +65,7 @@ namespace Sooda.QL
 
         public override object Evaluate(ISoqlEvaluateContext context)
         {
-            return context.GetParameter(this.ParameterPosition);
+            return context.GetParameter(ParameterPosition);
         }
-
     }
 }

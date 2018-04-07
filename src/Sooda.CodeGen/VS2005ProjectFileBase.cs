@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,20 +27,19 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.IO;
-using System.Xml;
-
 namespace Sooda.CodeGen
 {
-    public abstract class VS2005ProjectFileBase : IProjectFile
+    using System;
+    using System.IO;
+    using System.Xml;
+
+    public class VS2005ProjectFileBase : IProjectFile
     {
         protected XmlDocument doc = new XmlDocument();
-        protected readonly string projectExtension;
-        protected readonly string templateName;
-        protected bool modified = false;
-        XmlNamespaceManager namespaceManager;
-        const string msbuildNamespace = "http://schemas.microsoft.com/developer/msbuild/2003";
+        protected string projectExtension;
+        protected string templateName;
+        protected bool modified;
+        protected XmlNamespaceManager namespaceManager;
 
         protected VS2005ProjectFileBase(string projectExtension, string templateName)
         {
@@ -49,31 +47,22 @@ namespace Sooda.CodeGen
             this.templateName = templateName;
         }
 
-        protected XmlElement SelectElement(XmlNode parent, string xpath)
-        {
-            if (namespaceManager == null)
-            {
-                namespaceManager = new XmlNamespaceManager(doc.NameTable);
-                namespaceManager.AddNamespace("msbuild", msbuildNamespace);
-            }
-            return (XmlElement) parent.SelectSingleNode(xpath, namespaceManager);
-        }
-
-        protected static bool IsEmpty(XmlElement element)
-        {
-            return element != null && element.InnerText.Trim() == "";
-        }
-
         public virtual void CreateNew(string outputNamespace, string assemblyName)
         {
             doc = new XmlDocument();
-            using (Stream ins = typeof(CodeGenerator).Assembly.GetManifestResourceStream(templateName))
+            namespaceManager = new XmlNamespaceManager(doc.NameTable);
+            namespaceManager.AddNamespace("msbuild", "http://schemas.microsoft.com/developer/msbuild/2003");
+            using (Stream ins = typeof (CodeGenerator).Assembly.GetManifestResourceStream(templateName))
             {
                 doc.Load(ins);
             }
             modified = true;
-            XmlElement assemblyNameElement = SelectElement(doc, "msbuild:Project/msbuild:PropertyGroup[msbuild:OutputType]/msbuild:AssemblyName");
-            if (IsEmpty(assemblyNameElement))
+            XmlElement assemblyNameElement =
+                (XmlElement)
+                    doc.SelectSingleNode(
+                        "msbuild:Project/msbuild:PropertyGroup[msbuild:OutputType]/msbuild:AssemblyName",
+                        namespaceManager);
+            if (assemblyNameElement != null && assemblyNameElement.InnerText.Trim() == "")
             {
                 assemblyNameElement.InnerText = assemblyName;
             }
@@ -83,13 +72,17 @@ namespace Sooda.CodeGen
         {
             doc = new XmlDocument();
             doc.Load(fileName);
+            namespaceManager = new XmlNamespaceManager(doc.NameTable);
+            namespaceManager.AddNamespace("msbuild", "http://schemas.microsoft.com/developer/msbuild/2003");
             modified = false;
         }
 
         void IProjectFile.SaveTo(string fileName)
         {
-            XmlElement projectGuid = SelectElement(doc, "msbuild:Project/msbuild:PropertyGroup/msbuild:ProjectGuid");
-            if (IsEmpty(projectGuid))
+            XmlElement projectGuid =
+                (XmlElement)
+                    doc.SelectSingleNode("msbuild:Project/msbuild:PropertyGroup/msbuild:ProjectGuid", namespaceManager);
+            if (projectGuid != null && projectGuid.InnerText.Trim() == "")
             {
                 Guid g = Guid.NewGuid();
                 projectGuid.InnerText = "{" + g.ToString().ToUpper() + "}";
@@ -102,33 +95,82 @@ namespace Sooda.CodeGen
             }
         }
 
-        void AddItem(string type, string relativeFileName)
+        private XmlElement GetItemGroup(string whichHas)
         {
-            XmlElement itemGroup = SelectElement(doc, "msbuild:Project/msbuild:ItemGroup[msbuild:Compile]");
+            XmlElement itemGroup =
+                (XmlElement)
+                    doc.SelectSingleNode("msbuild:Project/msbuild:ItemGroup[msbuild:" + whichHas + "]", namespaceManager);
             if (itemGroup == null)
             {
-                itemGroup = doc.CreateElement("", "ItemGroup", msbuildNamespace);
-                doc.DocumentElement.AppendChild(itemGroup);
+                itemGroup = doc.CreateElement("", "ItemGroup", "http://schemas.microsoft.com/developer/msbuild/2003");
+                if (doc.DocumentElement != null) doc.DocumentElement.AppendChild(itemGroup);
             }
+            return itemGroup;
+        }
 
-            XmlElement file = SelectElement(itemGroup, "msbuild:" + type + "[@Include='" + relativeFileName + "']");
+
+        void IProjectFile.AddCompileUnit(string relativeFileName)
+        {
+            XmlElement compileItemGroup = GetItemGroup("Compile");
+
+            XmlElement file =
+                (XmlElement)
+                    compileItemGroup.SelectSingleNode("msbuild:Compile[@Include='" + relativeFileName + "']",
+                        namespaceManager);
             if (file == null)
             {
-                XmlElement el = doc.CreateElement("", type, msbuildNamespace);
+                XmlElement el = doc.CreateElement("", "Compile", "http://schemas.microsoft.com/developer/msbuild/2003");
                 el.SetAttribute("Include", relativeFileName);
-                itemGroup.AppendChild(el);
+                compileItemGroup.AppendChild(el);
                 modified = true;
             }
         }
 
-        void IProjectFile.AddCompileUnit(string relativeFileName)
+        void IProjectFile.AddCompileUnit(string relativeFileName, string dependentFileName)
         {
-            AddItem("Compile", relativeFileName);
+            XmlElement compileItemGroup = GetItemGroup("Compile");
+
+            var file =
+                (XmlElement)
+                    compileItemGroup.SelectSingleNode("msbuild:Compile[@Include='" + relativeFileName + "']",
+                        namespaceManager);
+            if (file == null)
+            {
+                XmlElement el = doc.CreateElement("", "Compile", "http://schemas.microsoft.com/developer/msbuild/2003");
+                el.SetAttribute("Include", relativeFileName);
+                if (!string.IsNullOrEmpty(dependentFileName))
+                {
+                    var el1 = doc.CreateElement("", "AutoGen", "http://schemas.microsoft.com/developer/msbuild/2003");
+                    el1.InnerText = "True";
+
+                    var el2 = doc.CreateElement("", "DependentUpon",
+                        "http://schemas.microsoft.com/developer/msbuild/2003");
+                    el2.InnerText = dependentFileName;
+
+                    el.AppendChild(el1);
+                    el.AppendChild(el2);
+                }
+                compileItemGroup.AppendChild(el);
+                modified = true;
+            }
         }
 
         void IProjectFile.AddResource(string relativeFileName)
         {
-            AddItem("EmbeddedResource", relativeFileName);
+            XmlElement compileItemGroup = GetItemGroup("Compile");
+
+            XmlElement file =
+                (XmlElement)
+                    compileItemGroup.SelectSingleNode("msbuild:EmbeddedResource[@Include='" + relativeFileName + "']",
+                        namespaceManager);
+            if (file == null)
+            {
+                XmlElement el = doc.CreateElement("", "EmbeddedResource",
+                    "http://schemas.microsoft.com/developer/msbuild/2003");
+                el.SetAttribute("Include", relativeFileName);
+                compileItemGroup.AppendChild(el);
+                modified = true;
+            }
         }
 
         string IProjectFile.GetProjectFileName(string outNamespace)

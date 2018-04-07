@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,20 +27,26 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using Sooda.Schema;
 using System;
-using System.Collections;
+using System.Xml;
+using Sooda.Schema;
+using Sooda.Sql;
 using System.IO;
 using System.Xml.Serialization;
+using System.Collections;
 
 namespace SoodaSchemaTool
 {
     [Command("genschema", "Generate schema (*.xml) from database structure")]
     public class CommandGenSchema : Command, ISchemaImporterOptions
-    {
+	{
         private string _databaseType = "mssql";
         private string _connectionString;
         private string _outputFile;
+
+		public CommandGenSchema()
+		{
+		}
 
         public string DatabaseType
         {
@@ -63,14 +68,16 @@ namespace SoodaSchemaTool
 
         public override int Run(string[] args)
         {
-            SchemaImporter importer = null;
+            Sooda.Schema.SchemaImporter importer = null;
 
             switch (DatabaseType)
             {
                 case "mssql":
                 case "sqlserver":
-                    importer = new MSSqlSchemaImporter();
+                    importer = new MsSqlSchemaImporter();
                     break;
+                default:
+                    throw new NotImplementedException();
             }
 
             SchemaInfo schemaInfo = importer.GetSchemaFromDatabase(this);
@@ -165,7 +172,7 @@ namespace SoodaSchemaTool
                         coll.ClassName = ci.Name;
                         coll.ForeignFieldName = fi.Name;
                         al.Add(coll);
-
+                        
                         fi.ReferencedClass.Collections1toN = (CollectionOnetoManyInfo[])al.ToArray(typeof(CollectionOnetoManyInfo));
                         // ci.Collections1toN
                     }
@@ -199,8 +206,8 @@ namespace SoodaSchemaTool
                 al.Add(mm);
 
                 ri.Table.Fields[1].ReferencedClass.CollectionsNtoN = (CollectionManyToManyInfo[])al.ToArray(typeof(CollectionManyToManyInfo));
-
+            
             }
         }
-    }
+	}
 }

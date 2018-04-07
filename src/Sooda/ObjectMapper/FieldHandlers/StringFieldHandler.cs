@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,21 +27,20 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.Data;
-
 namespace Sooda.ObjectMapper.FieldHandlers
 {
+    using System;
+    using System.Data;
+
     public class StringFieldHandler : SoodaFieldHandler
     {
-        public StringFieldHandler(bool nullable) : base(nullable) { }
+        public StringFieldHandler(bool nullable) : base(nullable)
+        {
+        }
 
         protected override string TypeName
         {
-            get
-            {
-                return "string";
-            }
+            get { return "string"; }
         }
 
         public override object RawRead(IDataRecord record, int pos)
@@ -76,6 +74,7 @@ namespace Sooda.ObjectMapper.FieldHandlers
         }
 
         private static readonly object _zeroValue = String.Empty;
+
         public override object ZeroValue()
         {
             return _zeroValue;
@@ -83,12 +82,12 @@ namespace Sooda.ObjectMapper.FieldHandlers
 
         public override Type GetFieldType()
         {
-            return typeof(String);
+            return typeof (String);
         }
 
         public override Type GetSqlType()
         {
-            return typeof(System.Data.SqlTypes.SqlString);
+            return typeof (System.Data.SqlTypes.SqlString);
         }
 
         public override void SetupDBParameter(IDbDataParameter parameter, object value)
@@ -103,15 +102,14 @@ namespace Sooda.ObjectMapper.FieldHandlers
         {
             if (fieldValue == null)
                 return System.Data.SqlTypes.SqlString.Null;
-            else
-                return new System.Data.SqlTypes.SqlString((String)fieldValue);
+            return new System.Data.SqlTypes.SqlString((String) fieldValue);
         }
 
         public static string GetNotNullValue(object val)
         {
             if (val == null)
                 throw new InvalidOperationException("Attempt to read a non-null value that isn't set yet");
-            return (string)val;
+            return (string) val;
         }
     }
 }

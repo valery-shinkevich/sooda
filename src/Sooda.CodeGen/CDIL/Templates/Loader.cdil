@@ -1,7 +1,5 @@
 class ${ClassName}Loader
-
 #if WithSoql
-
 method DoGetList(SoodaTransaction tran, SoodaWhereClause whereClause, SoodaOrderBy orderByClause, System.Int32 startIdx, System.Int32 pageCount, SoodaSnapshotOptions options)
     attributes Assembly,Static,Private,Overloaded,Final
     returns ${ClassName}List
@@ -471,15 +469,13 @@ method Linq(SoodaTransaction tran, SoodaSnapshotOptions options)
     returns generic(System.Linq.IQueryable, ${ClassName})
 begin
     return new generic(Sooda.Linq.SoodaQuerySource, ${ClassName})(arg(tran), typeref(${ClassName}_Factory).TheClassInfo, arg(options));
-end
-
+ end
 
 property generic(System.Linq.IQueryable, ${ClassName}) AllQuery
     attributes Public,Static,Final${OptionalNewAttribute}
 get
-    return defaultscope.Linq(typeref(SoodaSnapshotOptions).NoWriteObjects);
+    return defaultscope.Linq(typeref(SoodaSnapshotOptions).NoWriteObjects); 
 end
-
 
 #endif
 

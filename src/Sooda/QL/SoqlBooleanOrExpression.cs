@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -35,7 +34,9 @@ namespace Sooda.QL
         public SoqlBooleanExpression par1;
         public SoqlBooleanExpression par2;
 
-        public SoqlBooleanOrExpression() { }
+        public SoqlBooleanOrExpression()
+        {
+        }
 
         public SoqlBooleanOrExpression(SoqlBooleanExpression par1, SoqlBooleanExpression par2)
         {
@@ -51,20 +52,20 @@ namespace Sooda.QL
 
         public override SoqlExpression Simplify()
         {
-            par1 = (SoqlBooleanExpression)par1.Simplify();
-            par2 = (SoqlBooleanExpression)par2.Simplify();
+            par1 = (SoqlBooleanExpression) par1.Simplify();
+            par2 = (SoqlBooleanExpression) par2.Simplify();
 
             ISoqlConstantExpression cp1 = par1 as ISoqlConstantExpression;
             ISoqlConstantExpression cp2 = par2 as ISoqlConstantExpression;
 
             // left subexpression is true - our node is true
 
-            if (cp1 != null && (bool)cp1.GetConstantValue() == true)
+            if (cp1 != null && (bool) cp1.GetConstantValue())
                 return new SoqlBooleanLiteralExpression(true);
 
             // right subexpression is true - our node is true
 
-            if (cp2 != null && (bool)cp2.GetConstantValue() == true)
+            if (cp2 != null && (bool) cp2.GetConstantValue())
                 return new SoqlBooleanLiteralExpression(true);
 
             // both are constant and false - our node is false
@@ -72,10 +73,10 @@ namespace Sooda.QL
             if (cp1 != null && cp2 != null)
                 return new SoqlBooleanLiteralExpression(false);
 
-            if (cp1 != null && (bool)cp1.GetConstantValue() == false)
+            if (cp1 != null && (bool) cp1.GetConstantValue() == false)
                 return par2;
 
-            if (cp2 != null && (bool)cp2.GetConstantValue() == false)
+            if (cp2 != null && (bool) cp2.GetConstantValue() == false)
                 return par1;
 
             return this;
@@ -87,7 +88,7 @@ namespace Sooda.QL
             if (val1 == null)
                 return null;
 
-            bool bval1 = (bool)val1;
+            bool bval1 = (bool) val1;
             if (bval1)
                 return true;
 
@@ -95,7 +96,7 @@ namespace Sooda.QL
             if (val2 == null)
                 return null;
 
-            bool bval2 = (bool)val2;
+            bool bval2 = (bool) val2;
             if (bval2)
                 return true;
 

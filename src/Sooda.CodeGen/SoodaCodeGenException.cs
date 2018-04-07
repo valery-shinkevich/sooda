@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,17 +27,28 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.Runtime.Serialization;
-
 namespace Sooda.CodeGen
 {
+    using System;
+    using System.Runtime.Serialization;
+
     [Serializable]
     public class SoodaCodeGenException : Exception
     {
-        public SoodaCodeGenException() { }
-        public SoodaCodeGenException(string message) : base(message) { }
-        public SoodaCodeGenException(string message, Exception inner) : base(message, inner) { }
-        protected SoodaCodeGenException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        public SoodaCodeGenException()
+        {
+        }
+
+        public SoodaCodeGenException(string message) : base(message)
+        {
+        }
+
+        public SoodaCodeGenException(string message, Exception inner) : base(message, inner)
+        {
+        }
+
+        protected SoodaCodeGenException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
     }
 }

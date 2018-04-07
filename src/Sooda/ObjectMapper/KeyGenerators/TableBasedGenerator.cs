@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -30,12 +29,17 @@
 
 namespace Sooda.ObjectMapper.KeyGenerators
 {
+    using Schema;
+
     public class TableBasedGenerator : TableBasedGeneratorBase, IPrimaryKeyGenerator
     {
-        int currentValue = 0;
-        int maxValue = 0;
+        private int _currentValue;
+        private int _maxValue;
 
-        public TableBasedGenerator(string keyName, Sooda.Schema.DataSourceInfo dataSourceInfo) : base(keyName, dataSourceInfo)
+        //public static int CurrentBaseCode = 0;
+        //public static int KeyMultiplier = 1;
+
+        public TableBasedGenerator(string keyName, DataSourceInfo dataSourceInfo) : base(keyName, dataSourceInfo)
         {
         }
 
@@ -43,12 +47,12 @@ namespace Sooda.ObjectMapper.KeyGenerators
         {
             lock (this)
             {
-                if (currentValue >= maxValue)
-                {
-                    currentValue = (int) AcquireNextRange();
-                    maxValue = currentValue + poolSize;
-                }
-                return currentValue++;
+                if (_currentValue < _maxValue) return (_currentValue++); //*KeyMultiplier + CurrentBaseCode;
+
+                _currentValue = (int) AcquireNextRange();
+                _maxValue = _currentValue + PoolSize;
+
+                return (_currentValue++); //*KeyMultiplier + CurrentBaseCode;
             }
         }
     }

@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,22 +27,21 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.Data;
-using System.Data.SqlTypes;
-
 namespace Sooda.ObjectMapper.FieldHandlers
 {
+    using System;
+    using System.Data;
+    using System.Data.SqlTypes;
+
     public class BlobFieldHandler : SoodaFieldHandler
     {
-        public BlobFieldHandler(bool nullable) : base(nullable) { }
+        public BlobFieldHandler(bool nullable) : base(nullable)
+        {
+        }
 
         protected override string TypeName
         {
-            get
-            {
-                return "blob";
-            }
+            get { return "blob"; }
         }
 
         public override object RawRead(IDataRecord record, int pos)
@@ -71,8 +69,8 @@ namespace Sooda.ObjectMapper.FieldHandlers
 
         public static string SerializeToString(object obj)
         {
-            byte[] d = (byte[])obj;
-            return System.Convert.ToBase64String(d);
+            byte[] d = (byte[]) obj;
+            return Convert.ToBase64String(d);
         }
 
         public static object DeserializeFromString(string s)
@@ -80,7 +78,8 @@ namespace Sooda.ObjectMapper.FieldHandlers
             return Convert.FromBase64String(s);
         }
 
-        private static object _zeroValue = new byte[0];
+        private static readonly object _zeroValue = new byte[0];
+
         public override object ZeroValue()
         {
             return _zeroValue;
@@ -88,12 +87,12 @@ namespace Sooda.ObjectMapper.FieldHandlers
 
         public override Type GetFieldType()
         {
-            return typeof(byte[]);
+            return typeof (byte[]);
         }
 
         public override Type GetSqlType()
         {
-            return typeof(SqlBinary);
+            return typeof (SqlBinary);
         }
 
         public override void SetupDBParameter(IDbDataParameter parameter, object value)
@@ -109,19 +108,18 @@ namespace Sooda.ObjectMapper.FieldHandlers
 
         // type conversions - used in generated stub code
 
-        public static System.Data.SqlTypes.SqlBinary GetSqlNullableValue(object fieldValue)
+        public static SqlBinary GetSqlNullableValue(object fieldValue)
         {
             if (fieldValue == null)
-                return System.Data.SqlTypes.SqlBinary.Null;
-            else
-                return new System.Data.SqlTypes.SqlBinary((byte[])fieldValue);
+                return SqlBinary.Null;
+            return new SqlBinary((byte[]) fieldValue);
         }
 
         public static byte[] GetNotNullValue(object val)
         {
             if (val == null)
                 throw new InvalidOperationException("Attempt to read a non-null value that isn't set yet");
-            return (byte[])val;
+            return (byte[]) val;
         }
     }
 }

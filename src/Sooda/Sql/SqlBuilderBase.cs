@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,29 +27,29 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using Sooda.ObjectMapper;
-using Sooda.ObjectMapper.FieldHandlers;
-using Sooda.QL;
-using Sooda.Schema;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Data;
-using System.Globalization;
-using System.IO;
-
 namespace Sooda.Sql
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Data;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using ObjectMapper;
+    using ObjectMapper.FieldHandlers;
+    using QL;
+    using Schema;
+
     public abstract class SqlBuilderBase : ISqlBuilder
     {
         private bool _useSafeLiterals = true;
 
-        static string HashString(string input)
+        private static string HashString(string input)
         {
-            int sum = 0;
-            for (int i = 0; i < input.Length; i++)
-                sum += i * input[i];
-            sum &= 0xffff;
+            int sum = input.Select((t, i) => i*t).Sum();
+            sum = sum%65536;
             return sum.ToString("x4");
         }
 
@@ -75,10 +74,7 @@ namespace Sooda.Sql
 
         public virtual SqlOuterJoinSyntax OuterJoinSyntax
         {
-            get
-            {
-                return SqlOuterJoinSyntax.Ansi;
-            }
+            get { return SqlOuterJoinSyntax.Ansi; }
         }
 
         public virtual string StringConcatenationOperator
@@ -88,95 +84,46 @@ namespace Sooda.Sql
 
         public virtual int MaxIdentifierLength
         {
-            get
-            {
-                return 30;
-            }
+            get { return 30; }
         }
 
-        public void GenerateCreateTableField(TextWriter xtw, Sooda.Schema.FieldInfo fieldInfo)
+        public void GenerateCreateTableField(TextWriter xtw, FieldInfo fieldInfo)
         {
-            xtw.Write('\t');
-            xtw.Write(fieldInfo.DBColumnName);
-            xtw.Write(' ');
-            xtw.Write(GetSQLDataType(fieldInfo));
-            xtw.Write(' ');
-            xtw.Write(GetSQLNullable(fieldInfo));
+            xtw.Write(GenerateCreateTableField(fieldInfo));
         }
 
-        void TerminateDDL(TextWriter xtw, string additionalSettings, string terminator)
+        public void GenerateCreateTable(TextWriter xtw, TableInfo tableInfo, string additionalSettings,
+            string terminator)
         {
-            if (!string.IsNullOrEmpty(additionalSettings))
-            {
-                xtw.Write(' ');
-                xtw.Write(additionalSettings);
-            }
-            xtw.Write(terminator ?? GetDDLCommandTerminator());
-        }
-
-        public void GenerateCreateTable(TextWriter xtw, Sooda.Schema.TableInfo tableInfo, string additionalSettings, string terminator)
-        {
-            xtw.WriteLine("create table {0} (", tableInfo.DBTableName);
-            Dictionary<string, bool> processedFields = new Dictionary<string, bool>();
-            for (int i = 0; i < tableInfo.Fields.Count; ++i)
-            {
-                if (!processedFields.ContainsKey(tableInfo.Fields[i].DBColumnName))
-                {
-                    GenerateCreateTableField(xtw, tableInfo.Fields[i]);
-                    if (i == tableInfo.Fields.Count - 1)
-                        xtw.WriteLine();
-                    else
-                        xtw.WriteLine(',');
-                    processedFields.Add(tableInfo.Fields[i].DBColumnName, true);
-                }
-            }
-            xtw.Write(')');
+            xtw.WriteLine(GenerateCreateTable(tableInfo));
             TerminateDDL(xtw, additionalSettings, terminator);
         }
 
-        public virtual string GetAlterTableStatement(Sooda.Schema.TableInfo tableInfo)
+        public virtual string GetAlterTableStatement(TableInfo tableInfo)
         {
             return String.Format("alter table {0} add primary key", tableInfo.DBTableName);
         }
 
-        public void GeneratePrimaryKey(TextWriter xtw, Sooda.Schema.TableInfo tableInfo, string additionalSettings, string terminator)
+        public void GeneratePrimaryKey(TextWriter xtw, TableInfo tableInfo, string additionalSettings, string terminator)
         {
-            bool first = true;
-
-            foreach (Sooda.Schema.FieldInfo fi in tableInfo.Fields)
-            {
-                if (fi.IsPrimaryKey)
-                {
-                    if (first)
-                    {
-                        xtw.Write(GetAlterTableStatement(tableInfo));
-                        xtw.Write(" (");
-                    }
-                    else
-                    {
-                        xtw.Write(", ");
-                    }
-                    xtw.Write(fi.DBColumnName);
-                    first = false;
-                }
-            }
-            if (!first)
-            {
-                xtw.Write(')');
-                TerminateDDL(xtw, additionalSettings, terminator);
-            }
+            var key = GeneratePrimaryKey(tableInfo);
+            if (!string.IsNullOrEmpty(key)) return;
+            xtw.WriteLine(GeneratePrimaryKey(tableInfo));
+            TerminateDDL(xtw, additionalSettings, terminator);
         }
 
-        public void GenerateForeignKeys(TextWriter xtw, Sooda.Schema.TableInfo tableInfo, string terminator)
+        public void GenerateForeignKeys(TextWriter xtw, TableInfo tableInfo, string terminator)
         {
-            foreach (Sooda.Schema.FieldInfo fi in tableInfo.Fields)
+            foreach (FieldInfo fi in tableInfo.Fields)
             {
                 if (fi.References != null)
                 {
                     xtw.Write("alter table {0} add constraint {1} foreign key ({2}) references {3}({4})",
-                            tableInfo.DBTableName, GetConstraintName(tableInfo.DBTableName, fi.DBColumnName), fi.DBColumnName,
-                            fi.ReferencedClass.UnifiedTables[0].DBTableName, fi.ReferencedClass.GetFirstPrimaryKeyField().DBColumnName
-                            );
+                        tableInfo.DBTableName, GetConstraintName(tableInfo.DBTableName, fi.DBColumnName),
+                        fi.DBColumnName,
+                        fi.ReferencedClass.UnifiedTables[0].DBTableName,
+                        fi.ReferencedClass.GetFirstPrimaryKeyField().DBColumnName
+                        );
                     xtw.Write(terminator ?? GetDDLCommandTerminator());
                 }
             }
@@ -189,12 +136,12 @@ namespace Sooda.Sql
             TerminateDDL(xtw, additionalSettings, terminator);
         }
 
-        public void GenerateIndices(TextWriter xtw, Sooda.Schema.TableInfo tableInfo, string additionalSettings, string terminator)
+        public void GenerateIndices(TextWriter xtw, TableInfo tableInfo, string additionalSettings, string terminator)
         {
-            foreach (Sooda.Schema.FieldInfo fi in tableInfo.Fields)
+            foreach (FieldInfo fi in tableInfo.Fields)
             {
-                if (fi.References != null)
-                    GenerateIndex(xtw, fi, additionalSettings, terminator);
+                if (fi.References == null) continue;
+                GenerateIndex(xtw, fi, additionalSettings, terminator);
             }
         }
 
@@ -222,75 +169,64 @@ namespace Sooda.Sql
             return GetTruncatedIdentifier(String.Format("IDX_{0}_{1}", tableName, column));
         }
 
-        public abstract string GetSQLDataType(Sooda.Schema.FieldInfo fi);
-        public abstract string GetSQLOrderBy(Sooda.Schema.FieldInfo fi, bool start);
+        public abstract string GetSQLDataType(FieldInfo fi);
+        public abstract string GetSQLOrderBy(FieldInfo fi, bool start);
 
-        public virtual string GetSQLNullable(Sooda.Schema.FieldInfo fi)
+        // ReSharper disable once InconsistentNaming
+        public virtual string GetSQLNullable(FieldInfo fi)
         {
-            if (fi.IsDynamic)
-                return "not null";
-            if (fi.IsNullable)
-                return "null";
-            if (fi.ReferencedClass == null || fi.IsPrimaryKey || fi.ParentRelation != null || fi.ReadOnly || fi.ParentClass.ReadOnly)
-                return "not null";
-            if (fi.PrecommitTypedValue == SchemaInfo.NullPrecommitValue)
-                return "null";
-            return "not null";
+            return fi.IsNullable && !fi.IsDynamic ? "null" : "not null";
         }
 
-        protected virtual bool SetDbTypeFromValue(IDbDataParameter parameter, object value, SoqlLiteralValueModifiers modifiers)
+        protected virtual bool SetDbTypeFromValue(IDbDataParameter parameter, object value,
+            SoqlLiteralValueModifiers modifiers)
         {
             DbType dbType;
-            if (!paramTypes.TryGetValue(value.GetType(), out dbType))
-                return false;
+            if (!ParamTypes.TryGetValue(value.GetType(), out dbType)) return false;
             parameter.DbType = dbType;
             return true;
         }
 
-        private static readonly Dictionary<Type, DbType> paramTypes = new Dictionary<Type, DbType>();
+        private static readonly Dictionary<Type, DbType> ParamTypes = new Dictionary<Type, DbType>();
 
         static SqlBuilderBase()
         {
-            paramTypes[typeof(SByte)] = DbType.SByte;
-            paramTypes[typeof(Int16)] = DbType.Int16;
-            paramTypes[typeof(Int32)] = DbType.Int32;
-            paramTypes[typeof(Int64)] = DbType.Int64;
-            paramTypes[typeof(Single)] = DbType.Single;
-            paramTypes[typeof(Double)] = DbType.Double;
-            paramTypes[typeof(String)] = DbType.String;
-            paramTypes[typeof(Boolean)] = DbType.Boolean;
-            paramTypes[typeof(Decimal)] = DbType.Decimal;
-            paramTypes[typeof(Guid)] = DbType.Guid;
-            paramTypes[typeof(TimeSpan)] = DbType.Int32;
-            paramTypes[typeof(byte[])] = DbType.Binary;
-            paramTypes[typeof(System.Drawing.Image)] = DbType.Binary;
-            paramTypes[typeof(System.Drawing.Bitmap)] = DbType.Binary;
+            ParamTypes[typeof (SByte)] = DbType.SByte;
+            ParamTypes[typeof (Int16)] = DbType.Int16;
+            ParamTypes[typeof (Int32)] = DbType.Int32;
+            ParamTypes[typeof (Int64)] = DbType.Int64;
+            ParamTypes[typeof (Single)] = DbType.Single;
+            ParamTypes[typeof (Double)] = DbType.Double;
+            ParamTypes[typeof (String)] = DbType.String;
+            ParamTypes[typeof (Boolean)] = DbType.Boolean;
+            ParamTypes[typeof (Decimal)] = DbType.Decimal;
+            ParamTypes[typeof (Guid)] = DbType.Guid;
+            ParamTypes[typeof (TimeSpan)] = DbType.Int32;
+            ParamTypes[typeof (byte[])] = DbType.Binary;
+            ParamTypes[typeof (System.Drawing.Image)] = DbType.Binary;
+            ParamTypes[typeof (System.Drawing.Bitmap)] = DbType.Binary;
         }
 
         public virtual string QuoteIdentifier(string s)
         {
-            for (int i = 0; i < s.Length; i++)
+            if (s.Where((c, i) => !(c >= 'A' && c <= 'Z')
+                                  && !(c >= 'a' && c <= 'z')
+                                  && !(c >= '0' && c <= '9')
+                                  && !(c == '_' && i > 0)).Any())
             {
-                char c = s[i];
-                if (!(c >= 'A' && c <= 'Z')
-                 && !(c >= 'a' && c <= 'z')
-                 && !(c >= '0' && c <= '9')
-                 && !(c == '_' && i > 0))
-                    return "\"" + s + "\"";
+                return "\"" + s + "\"";
             }
             return s;
         }
 
-        public abstract SqlTopSupportMode TopSupport
-        {
-            get;
-        }
+        public abstract SqlTopSupportMode TopSupport { get; }
 
         protected bool IsStringSafeForLiteral(string v)
         {
             if (v.Length > 500)
                 return false;
-            foreach (char ch in v)
+
+            foreach (var ch in v)
             {
                 switch (ch)
                 {
@@ -389,23 +325,25 @@ namespace Sooda.Sql
 
             p.ParameterName = GetNameForParameter(command.Parameters.Count);
             if (modifiers != null)
+            {
                 FieldHandlerFactory.GetFieldHandler(modifiers.DataTypeOverride).SetupDBParameter(p, v);
+            }
             else
             {
-                SetDbTypeFromValue(p, v, modifiers);
+                SetDbTypeFromValue(p, v, null);
                 p.Value = v;
             }
             command.Parameters.Add(p);
             return p.ParameterName;
         }
 
-        public void BuildCommandWithParameters(System.Data.IDbCommand command, bool append, string query, object[] par, bool isRaw)
+        public void BuildCommandWithParameters(IDbCommand command, bool append, string query, object[] par, bool isRaw)
         {
             if (append)
             {
                 if (command.CommandText == null)
                     command.CommandText = "";
-                else if (command.CommandText.Length > 0)
+                if (command.CommandText != "")
                     command.CommandText += ";\n";
             }
             else
@@ -414,20 +352,22 @@ namespace Sooda.Sql
                 command.Parameters.Clear();
             }
 
-            System.Text.StringBuilder sb = new System.Text.StringBuilder(query.Length * 2);
-            StringCollection paramNames = new StringCollection();
+            var sb = new StringBuilder(query.Length*2);
+            var paramNames = new StringCollection();
 
             for (int i = 0; i < query.Length; ++i)
             {
                 char c = query[i];
 
-                if (c == '\'')
+                if (c == '\'') // locate the string
                 {
                     int j = ++i;
-                    for (;;++j)
+
+                    for (;; ++j)
                     {
                         if (j >= query.Length)
                             throw new ArgumentException("Query has unbalanced quotes");
+
                         if (query[j] == '\'')
                         {
                             if (j + 1 >= query.Length || query[j + 1] != '\'')
@@ -439,6 +379,7 @@ namespace Sooda.Sql
 
                     string stringValue = query.Substring(i, j - i);
                     char modifier = j + 1 < query.Length ? query[j + 1] : ' ';
+
                     string paramName;
 
                     switch (modifier)
@@ -450,7 +391,9 @@ namespace Sooda.Sql
                             j++;
                             break;
                         case 'D':
-                            paramName = AddParameterFromValue(command, DateTime.ParseExact(stringValue, "yyyyMMddHH:mm:ss", CultureInfo.InvariantCulture), null);
+                            paramName = AddParameterFromValue(command,
+                                DateTime.ParseExact(stringValue, "yyyyMMddHH:mm:ss",
+                                    CultureInfo.InvariantCulture), null);
                             sb.Append(paramName);
                             j++;
                             break;
@@ -465,6 +408,7 @@ namespace Sooda.Sql
                             {
                                 stringValue = stringValue.Replace("''", "'");
                                 paramName = AddParameterFromValue(command, stringValue, null);
+
                                 sb.Append(paramName);
                             }
                             else
@@ -490,7 +434,8 @@ namespace Sooda.Sql
                         if (endPos < 0)
                             throw new ArgumentException("Missing ':' in literal specification");
 
-                        SoqlLiteralValueModifiers modifier = SoqlParser.ParseLiteralValueModifiers(query.Substring(startPos, endPos - startPos));
+                        SoqlLiteralValueModifiers modifier =
+                            SoqlParser.ParseLiteralValueModifiers(query.Substring(startPos, endPos - startPos));
                         FieldDataType fdt = modifier.DataTypeOverride;
 
                         int valueStartPos = endPos + 1;
@@ -521,12 +466,12 @@ namespace Sooda.Sql
                         }
                         else if (UseSafeLiterals && v is int)
                         {
-                            sb.Append((int)v);
+                            sb.Append((int) v);
                         }
-                        else if (UseSafeLiterals && v is string && IsStringSafeForLiteral((string)v))
+                        else if (UseSafeLiterals && v is string && IsStringSafeForLiteral((string) v))
                         {
                             sb.Append('\'');
-                            sb.Append((string)v);
+                            sb.Append((string) v);
                             sb.Append('\'');
                         }
                         else
@@ -545,11 +490,12 @@ namespace Sooda.Sql
                         int paramNumber = 0;
                         do
                         {
-                            paramNumber = paramNumber * 10 + c - '0';
+                            paramNumber = paramNumber*10 + c - '0';
                             c = query[++i];
                         } while (c >= '0' && c <= '9');
 
                         SoqlLiteralValueModifiers modifiers = null;
+
                         if (c == ':')
                         {
                             int startPos = i + 1;
@@ -565,7 +511,7 @@ namespace Sooda.Sql
 
                         if (v is SoodaObject)
                         {
-                            v = ((SoodaObject)v).GetPrimaryKeyValue();
+                            v = ((SoodaObject) v).GetPrimaryKeyValue();
                         }
 
                         if (v == null)
@@ -574,12 +520,12 @@ namespace Sooda.Sql
                         }
                         else if (UseSafeLiterals && v is int)
                         {
-                            sb.Append((int)v);
+                            sb.Append((int) v);
                         }
-                        else if (UseSafeLiterals && v is string && IsStringSafeForLiteral((string)v))
+                        else if (UseSafeLiterals && v is string && IsStringSafeForLiteral((string) v))
                         {
                             sb.Append('\'');
-                            sb.Append((string)v);
+                            sb.Append((string) v);
                             sb.Append('\'');
                         }
                         else
@@ -592,7 +538,8 @@ namespace Sooda.Sql
                         throw new ArgumentException("Unexpected character in parameter specification");
                     }
                 }
-                else if (c == '(' || c == ' ' || c == ',' || c == '=' || c == '>' || c == '<' || c == '+' || c == '-' || c == '*' || c == '/')
+                else if (c == '(' || c == ' ' || c == ',' || c == '=' || c == '>' || c == '<' || c == '+' || c == '-' ||
+                         c == '*' || c == '/')
                 {
                     sb.Append(c);
                     if (i < query.Length - 1)
@@ -600,31 +547,31 @@ namespace Sooda.Sql
                         c = query[i + 1];
                         if (c >= '0' && c <= '9' && !UseSafeLiterals)
                         {
-                            int v = 0;
+                            var v = 0;
                             double f = 0;
                             double dp = 0;
-                            bool isDouble = false;
+                            var isDouble = false;
                             do
                             {
                                 if (c != '.')
                                 {
                                     if (!isDouble)
-                                        v = v * 10 + c - '0';
+                                        v = v*10 + c - '0';
                                     else
                                     {
-                                        f = f + dp * (c - '0');
-                                        dp = dp * 0.1;
+                                        f = f + dp*(c - '0');
+                                        dp = dp*0.1;
                                     }
                                 }
                                 else
                                 {
-                                   isDouble = true;
-                                   f = v;
-                                   dp = 0.1;
+                                    isDouble = true;
+                                    f = v;
+                                    dp = 0.1;
                                 }
                                 i++;
                                 if (i < query.Length - 1)
-                                    c = query[i+1];
+                                    c = query[i + 1];
                             } while (((c >= '0' && c <= '9') || c == '.') && (i < query.Length - 1));
                             if (!isDouble)
                             {
@@ -647,18 +594,169 @@ namespace Sooda.Sql
             command.CommandText += sb.ToString();
         }
 
-        public virtual bool HandleFatalException(IDbConnection connection, Exception e)
+        public virtual bool IsFatalException(IDbConnection connection, Exception e)
         {
             return true;
         }
 
-        public virtual bool IsNullValue(object val, Sooda.Schema.FieldInfo fi)
+        public virtual bool IsNullValue(object val, FieldInfo fi)
         {
             return val == null;
         }
 
-        protected abstract string AddNumberedParameter(IDbCommand command, object v, SoqlLiteralValueModifiers modifiers, StringCollection paramNames, int paramNumber);
+        protected abstract string AddNumberedParameter(IDbCommand command, object v, SoqlLiteralValueModifiers modifiers,
+            StringCollection paramNames, int paramNumber);
 
         protected abstract string GetNameForParameter(int pos);
+
+        //wash{
+        public String GenerateForeignKeys(TableInfo tableInfo)
+        {
+            var sb = new StringBuilder();
+            foreach (FieldInfo fi in tableInfo.Fields)
+            {
+                if (fi.References != null)
+                {
+                    sb.AppendFormat("alter table {0} add constraint {1} foreign key ({2}) references {3}({4})",
+                        tableInfo.DBTableName, GetConstraintName(tableInfo.DBTableName, fi.DBColumnName),
+                        fi.DBColumnName,
+                        fi.ReferencedClass.UnifiedTables[0].DBTableName,
+                        fi.ReferencedClass.GetFirstPrimaryKeyField().DBColumnName
+                        );
+                    sb.AppendLine();
+                    //        sb.Append(GetDDLCommandTerminator());
+                }
+            }
+            return sb.ToString();
+        }
+
+        public String GeneratePrimaryKey(TableInfo tableInfo)
+        {
+            var sb = new StringBuilder();
+
+            var first = true;
+
+            foreach (var fi in tableInfo.Fields)
+            {
+                if (!fi.IsPrimaryKey) continue;
+                if (first)
+                {
+                    sb.Append(GetAlterTableStatement(tableInfo));
+                    sb.Append(" (");
+                }
+                else
+                {
+                    sb.Append(", ");
+                }
+                sb.Append(fi.DBColumnName);
+                first = false;
+            }
+            if (!first)
+            {
+                sb.AppendLine(") ");
+                //sb.Append(GetDDLCommandTerminator());
+            }
+            return sb.ToString();
+        }
+
+        public String GenerateDropPrimaryKey(TableInfo tableInfo)
+        {
+            var first = true;
+            var sb = new StringBuilder();
+            foreach (var fi in tableInfo.Fields)
+            {
+                if (!fi.IsPrimaryKey) continue;
+                if (first)
+                {
+                    sb.AppendFormat("alter table {0} DROP primary key (", tableInfo.DBTableName);
+                }
+                else
+                {
+                    sb.Append(", ");
+                }
+                sb.Append(fi.DBColumnName);
+                first = false;
+            }
+            if (!first)
+            {
+                sb.AppendLine(")");
+                //sb.Append(GetDDLCommandTerminator());
+            }
+            return sb.ToString();
+        }
+
+        public String GenerateCreateTable(TableInfo tableInfo)
+        {
+            var sb = new StringBuilder();
+            sb.AppendFormat("create table {0} (", tableInfo.DBTableName);
+            sb.AppendLine();
+            var processedFields = new Dictionary<string, bool>();
+            for (int i = 0; i < tableInfo.Fields.Count; ++i)
+            {
+                if (!processedFields.ContainsKey(tableInfo.Fields[i].DBColumnName))
+                {
+                    sb.Append(GenerateCreateTableField(tableInfo.Fields[i]));
+                    if (i == tableInfo.Fields.Count - 1)
+                        sb.AppendLine();
+                    else
+                        sb.AppendLine(",");
+                    processedFields.Add(tableInfo.Fields[i].DBColumnName, true);
+                }
+            }
+            sb.Append(')');
+            //sb.Append(GetDDLCommandTerminator());
+            return sb.ToString();
+        }
+
+        public string GenerateCreateTableField(FieldInfo fieldInfo)
+        {
+            var field =
+                string.Format("\t{0} {1} {3} {2}", fieldInfo.DBColumnName, GetSQLDataType(fieldInfo),
+                    GetSQLNullable(fieldInfo), GetSQLFilestream(fieldInfo));
+
+            field = AddDefaultValue(fieldInfo, field);
+            return field;
+        }
+
+        private static string AddDefaultValue(FieldInfo fieldInfo, string field)
+        {
+            if (!fieldInfo.IsNullable && !fieldInfo.IsPrimaryKey && string.IsNullOrEmpty(fieldInfo.References))
+            {
+                if (fieldInfo.DataType == FieldDataType.Integer || fieldInfo.DataType == FieldDataType.Money ||
+                    fieldInfo.DataType == FieldDataType.Float || fieldInfo.DataType == FieldDataType.Double ||
+                    fieldInfo.DataType == FieldDataType.Decimal || fieldInfo.DataType == FieldDataType.Long ||
+                    fieldInfo.DataType == FieldDataType.Boolean || fieldInfo.DataType == FieldDataType.BooleanAsInteger)
+                {
+                    field += " DEFAULT (0)";
+                }
+                else if (fieldInfo.DataType == FieldDataType.AnsiString || fieldInfo.DataType == FieldDataType.Guid)
+                {
+                    field += string.Format(" DEFAULT '{0}'", fieldInfo.PrecommitTypedValue);
+                }
+                else if (fieldInfo.DataType == FieldDataType.String)
+                {
+                    field += string.Format(" DEFAULT N'{0}'", fieldInfo.PrecommitTypedValue);
+                }
+            }
+            return field;
+        }
+
+        private string GetSQLFilestream(FieldInfo fieldInfo)
+        {
+            return fieldInfo.IsFileStream ? "FILESTREAM" : (fieldInfo.IsRowGuidCol ? "UNIQUE ROWGUIDCOL" : string.Empty);
+        }
+
+        //}wash
+
+        // ReSharper disable once InconsistentNaming
+        private void TerminateDDL(TextWriter xtw, string additionalSettings, string terminator)
+        {
+            if (!string.IsNullOrEmpty(additionalSettings))
+            {
+                xtw.Write(' ');
+                xtw.Write(additionalSettings);
+            }
+            xtw.Write(terminator ?? GetDDLCommandTerminator());
+        }
     }
 }

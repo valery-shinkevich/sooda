@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,23 +27,22 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.Data;
-using System.Drawing;
-using System.IO;
-
 namespace Sooda.ObjectMapper.FieldHandlers
 {
+    using System;
+    using System.Data;
+    using System.Drawing;
+    using System.IO;
+
     public class ImageFieldHandler : SoodaFieldHandler
     {
-        public ImageFieldHandler(bool nullable) : base(nullable) { }
+        public ImageFieldHandler(bool nullable) : base(nullable)
+        {
+        }
 
         protected override string TypeName
         {
-            get
-            {
-                return "image";
-            }
+            get { return "image"; }
         }
 
         public override object RawRead(IDataRecord record, int pos)
@@ -76,7 +74,7 @@ namespace Sooda.ObjectMapper.FieldHandlers
             }
             catch (ArgumentException)
             {
-                // it's possible that the image has been saved
+                // it's possible that the image has been saved 
                 // with OLE header, strip it. It's the first 78 bytes.
 
                 MemoryStream ms = new MemoryStream(buf, 78, buf.Length - 78);
@@ -97,13 +95,13 @@ namespace Sooda.ObjectMapper.FieldHandlers
 
         public static string SerializeToString(object obj)
         {
-            Image img = (Image)obj;
+            Image img = (Image) obj;
             // must not do using() here - http://support.microsoft.com/?id=814675
             MemoryStream ms = new MemoryStream();
             img.Save(ms, img.RawFormat);
 
             byte[] d = ms.GetBuffer();
-            return System.Convert.ToBase64String(d);
+            return Convert.ToBase64String(d);
         }
 
         public static object DeserializeFromString(string s)
@@ -114,6 +112,7 @@ namespace Sooda.ObjectMapper.FieldHandlers
         }
 
         private const object _zeroValue = null;
+
         public override object ZeroValue()
         {
             return _zeroValue;
@@ -121,7 +120,7 @@ namespace Sooda.ObjectMapper.FieldHandlers
 
         public override Type GetFieldType()
         {
-            return typeof(Image);
+            return typeof (Image);
         }
 
         public override Type GetSqlType()
@@ -131,7 +130,7 @@ namespace Sooda.ObjectMapper.FieldHandlers
 
         public override void SetupDBParameter(IDbDataParameter parameter, object value)
         {
-            System.Drawing.Image img = (System.Drawing.Image)value;
+            Image img = (Image) value;
 
             MemoryStream ms = new MemoryStream();
             img.Save(ms, img.RawFormat);
@@ -142,7 +141,7 @@ namespace Sooda.ObjectMapper.FieldHandlers
 
         public static Image GetNotNullValue(object val)
         {
-            return (Image)val;
+            return (Image) val;
         }
     }
 }

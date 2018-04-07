@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,12 +27,11 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.Collections;
-
-
 namespace Sooda.Caching
 {
+    using System;
+    using System.Collections;
+
     public class SoodaNoCache : ISoodaCache
     {
         public bool DefaultSlidingExpiration
@@ -53,7 +51,8 @@ namespace Sooda.Caching
             return null;
         }
 
-        void ISoodaCache.Add(string className, object primaryKeyValue, SoodaCacheEntry entry, TimeSpan expirationTimeout, bool slidingExpiration)
+        void ISoodaCache.Add(string className, object primaryKeyValue, SoodaCacheEntry entry, TimeSpan expirationTimeout,
+            bool slidingExpiration)
         {
         }
 
@@ -74,7 +73,8 @@ namespace Sooda.Caching
             return null;
         }
 
-        void ISoodaCache.StoreCollection(string cacheKey, string rootClassName, IList primaryKeys, string[] dependentClasses, bool evictWhenItemRemoved, TimeSpan expirationTimeout, bool slidingExpiration)
+        void ISoodaCache.StoreCollection(string cacheKey, string rootClassName, IList primaryKeys,
+            string[] dependentClasses, bool evictWhenItemRemoved, TimeSpan expirationTimeout, bool slidingExpiration)
         {
         }
 
@@ -87,7 +87,7 @@ namespace Sooda.Caching
         {
         }
 
-        class DummySoodaCacheLock : ISoodaCacheLock
+        private class DummySoodaCacheLock : ISoodaCacheLock
         {
             public void Dispose()
             {

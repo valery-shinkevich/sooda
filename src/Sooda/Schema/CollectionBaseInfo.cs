@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,21 +27,19 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.Xml.Serialization;
-
 namespace Sooda.Schema
 {
+    using System;
+    using System.Xml.Serialization;
+
     /// <remarks/>
     [XmlType(Namespace = "http://www.sooda.org/schemas/SoodaSchema.xsd")]
     [Serializable]
     public abstract class CollectionBaseInfo
     {
-        [XmlAttribute("name")]
-        public string Name;
+        [XmlAttribute("name")] public string Name;
 
-        [XmlElement("description")]
-        public string Description;
+        [XmlAttribute("description")] public string Description;
 
         public abstract ClassInfo GetItemClass();
     }

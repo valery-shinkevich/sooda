@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,15 +27,17 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System.IO;
-
 namespace Sooda.CodeGen.CDIL
 {
+    using System.IO;
+
     public class CDILTemplate
     {
         public static string Get(string name)
         {
-            using (Stream stream = typeof(CDILTemplate).Assembly.GetManifestResourceStream("Sooda.CodeGen.CDIL.Templates." + name))
+            using (
+                Stream stream =
+                    typeof (CDILTemplate).Assembly.GetManifestResourceStream("Sooda.CodeGen.CDIL.Templates." + name))
             {
                 StreamReader sr = new StreamReader(stream, System.Text.Encoding.UTF8, false);
                 return sr.ReadToEnd();

@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,18 +27,12 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-
-using System.CodeDom;
-
-
 namespace Sooda.CodeGen
 {
+    using System.CodeDom;
+
     public class CodeDomClassSkeletonGenerator : CodeDomHelpers
     {
-        public CodeDomClassSkeletonGenerator()
-        {
-        }
-
         public CodeConstructor Constructor_Raw()
         {
             CodeConstructor ctor = new CodeConstructor();
@@ -73,17 +66,46 @@ namespace Sooda.CodeGen
             return ctor;
         }
 
+        //wash{
+        public CodeConstructor Constructor_Inserting1(bool useChainedCall)
+        {
+            CodeConstructor ctor = new CodeConstructor();
+            ctor.Attributes = MemberAttributes.Public;
+            ctor.Parameters.Add(new CodeParameterDeclarationExpression("SoodaTransaction", "transaction"));
+            ctor.Parameters.Add(new CodeParameterDeclarationExpression("Object", "key"));
+            ctor.BaseConstructorArgs.Add(Arg("transaction"));
+            ctor.BaseConstructorArgs.Add(Arg("key"));
+            if (useChainedCall)
+            {
+                ctor.Statements.Add(new CodeCommentStatement(""));
+                ctor.Statements.Add(new CodeCommentStatement("TODO: Add construction logic here."));
+                ctor.Statements.Add(new CodeCommentStatement(""));
+            }
+            else
+            {
+                ctor.Statements.Add(new CodeCommentStatement("Do not modify this constructor."));
+                ctor.Statements.Add(new CodeMethodInvokeExpression(new CodeThisReferenceExpression(), "InitObject"));
+            }
+            return ctor;
+        }
+
+        //}wash
+
         public CodeConstructor Constructor_Inserting2(bool useChainedCall)
         {
             CodeConstructor ctor = new CodeConstructor();
             ctor.Attributes = MemberAttributes.Public;
             if (useChainedCall)
             {
-                ctor.ChainedConstructorArgs.Add(new CodePropertyReferenceExpression(new CodeTypeReferenceExpression("SoodaTransaction"), "ActiveTransaction"));
+                ctor.ChainedConstructorArgs.Add(
+                    new CodePropertyReferenceExpression(new CodeTypeReferenceExpression("SoodaTransaction"),
+                        "ActiveTransaction"));
             }
             else
             {
-                ctor.BaseConstructorArgs.Add(new CodePropertyReferenceExpression(new CodeTypeReferenceExpression("SoodaTransaction"), "ActiveTransaction"));
+                ctor.BaseConstructorArgs.Add(
+                    new CodePropertyReferenceExpression(new CodeTypeReferenceExpression("SoodaTransaction"),
+                        "ActiveTransaction"));
             }
             ctor.Statements.Add(new CodeCommentStatement("Do not modify this constructor."));
             if (!useChainedCall)

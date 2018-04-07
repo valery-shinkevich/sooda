@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,26 +27,23 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.Collections;
-
-
-using System.Xml.Serialization;
-
 namespace Sooda.QL
 {
+    using System;
+    using System.Collections;
+    using System.Xml.Serialization;
+
     public class SoqlBooleanRelationalExpression : SoqlBooleanExpression
     {
-        [XmlElement("Left")]
-        public SoqlExpression par1;
+        [XmlElement("Left")] public SoqlExpression par1;
 
-        [XmlElement("Right")]
-        public SoqlExpression par2;
+        [XmlElement("Right")] public SoqlExpression par2;
 
-        [XmlAttribute("operator")]
-        public SoqlRelationalOperator op;
+        [XmlAttribute("operator")] public SoqlRelationalOperator op;
 
-        public SoqlBooleanRelationalExpression() { }
+        public SoqlBooleanRelationalExpression()
+        {
+        }
 
         public SoqlBooleanRelationalExpression(SoqlExpression par1, SoqlExpression par2, SoqlRelationalOperator op)
         {
@@ -78,8 +74,7 @@ namespace Sooda.QL
                 object result = Compare(v1, v2, op);
                 if (result == null)
                     return new SoqlNullLiteral();
-                else
-                    return new SoqlBooleanLiteralExpression((bool)result);
+                return new SoqlBooleanLiteralExpression((bool) result);
             }
             return this;
         }
@@ -91,12 +86,12 @@ namespace Sooda.QL
 
             if (val1 is SoodaObject)
             {
-                val1 = ((SoodaObject)val1).GetPrimaryKeyValue();
+                val1 = ((SoodaObject) val1).GetPrimaryKeyValue();
             }
 
             if (val2 is SoodaObject)
             {
-                val2 = ((SoodaObject)val2).GetPrimaryKeyValue();
+                val2 = ((SoodaObject) val2).GetPrimaryKeyValue();
             }
 
             if (val1 is DateTime || val2 is DateTime)
@@ -162,13 +157,14 @@ namespace Sooda.QL
                 val2 = Convert.ToBoolean(val2);
                 return;
             }
-            throw new Exception("Cannot promote types " + val1.GetType().Name + " and " + val2.GetType().Name + " to one type.");
+            throw new Exception("Cannot promote types " + val1.GetType().Name + " and " + val2.GetType().Name +
+                                " to one type.");
         }
 
         public static object Compare(object v1, object v2, SoqlRelationalOperator op)
         {
-            v1 = Sooda.Utils.SqlTypesUtil.Unwrap(v1);
-            v2 = Sooda.Utils.SqlTypesUtil.Unwrap(v2);
+            v1 = Utils.SqlTypesUtil.Unwrap(v1);
+            v2 = Utils.SqlTypesUtil.Unwrap(v2);
 
             if (v1 == null || v2 == null)
                 return null;
@@ -200,6 +196,31 @@ namespace Sooda.QL
                     string s2 = Convert.ToString(v2);
 
                     return SoqlUtils.Like(s1, s2);
+
+                case SoqlRelationalOperator.LTrimEqual:
+                    var l1 = Convert.ToString(v1).TrimEnd(' ');
+                    var l2 = Convert.ToString(v2).TrimStart(' ');
+
+                    return comparer.Compare(l1, l2) == 0;
+
+                case SoqlRelationalOperator.RTrimEqual:
+                    var r1 = Convert.ToString(v1).TrimEnd(' ');
+                    var r2 = Convert.ToString(v2).TrimEnd(' ');
+
+                    return comparer.Compare(r1, r2) == 0;
+
+                case SoqlRelationalOperator.TrimEqual:
+                    var t1 = Convert.ToString(v1).Trim();
+                    var t2 = Convert.ToString(v2).Trim();
+
+                    return comparer.Compare(t1, t2) == 0;
+
+                case SoqlRelationalOperator.RemoveSharp:
+                    var rs1 = Convert.ToString(v1).Replace("#", "");
+                    var rs2 = Convert.ToString(v2).Replace("#", "");
+
+                    return comparer.Compare(rs1, rs2) == 0;
+
 
                 default:
                     throw new NotSupportedException("Relational operator " + op + " is not supported.");

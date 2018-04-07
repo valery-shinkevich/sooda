@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,12 +27,11 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.Text;
-
-
 namespace Sooda
 {
+    using System;
+    using System.Text;
+
     [Serializable]
     public class SoodaTuple : IComparable
     {
@@ -114,8 +112,7 @@ namespace Sooda
                 }
                 return retval;
             }
-            else
-                return new object[] { tupleOrScalar };
+            return new[] {tupleOrScalar};
         }
 
         public bool IsAllNotNull()
@@ -141,7 +138,7 @@ namespace Sooda
             {
                 if (i > 0)
                     sb.Append(',');
-                sb.Append(_items[i].ToString());
+                sb.Append(_items[i]);
             }
             sb.Append(']');
             return sb.ToString();

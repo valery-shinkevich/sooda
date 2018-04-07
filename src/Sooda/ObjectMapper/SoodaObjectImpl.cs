@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,8 +27,11 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
+
 namespace Sooda.ObjectMapper
 {
+    using QL;
+
     public static class SoodaObjectImpl
     {
         public static bool IsFieldDirty(SoodaObject theObject, int tableNumber, int fieldOrdinal)
@@ -40,30 +42,32 @@ namespace Sooda.ObjectMapper
         public static bool IsFieldNull(SoodaObject theObject, int tableNumber, int fieldOrdinal)
         {
             theObject.EnsureDataLoaded(tableNumber);
-            return theObject._fieldValues.IsNull(fieldOrdinal);
+            return theObject.FieldValues.IsNull(fieldOrdinal);
         }
 
         public static object GetBoxedFieldValue(SoodaObject theObject, int tableNumber, int fieldOrdinal)
         {
             theObject.EnsureDataLoaded(tableNumber);
-            return theObject._fieldValues.GetBoxedFieldValue(fieldOrdinal);
+            return theObject.FieldValues.GetBoxedFieldValue(fieldOrdinal);
         }
 
-        public static SoodaObject GetRefFieldValue(ref SoodaObject refCache, SoodaObject theObject, int tableNumber, int fieldOrdinal, SoodaTransaction tran, ISoodaObjectFactory factory)
+        public static SoodaObject GetRefFieldValue(ref SoodaObject refCache, SoodaObject theObject, int tableNumber,
+            int fieldOrdinal, SoodaTransaction tran, ISoodaObjectFactory factory)
         {
             if (refCache != null)
                 return refCache;
 
             theObject.EnsureDataLoaded(tableNumber);
 
-            if (theObject._fieldValues.IsNull(fieldOrdinal))
+            if (theObject.FieldValues.IsNull(fieldOrdinal))
                 return null;
 
-            refCache = factory.GetRef(tran, theObject._fieldValues.GetBoxedFieldValue(fieldOrdinal));
+            refCache = factory.GetRef(tran, theObject.FieldValues.GetBoxedFieldValue(fieldOrdinal));
             return refCache;
         }
 
-        public static SoodaObject TryGetRefFieldValue(ref SoodaObject refCache, object fieldValue, SoodaTransaction tran, ISoodaObjectFactory factory)
+        public static SoodaObject TryGetRefFieldValue(ref SoodaObject refCache, object fieldValue, SoodaTransaction tran,
+            ISoodaObjectFactory factory)
         {
             if (refCache != null)
                 return refCache;
@@ -80,17 +84,21 @@ namespace Sooda.ObjectMapper
             theObject.LoadAllData();
         }
 
-        public static void SetPlainFieldValue(SoodaObject theObject, int tableNumber, string fieldName, int fieldOrdinal, object newValue, SoodaFieldUpdateDelegate before, SoodaFieldUpdateDelegate after)
+        public static void SetPlainFieldValue(SoodaObject theObject, int tableNumber, string fieldName, int fieldOrdinal,
+            object newValue, SoodaFieldUpdateDelegate before, SoodaFieldUpdateDelegate after)
         {
             theObject.SetPlainFieldValue(tableNumber, fieldName, fieldOrdinal, newValue, before, after);
         }
 
-        public static void SetRefFieldValue(SoodaObject theObject, int tableNumber, string fieldName, int fieldOrdinal, SoodaObject newValue, SoodaObject[] refcache, int refcacheOrdinal, ISoodaObjectFactory factory)
+        public static void SetRefFieldValue(SoodaObject theObject, int tableNumber, string fieldName, int fieldOrdinal,
+            SoodaObject newValue, SoodaObject[] refcache, int refcacheOrdinal, ISoodaObjectFactory factory)
         {
-            theObject.SetRefFieldValue(tableNumber, fieldName, fieldOrdinal, newValue, refcache, refcacheOrdinal, factory);
+            theObject.SetRefFieldValue(tableNumber, fieldName, fieldOrdinal, newValue, refcache, refcacheOrdinal,
+                factory);
         }
 
-        public static SoodaObject SelectSingleObjectBE(Sooda.QL.SoqlBooleanExpression expr, ISoodaObjectList list)
+        // ReSharper disable once InconsistentNaming
+        public static SoodaObject SelectSingleObjectBE(SoqlBooleanExpression expr, ISoodaObjectList list)
         {
             if (list.Count == 0)
                 return null;
@@ -99,7 +107,8 @@ namespace Sooda.ObjectMapper
             return list.GetItem(0);
         }
 
-        public static SoodaObject SelectSingleObjectWC(Sooda.SoodaWhereClause expr, ISoodaObjectList list)
+        // ReSharper disable once InconsistentNaming
+        public static SoodaObject SelectSingleObjectWC(SoodaWhereClause expr, ISoodaObjectList list)
         {
             if (list.Count == 0)
                 return null;
@@ -111,7 +120,7 @@ namespace Sooda.ObjectMapper
         public static SoodaObjectFieldValues GetFieldValuesForRead(SoodaObject t, int tableNumber)
         {
             t.EnsureDataLoaded(tableNumber);
-            return t._fieldValues;
+            return t.FieldValues;
         }
     }
 }

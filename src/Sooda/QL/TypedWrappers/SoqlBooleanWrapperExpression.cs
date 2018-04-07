@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -69,10 +68,26 @@ namespace Sooda.QL.TypedWrappers
             return new SoqlBooleanWrapperExpression(v);
         }
 
-        public static SoqlBooleanExpression operator ==(SoqlBooleanWrapperExpression left, SoqlBooleanWrapperExpression right) { return new Sooda.QL.SoqlBooleanRelationalExpression(left, right, Sooda.QL.SoqlRelationalOperator.Equal); }
-        public static SoqlBooleanExpression operator !=(SoqlBooleanWrapperExpression left, SoqlBooleanWrapperExpression right) { return new Sooda.QL.SoqlBooleanRelationalExpression(left, right, Sooda.QL.SoqlRelationalOperator.NotEqual); }
+        public static SoqlBooleanExpression operator ==(
+            SoqlBooleanWrapperExpression left, SoqlBooleanWrapperExpression right)
+        {
+            return new SoqlBooleanRelationalExpression(left, right, SoqlRelationalOperator.Equal);
+        }
 
-        public override bool Equals(object o) { return object.ReferenceEquals(this, o); }
-        public override int GetHashCode() { return base.GetHashCode(); }
+        public static SoqlBooleanExpression operator !=(
+            SoqlBooleanWrapperExpression left, SoqlBooleanWrapperExpression right)
+        {
+            return new SoqlBooleanRelationalExpression(left, right, SoqlRelationalOperator.NotEqual);
+        }
+
+        public override bool Equals(object o)
+        {
+            return ReferenceEquals(this, o);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }

@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,13 +27,14 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-
 namespace Sooda.Logging
 {
+    using System;
+
     public sealed class NullLogger : Logger
     {
         private static readonly NullLogger _theInstance = new NullLogger();
+
         private NullLogger()
         {
         }
@@ -44,34 +44,106 @@ namespace Sooda.Logging
             get { return _theInstance; }
         }
 
-        public override bool IsTraceEnabled { get { return false; } }
-        public override void Trace(IFormatProvider fp, string format, params object[] par) { }
-        public override void Trace(string format, params object[] par) { }
-        public override void Trace(string message) { }
+        public override bool IsTraceEnabled
+        {
+            get { return false; }
+        }
 
-        public override bool IsDebugEnabled { get { return false; } }
-        public override void Debug(IFormatProvider fp, string format, params object[] par) { }
-        public override void Debug(string format, params object[] par) { }
-        public override void Debug(string message) { }
+        public override void Trace(IFormatProvider fp, string format, params object[] par)
+        {
+        }
 
-        public override bool IsInfoEnabled { get { return false; } }
-        public override void Info(IFormatProvider fp, string format, params object[] par) { }
-        public override void Info(string format, params object[] par) { }
-        public override void Info(string message) { }
+        public override void Trace(string format, params object[] par)
+        {
+        }
 
-        public override bool IsWarnEnabled { get { return false; } }
-        public override void Warn(IFormatProvider fp, string format, params object[] par) { }
-        public override void Warn(string format, params object[] par) { }
-        public override void Warn(string message) { }
+        public override void Trace(string message)
+        {
+        }
 
-        public override bool IsErrorEnabled { get { return false; } }
-        public override void Error(IFormatProvider fp, string format, params object[] par) { }
-        public override void Error(string format, params object[] par) { }
-        public override void Error(string message) { }
+        public override bool IsDebugEnabled
+        {
+            get { return false; }
+        }
 
-        public override bool IsFatalEnabled { get { return false; } }
-        public override void Fatal(IFormatProvider fp, string format, params object[] par) { }
-        public override void Fatal(string format, params object[] par) { }
-        public override void Fatal(string message) { }
+        public override void Debug(IFormatProvider fp, string format, params object[] par)
+        {
+        }
+
+        public override void Debug(string format, params object[] par)
+        {
+        }
+
+        public override void Debug(string message)
+        {
+        }
+
+        public override bool IsInfoEnabled
+        {
+            get { return false; }
+        }
+
+        public override void Info(IFormatProvider fp, string format, params object[] par)
+        {
+        }
+
+        public override void Info(string format, params object[] par)
+        {
+        }
+
+        public override void Info(string message)
+        {
+        }
+
+        public override bool IsWarnEnabled
+        {
+            get { return false; }
+        }
+
+        public override void Warn(IFormatProvider fp, string format, params object[] par)
+        {
+        }
+
+        public override void Warn(string format, params object[] par)
+        {
+        }
+
+        public override void Warn(string message)
+        {
+        }
+
+        public override bool IsErrorEnabled
+        {
+            get { return false; }
+        }
+
+        public override void Error(IFormatProvider fp, string format, params object[] par)
+        {
+        }
+
+        public override void Error(string format, params object[] par)
+        {
+        }
+
+        public override void Error(string message)
+        {
+        }
+
+        public override bool IsFatalEnabled
+        {
+            get { return false; }
+        }
+
+        public override void Fatal(IFormatProvider fp, string format, params object[] par)
+        {
+        }
+
+        public override void Fatal(string format, params object[] par)
+        {
+        }
+
+        public override void Fatal(string message)
+        {
+        }
     }
 }

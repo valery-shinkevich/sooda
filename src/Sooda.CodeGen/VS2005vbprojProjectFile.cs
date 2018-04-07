@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -32,7 +31,10 @@ namespace Sooda.CodeGen
 {
     public class VS2005vbprojProjectFile : VS2005ProjectFileBase
     {
-        public VS2005vbprojProjectFile() : base(".vbproj", "Sooda.CodeGen.Template.Template80.vbproj") { }
+        public VS2005vbprojProjectFile() : base(".vbproj", "Sooda.CodeGen.Template.Template80.vbproj")
+        {
+        }
+
         public override void CreateNew(string outputNamespace, string assemblyName)
         {
             base.CreateNew(outputNamespace, assemblyName);

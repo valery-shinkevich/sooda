@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,20 +27,21 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-
-
 namespace Sooda.QL
 {
+    using System;
+
     public class SoqlExistsExpression : SoqlBooleanExpression
     {
         public SoqlQueryExpression Query;
 
-        public SoqlExistsExpression() { }
+        public SoqlExistsExpression()
+        {
+        }
 
         public SoqlExistsExpression(SoqlQueryExpression query)
         {
-            this.Query = query;
+            Query = query;
         }
 
         // visitor pattern
@@ -54,6 +54,5 @@ namespace Sooda.QL
         {
             throw new NotImplementedException();
         }
-
     }
 }

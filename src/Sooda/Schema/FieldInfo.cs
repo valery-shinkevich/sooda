@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,100 +27,96 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using Sooda.ObjectMapper;
-using Sooda.ObjectMapper.FieldHandlers;
-using System;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Xml.Serialization;
-
 namespace Sooda.Schema
 {
+    using System;
+    using System.Collections.Specialized;
+    using System.ComponentModel;
+    using System.Xml;
+    using System.Xml.Serialization;
+    using ObjectMapper;
+    using ObjectMapper.FieldHandlers;
 
-    [XmlTypeAttribute(Namespace = "http://www.sooda.org/schemas/SoodaSchema.xsd")]
+    [XmlType(Namespace = "http://www.sooda.org/schemas/SoodaSchema.xsd")]
     [Serializable]
     public class FieldInfo : ICloneable
     {
-        [XmlAttribute("name")]
-        public string Name;
+        [XmlAttribute("name")] public string Name;
 
-        private string dbcolumn;
+        private string _dbcolumn;
 
-        [XmlAttribute("type")]
-        public FieldDataType DataType;
+        [XmlAttribute("type")] public FieldDataType DataType;
 
-        [XmlElement("description")]
-        public string Description;
+        [XmlAttribute("size")] [DefaultValue(-1)] public int Size = -1;
 
-        [XmlAttribute("size")]
-        [System.ComponentModel.DefaultValueAttribute(-1)]
-        public int Size = -1;
+        [XmlAttribute("enum")] public string Enum;
 
-        [XmlAttribute("precision")]
-        [System.ComponentModel.DefaultValueAttribute(-1)]
-        public int Precision = -1;
+        [XmlAttribute("precision")] [DefaultValue(-1)] public int Precision = -1;
 
-        [XmlAttribute("references")]
-        public string References;
+        [XmlAttribute("references")] public string References;
 
-        [XmlAttribute("precommitValue")]
-        public string PrecommitValue;
+        [XmlAttribute("precommitValue")] public string PrecommitValue;
 
-        [XmlIgnore]
-        [NonSerialized]
-        public object PrecommitTypedValue;
+        //wash{
+        [XmlAttribute("uid")] // ReSharper disable once InconsistentNaming
+        public Guid uid;
 
-        [XmlAttribute("primaryKey")]
-        [System.ComponentModel.DefaultValueAttribute(false)]
-        public bool IsPrimaryKey = false;
+        [XmlAttribute("UITypeEditor")] // ReSharper disable once InconsistentNaming
+        public string UITypeEditor;
 
-        [XmlAttribute("nullable")]
-        [System.ComponentModel.DefaultValueAttribute(false)]
-        public bool IsNullable = false;
+        [XmlAttribute("TypeConverter")] public string TypeConverter;
 
-        [XmlAttribute("readOnly")]
-        [System.ComponentModel.DefaultValueAttribute(false)]
-        public bool ReadOnly = false;
+        [XmlAttribute("DisplayName")] public string DisplayName;
 
-        [XmlAttribute("forceTrigger")]
-        [System.ComponentModel.DefaultValueAttribute(false)]
-        public bool ForceTrigger = false;
+        [XmlAttribute("Browsable")] public bool Browsable = true;
 
-        [XmlAttribute("onDelete")]
-        [System.ComponentModel.DefaultValueAttribute(DeleteAction.Nothing)]
-        public DeleteAction DeleteAction = DeleteAction.Nothing;
+        [XmlAttribute("Category")] public string Category;
 
-        [XmlAnyAttribute()]
-        [NonSerialized]
-        public System.Xml.XmlAttribute[] Extensions;
+        [XmlAttribute("Description")] public string Description;
 
-        [XmlAttribute("label")]
-        [DefaultValue(false)]
-        public bool IsLabel = false;
+        [XmlAttribute("ReadOnly")] [DefaultValue(false)] public bool ReadOnly;
 
-        [XmlAttribute("prefetch")]
-        [DefaultValue(0)]
-        public int PrefetchLevel = 0;
+        [XmlAttribute("UiReadOnly")] [DefaultValue(false)] public bool UiReadOnly;
 
-        [XmlAttribute("find")]
-        [DefaultValue(false)]
-        public bool FindMethod = false;
+        [XmlAttribute("Identity")] [DefaultValue(false)] public bool IsIdentity;
 
-        [XmlAttribute("findList")]
-        [DefaultValue(false)]
-        public bool FindListMethod = false;
+        [XmlAttribute("IsIndexed")] [DefaultValue(false)] public bool IsIndexed;
+
+        [XmlAttribute("Modifier")] public string Modifier = String.Empty;
+
+        [XmlAttribute("IsRowGuidCol")] [DefaultValue(false)] public bool IsRowGuidCol;
+
+        [XmlAttribute("IsFileStream")] [DefaultValue(false)] public bool IsFileStream;
+
+        //}wash
+
+        [XmlIgnore] [NonSerialized] public object PrecommitTypedValue;
+
+        [XmlAttribute("primaryKey")] [DefaultValue(false)] public bool IsPrimaryKey;
+
+        [XmlAttribute("nullable")] [DefaultValue(false)] public bool IsNullable;
+
+        [XmlAttribute("forceTrigger")] [DefaultValue(false)] public bool ForceTrigger;
+
+        [XmlAttribute("onDelete")] [DefaultValue(DeleteAction.Nothing)] public DeleteAction DeleteAction =
+            DeleteAction.Nothing;
+
+        [XmlAnyAttribute, NonSerialized] public XmlAttribute[] Extensions;
+
+        [XmlAttribute("label")] [DefaultValue(false)] public bool IsLabel;
+
+        [XmlAttribute("prefetch")] [DefaultValue(0)] public int PrefetchLevel;
+
+        [XmlAttribute("find")] [DefaultValue(false)] public bool FindMethod;
+
+        [XmlAttribute("findList")] [DefaultValue(false)] public bool FindListMethod;
 
         [XmlAttribute("dbcolumn")]
+        // ReSharper disable once InconsistentNaming
         public string DBColumnName
         {
-            get
-            {
-                return dbcolumn ?? Name;
-            }
-            set
-            {
-                dbcolumn = value;
-            }
+            get { return _dbcolumn ?? Name; }
+            set { _dbcolumn = value; }
         }
 
         public FieldInfo Clone()
@@ -134,50 +129,50 @@ namespace Sooda.Schema
             return DoClone();
         }
 
-        [XmlIgnore()]
-        [NonSerialized]
-        public int OrdinalInTable;
+        [XmlIgnore] [NonSerialized] public int OrdinalInTable;
 
-        [XmlIgnore()]
-        [NonSerialized]
-        public int ClassLocalOrdinal;
+        [XmlIgnore] [NonSerialized] public int ClassLocalOrdinal;
 
-        [XmlIgnore()]
-        [NonSerialized]
-        public int ClassUnifiedOrdinal;
+        [XmlIgnore] [NonSerialized] public int ClassUnifiedOrdinal;
 
-        [XmlIgnore]
-        [NonSerialized]
-        public TableInfo Table;
+        [XmlIgnore] [NonSerialized] public TableInfo Table;
 
-        [XmlIgnore]
-        [NonSerialized]
-        public ClassInfo ReferencedClass;
+        [XmlIgnore] [NonSerialized] public ClassInfo ReferencedClass;
 
-        [XmlIgnore]
-        [NonSerialized]
-        public ClassInfo ParentClass;
+        [XmlIgnore] [NonSerialized] public ClassInfo ParentClass;
 
-        [XmlIgnore]
-        [NonSerialized]
-        internal string NameTag;
+        [XmlIgnore] [NonSerialized] internal string NameTag;
 
-        [XmlIgnore]
-        [NonSerialized]
-        public RelationInfo ParentRelation;
+        [XmlIgnore] [NonSerialized] public RelationInfo ParentRelation;
 
         public FieldInfo DoClone()
         {
-            FieldInfo fi = new FieldInfo();
-
-            fi.Name = this.Name;
-            fi.dbcolumn = this.dbcolumn;
-            fi.IsNullable = this.IsNullable;
-            fi.DataType = this.DataType;
-            fi.Size = this.Size;
-            fi.ForceTrigger = this.ForceTrigger;
-            fi.ReadOnly = this.ReadOnly;
-
+            var fi = new FieldInfo
+            {
+                Name = Name,
+                _dbcolumn = _dbcolumn,
+                IsNullable = IsNullable,
+                DataType = DataType,
+                Size = Size,
+                ForceTrigger = ForceTrigger,
+                Description = Description,
+                Browsable = Browsable,
+                Category = Category,
+                DisplayName = DisplayName,
+                UITypeEditor = UITypeEditor,
+                TypeConverter = TypeConverter,
+                IsIdentity = IsIdentity,
+                ReadOnly = ReadOnly,
+                Precision = Precision,
+                PrecommitValue = PrecommitValue,
+                uid = uid,
+                Modifier = Modifier,
+                IsPrimaryKey = IsPrimaryKey,
+                References = References,
+                ReferencedClass = ReferencedClass,
+                IsRowGuidCol = IsRowGuidCol,
+                IsFileStream = IsFileStream
+            };
             return fi;
         }
 
@@ -198,9 +193,9 @@ namespace Sooda.Schema
 
         internal void Resolve(TableInfo parentTable, string parentName, int ordinal)
         {
-            this.Table = parentTable;
-            this.OrdinalInTable = ordinal;
-            this.NameTag = parentTable.NameToken + "/" + ordinal;
+            Table = parentTable;
+            OrdinalInTable = ordinal;
+            NameTag = parentTable.NameToken + "/" + ordinal;
         }
 
         internal void ResolvePrecommitValues()
@@ -209,42 +204,44 @@ namespace Sooda.Schema
 
         public override string ToString()
         {
-            return String.Format("{0}.{1} ({2} ref {3})", ParentClass != null ? "class " + ParentClass.Name : "???", Name, DataType, References);
+            return String.Format("{0}.{1} ({2} ref {3})", ParentClass != null ? "class " + ParentClass.Name : "???",
+                Name, DataType, References);
         }
 
         internal void Merge(FieldInfo merge)
         {
-            this.DataType = merge.DataType;
+            DataType = merge.DataType;
             if (merge.Description != null)
-                this.Description = (this.Description != null ? this.Description + "\n" : "") + merge.Description;
+                Description = (Description != null ? Description + "\n" : "") + merge.Description;
             if (merge.Size != -1)
-                this.Size = merge.Size;
+                Size = merge.Size;
             if (merge.Precision != -1)
-                this.Precision = merge.Size;
+                Precision = merge.Size;
             if (merge.References != null)
-                this.References = merge.References;
+                References = merge.References;
             if (merge.PrecommitValue != null)
-                this.PrecommitValue = merge.PrecommitValue;
-            this.IsPrimaryKey = merge.IsPrimaryKey;
-            this.IsNullable = merge.IsNullable;
-            this.ReadOnly = merge.ReadOnly;
-            this.ForceTrigger = merge.ForceTrigger;
-            this.DeleteAction = merge.DeleteAction;
-            this.IsLabel = merge.IsLabel;
-            this.PrefetchLevel = merge.PrefetchLevel;
-            this.FindMethod = merge.FindMethod;
-            this.FindListMethod = merge.FindListMethod;
-            if (merge.dbcolumn != null)
-                this.DBColumnName = merge.dbcolumn;
+                PrecommitValue = merge.PrecommitValue;
+            IsPrimaryKey = merge.IsPrimaryKey;
+            IsNullable = merge.IsNullable;
+            ReadOnly = merge.ReadOnly;
+            ForceTrigger = merge.ForceTrigger;
+            DeleteAction = merge.DeleteAction;
+            IsLabel = merge.IsLabel;
+            PrefetchLevel = merge.PrefetchLevel;
+            FindMethod = merge.FindMethod;
+            FindListMethod = merge.FindListMethod;
+            if (merge._dbcolumn != null)
+                DBColumnName = merge._dbcolumn;
         }
 
         internal void ResolveReferences(SchemaInfo schema)
         {
-            if (References == null)
-                return;
-            ClassInfo ci = schema.FindClassByName(References);
+            if (References == null) return;
+
+            var ci = schema.FindClassByName(References);
             if (ci == null)
                 throw new SoodaSchemaException("Class " + References + " not found.");
+
             DataType = ci.GetFirstPrimaryKeyField().DataType;
             ReferencedClass = ci;
         }
@@ -252,14 +249,11 @@ namespace Sooda.Schema
         [XmlIgnore]
         public string TypeName
         {
-            get
-            {
-                return References ?? DataType.ToString();
-            }
+            get { return References ?? DataType.ToString(); }
             set
             {
 #if DOTNET4
-                if (Enum.TryParse(value, out DataType))
+                if (System.Enum.TryParse(value, out DataType))
                 {
                     References = null;
                     return;
@@ -267,7 +261,7 @@ namespace Sooda.Schema
 #else
                 try
                 {
-                    DataType = (FieldDataType) Enum.Parse(typeof(FieldDataType), value);
+                    DataType = (FieldDataType) System.Enum.Parse(typeof(FieldDataType), value);
                     References = null;
                     return;
                 }
@@ -293,7 +287,7 @@ namespace Sooda.Schema
             {
                 if (value == null)
                     throw new ArgumentNullException();
-                if (value.IsSubclassOf(typeof(SoodaObject)))
+                if (value.IsSubclassOf(typeof (SoodaObject)))
                 {
                     References = value.Name;
                 }
@@ -308,10 +302,7 @@ namespace Sooda.Schema
         [XmlIgnore]
         public bool IsDynamic
         {
-            get
-            {
-                return Table.IsDynamic;
-            }
+            get { return Table.IsDynamic; }
         }
     }
 }

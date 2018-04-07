@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,14 +27,14 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using Sooda.Schema;
-using System;
-
 namespace Sooda.Sql
 {
+    using System;
+    using Schema;
+
     public class PostgreSqlBuilder : SqlBuilderNamedArg
     {
-        public override string GetSQLDataType(Sooda.Schema.FieldInfo fi)
+        public override string GetSQLDataType(FieldInfo fi)
         {
             switch (fi.DataType)
             {
@@ -45,31 +44,29 @@ namespace Sooda.Sql
                 case FieldDataType.String:
                     return "varchar(" + fi.Size + ")";
 
+                case FieldDataType.Date:
                 case FieldDataType.DateTime:
                     return "datetime";
 
                 default:
-                    throw new NotImplementedException(String.Format("Datatype {0} not supported for this database", fi.DataType.ToString()));
+                    throw new NotImplementedException(String.Format("Datatype {0} not supported for this database",
+                        fi.DataType));
             }
         }
 
         protected override string GetNameForParameter(int pos)
         {
-            return ":p" + pos.ToString();
+            return ":p" + pos;
         }
 
         public override SqlTopSupportMode TopSupport
         {
-            get
-            {
-                return SqlTopSupportMode.MySqlLimit;
-            }
+            get { return SqlTopSupportMode.MySqlLimit; }
         }
 
-        public override string GetSQLOrderBy(Sooda.Schema.FieldInfo fi, bool start)
+        public override string GetSQLOrderBy(FieldInfo fi, bool start)
         {
             return "";
         }
-
     }
 }

@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -34,21 +33,21 @@ namespace Sooda.CodeGen.CDIL
 
     public enum CDILToken
     {
-        BOF,        // begin of token stream
-        EOF,        // end of token stream
+        BOF, // begin of token stream
+        EOF, // end of token stream
 
-        LeftParen,  // (
+        LeftParen, // (
         RightParen, // )
-        Comma,      // ,
-        Semicolon,  // ;
-        Dot,        // .
-        Dollar,     // $
-        Assign,     // =
+        Comma, // ,
+        Semicolon, // ;
+        Dot, // .
+        Dollar, // $
+        Assign, // =
 
-        Integer,    // 1
-        String,     // 'aaaa'
-        Boolean,    // true,false
+        Integer, // 1
+        String, // 'aaaa'
+        Boolean, // true,false
 
-        Keyword,    // keyword - generic
+        Keyword // keyword - generic
     }
 }

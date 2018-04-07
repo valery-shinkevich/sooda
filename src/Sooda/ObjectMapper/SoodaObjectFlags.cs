@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,13 +27,12 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-
-
 namespace Sooda.ObjectMapper
 {
+    using System;
+
     [Flags]
-    internal enum SoodaObjectFlags : int
+    internal enum SoodaObjectFlags
     {
         InsertMode = 0x01,
         MarkedForDeletion = 0x02,

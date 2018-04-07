@@ -1,7 +1,9 @@
+using System;
+
 namespace SoodaAddin.UI
 {
-    public interface ISoodaConfigurationStrategy
-    {
+	public interface ISoodaConfigurationStrategy
+	{
         string ProjectFile { get; set; }
         string AssemblyName { get; }
         void AddCompileUnit(string file);

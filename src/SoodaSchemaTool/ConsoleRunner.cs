@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -29,20 +28,25 @@
 //
 
 using System;
+using System.IO;
+using System.Xml;
+
+using Sooda.Schema;
+using Sooda.Sql;
+using System.Reflection;
 using System.Collections;
 using System.Globalization;
-using System.Reflection;
 
-namespace SoodaSchemaTool
+namespace SoodaSchemaTool 
 {
-    public class ConsoleRunner
+    public class ConsoleRunner 
     {
         private static void Usage()
         {
             CommandFactory.CreateCommand("help").Run(new string[] { });
         }
 
-        public static int Main(string[] args)
+        public static int Main(string[] args) 
         {
             if (args.Length == 0)
             {

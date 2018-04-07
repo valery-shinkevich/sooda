@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -34,7 +33,9 @@ namespace Sooda.QL
     {
         public SoqlBooleanExpression par;
 
-        public SoqlBooleanNegationExpression() { }
+        public SoqlBooleanNegationExpression()
+        {
+        }
 
         public SoqlBooleanNegationExpression(SoqlBooleanExpression par)
         {
@@ -49,7 +50,7 @@ namespace Sooda.QL
 
         public override SoqlExpression Simplify()
         {
-            par = (SoqlBooleanExpression)par.Simplify();
+            par = (SoqlBooleanExpression) par.Simplify();
             return this;
         }
 
@@ -59,8 +60,7 @@ namespace Sooda.QL
             if (val == null)
                 return null;
 
-            return !((bool)val);
+            return !((bool) val);
         }
     }
-
 }

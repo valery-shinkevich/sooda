@@ -21,6 +21,7 @@
 // 
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
@@ -432,7 +433,7 @@ namespace SoodaQuery {
             //
             this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth24Bit;
             this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            //this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
             this.imageList1.TransparentColor = System.Drawing.Color.Silver;
             //
             // recordsetContextMenu
@@ -516,7 +517,7 @@ namespace SoodaQuery {
             this.xmlResults.Dock = System.Windows.Forms.DockStyle.Fill;
             this.xmlResults.DockPadding.Top = 2;
             this.xmlResults.EnableFolding = false;
-            this.xmlResults.Encoding = ((System.Text.Encoding)(resources.GetObject("xmlResults.Encoding")));
+            //this.xmlResults.Encoding = ((System.Text.Encoding)(resources.GetObject("xmlResults.Encoding")));
             this.xmlResults.IndentStyle = ICSharpCode.TextEditor.Document.IndentStyle.Auto;
             this.xmlResults.Location = new System.Drawing.Point(0, 0);
             this.xmlResults.Name = "xmlResults";
@@ -555,7 +556,7 @@ namespace SoodaQuery {
             this.csvResults.Dock = System.Windows.Forms.DockStyle.Fill;
             this.csvResults.DockPadding.Top = 2;
             this.csvResults.EnableFolding = false;
-            this.csvResults.Encoding = ((System.Text.Encoding)(resources.GetObject("csvResults.Encoding")));
+            //this.csvResults.Encoding = ((System.Text.Encoding)(resources.GetObject("csvResults.Encoding")));
             this.csvResults.IndentStyle = ICSharpCode.TextEditor.Document.IndentStyle.Auto;
             this.csvResults.Location = new System.Drawing.Point(0, 0);
             this.csvResults.Name = "csvResults";
@@ -604,7 +605,7 @@ namespace SoodaQuery {
             this.translatedSql.Dock = System.Windows.Forms.DockStyle.Fill;
             this.translatedSql.DockPadding.Top = 2;
             this.translatedSql.EnableFolding = false;
-            this.translatedSql.Encoding = ((System.Text.Encoding)(resources.GetObject("translatedSql.Encoding")));
+            //this.translatedSql.Encoding = ((System.Text.Encoding)(resources.GetObject("translatedSql.Encoding")));
             this.translatedSql.IndentStyle = ICSharpCode.TextEditor.Document.IndentStyle.Auto;
             this.translatedSql.Location = new System.Drawing.Point(0, 0);
             this.translatedSql.Name = "translatedSql";
@@ -648,7 +649,7 @@ namespace SoodaQuery {
             this.TextEditorControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.TextEditorControl1.DockPadding.Top = 2;
             this.TextEditorControl1.EnableFolding = false;
-            this.TextEditorControl1.Encoding = ((System.Text.Encoding)(resources.GetObject("TextEditorControl1.Encoding")));
+            //this.TextEditorControl1.Encoding = ((System.Text.Encoding)(resources.GetObject("TextEditorControl1.Encoding")));
             this.TextEditorControl1.IndentStyle = ICSharpCode.TextEditor.Document.IndentStyle.Auto;
             this.TextEditorControl1.Location = new System.Drawing.Point(0, 0);
             this.TextEditorControl1.Name = "TextEditorControl1";
@@ -698,7 +699,7 @@ namespace SoodaQuery {
             this.soqlPrettyPrint.Dock = System.Windows.Forms.DockStyle.Fill;
             this.soqlPrettyPrint.DockPadding.Top = 2;
             this.soqlPrettyPrint.EnableFolding = false;
-            this.soqlPrettyPrint.Encoding = ((System.Text.Encoding)(resources.GetObject("soqlPrettyPrint.Encoding")));
+            //this.soqlPrettyPrint.Encoding = ((System.Text.Encoding)(resources.GetObject("soqlPrettyPrint.Encoding")));
             this.soqlPrettyPrint.IndentStyle = ICSharpCode.TextEditor.Document.IndentStyle.Auto;
             this.soqlPrettyPrint.Location = new System.Drawing.Point(0, 0);
             this.soqlPrettyPrint.Name = "soqlPrettyPrint";
@@ -721,7 +722,7 @@ namespace SoodaQuery {
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.toolBar1);
             this.Controls.Add(this.statusBar1);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            //this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Menu = this.mainMenu1;
             this.Name = "MainForm";
             this.Load += new System.EventHandler(this.MainFor_Load);
@@ -1008,16 +1009,10 @@ namespace SoodaQuery {
         private void tabPagePrettyPrint_Click(object sender, System.EventArgs e) {}
 
     class MyResourceSyntaxModeProvider : ISyntaxModeFileProvider {
-            ArrayList syntaxModes = null;
+        
+        readonly List<SyntaxMode> syntaxModes = null;
 
-            public ArrayList SyntaxModes
-            {
-                get {
-                    return syntaxModes;
-                }
-            }
-
-            public MyResourceSyntaxModeProvider() {
+        public MyResourceSyntaxModeProvider() {
                 Assembly assembly = typeof(MainForm).Assembly;
                 Stream syntaxModeStream = assembly.GetManifestResourceStream("SoodaQuery.SyntaxModes.xml");
                 if (syntaxModeStream == null)
@@ -1025,10 +1020,21 @@ namespace SoodaQuery {
                 syntaxModes = SyntaxMode.GetSyntaxModes(syntaxModeStream);
             }
 
-            public XmlTextReader GetSyntaxModeFile(ICSharpCode.TextEditor.Document.SyntaxMode syntaxMode) {
-                Assembly assembly = typeof(MainForm).Assembly;
-                return new XmlTextReader(assembly.GetManifestResourceStream("SoodaQuery." + syntaxMode.FileName));
-            }
+        ICollection<SyntaxMode> ISyntaxModeFileProvider.SyntaxModes
+        {
+            get { return syntaxModes; }
         }
+
+        public XmlTextReader GetSyntaxModeFile(ICSharpCode.TextEditor.Document.SyntaxMode syntaxMode)
+        {
+            Assembly assembly = typeof(MainForm).Assembly;
+            
+            return assembly != null
+                       ? new XmlTextReader(assembly.GetManifestResourceStream("SoodaQuery." + syntaxMode.FileName))
+                       : null;
+        }
+
+        public void UpdateSyntaxModeList() { throw new System.NotImplementedException(); }
+    }
     }
 }

@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,12 +27,12 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.CodeDom;
-using System.IO;
-
 namespace Sooda.CodeGen.CDIL
 {
+    using System;
+    using System.CodeDom;
+    using System.IO;
+
     public class CDILPrettyPrinter
     {
         private static void PrintCustomAttributeDeclaration(TextWriter output, CodeAttributeDeclaration cad)
@@ -48,8 +47,6 @@ namespace Sooda.CodeGen.CDIL
 
             if ((attr & MemberAttributes.Abstract) == MemberAttributes.Abstract)
             {
-                if (!first)
-                    output.Write(',');
                 first = false;
                 output.Write("Abstract");
             }
@@ -159,7 +156,7 @@ namespace Sooda.CodeGen.CDIL
         {
             if (expression is CodeMethodInvokeExpression)
             {
-                CodeMethodInvokeExpression cmi = (CodeMethodInvokeExpression)expression;
+                CodeMethodInvokeExpression cmi = (CodeMethodInvokeExpression) expression;
                 if (cmi.Method.TargetObject == null)
                     output.Write("defaultscope");
                 else
@@ -179,7 +176,7 @@ namespace Sooda.CodeGen.CDIL
 
             if (expression is CodeDelegateInvokeExpression)
             {
-                CodeDelegateInvokeExpression die = (CodeDelegateInvokeExpression)expression;
+                CodeDelegateInvokeExpression die = (CodeDelegateInvokeExpression) expression;
                 output.Write("delegatecall(");
                 PrintExpression(output, die.TargetObject);
                 output.Write(')');
@@ -196,7 +193,7 @@ namespace Sooda.CodeGen.CDIL
 
             if (expression is CodePropertyReferenceExpression)
             {
-                CodePropertyReferenceExpression cpre = (CodePropertyReferenceExpression)expression;
+                CodePropertyReferenceExpression cpre = (CodePropertyReferenceExpression) expression;
                 if (cpre.TargetObject == null)
                     output.Write("defaultscope");
                 else
@@ -208,7 +205,7 @@ namespace Sooda.CodeGen.CDIL
 
             if (expression is CodeFieldReferenceExpression)
             {
-                CodeFieldReferenceExpression cpre = (CodeFieldReferenceExpression)expression;
+                CodeFieldReferenceExpression cpre = (CodeFieldReferenceExpression) expression;
                 if (cpre.TargetObject == null)
                     output.Write("defaultscope");
                 else
@@ -221,7 +218,7 @@ namespace Sooda.CodeGen.CDIL
 
             if (expression is CodePrimitiveExpression)
             {
-                object value = ((CodePrimitiveExpression)expression).Value;
+                object value = ((CodePrimitiveExpression) expression).Value;
                 if (value == null)
                     output.Write("null");
                 else if (value.Equals(true))
@@ -249,20 +246,20 @@ namespace Sooda.CodeGen.CDIL
 
             if (expression is CodeArgumentReferenceExpression)
             {
-                output.Write("arg({0})", ((CodeArgumentReferenceExpression)expression).ParameterName);
+                output.Write("arg({0})", ((CodeArgumentReferenceExpression) expression).ParameterName);
                 return;
             }
 
             if (expression is CodeVariableReferenceExpression)
             {
-                output.Write("var({0})", ((CodeVariableReferenceExpression)expression).VariableName);
+                output.Write("var({0})", ((CodeVariableReferenceExpression) expression).VariableName);
                 return;
             }
 
             if (expression is CodeTypeReferenceExpression)
             {
                 output.Write("typeref(");
-                CodeTypeReferenceExpression ctr = (CodeTypeReferenceExpression)expression;
+                CodeTypeReferenceExpression ctr = (CodeTypeReferenceExpression) expression;
                 PrintTypeReference(output, ctr.Type);
                 output.Write(')');
                 return;
@@ -281,7 +278,7 @@ namespace Sooda.CodeGen.CDIL
 
             if (expression is CodeTypeOfExpression)
             {
-                CodeTypeOfExpression ctoe = (CodeTypeOfExpression)expression;
+                CodeTypeOfExpression ctoe = (CodeTypeOfExpression) expression;
                 output.Write("typeof(");
                 PrintTypeReference(output, ctoe.Type);
                 output.Write(')');
@@ -290,7 +287,7 @@ namespace Sooda.CodeGen.CDIL
 
             if (expression is CodeObjectCreateExpression)
             {
-                CodeObjectCreateExpression coce = (CodeObjectCreateExpression)expression;
+                CodeObjectCreateExpression coce = (CodeObjectCreateExpression) expression;
                 output.Write("new ");
                 PrintTypeReference(output, coce.CreateType);
                 output.Write('(');
@@ -299,16 +296,14 @@ namespace Sooda.CodeGen.CDIL
                     if (i > 0)
                         output.Write(", ");
                     PrintExpression(output, coce.Parameters[i]);
-
                 }
-
                 output.Write(')');
                 return;
             }
 
             if (expression is CodeArrayIndexerExpression)
             {
-                CodeArrayIndexerExpression caie = (CodeArrayIndexerExpression)expression;
+                CodeArrayIndexerExpression caie = (CodeArrayIndexerExpression) expression;
                 output.Write("arrayitem(");
                 PrintExpression(output, caie.TargetObject);
                 for (int i = 0; i < caie.Indices.Count; ++i)
@@ -322,7 +317,7 @@ namespace Sooda.CodeGen.CDIL
 
             if (expression is CodeArrayCreateExpression)
             {
-                CodeArrayCreateExpression cace = (CodeArrayCreateExpression)expression;
+                CodeArrayCreateExpression cace = (CodeArrayCreateExpression) expression;
                 output.Write("newarray(");
                 PrintTypeReference(output, cace.CreateType);
                 output.Write(',');
@@ -333,7 +328,7 @@ namespace Sooda.CodeGen.CDIL
 
             if (expression is CodeBinaryOperatorExpression)
             {
-                CodeBinaryOperatorExpression cboe = (CodeBinaryOperatorExpression)expression;
+                CodeBinaryOperatorExpression cboe = (CodeBinaryOperatorExpression) expression;
                 switch (cboe.Operator)
                 {
                     case CodeBinaryOperatorType.ValueEquality:
@@ -372,21 +367,21 @@ namespace Sooda.CodeGen.CDIL
 
             if (expression is CodeDirectionExpression)
             {
-                switch (((CodeDirectionExpression)expression).Direction)
+                switch (((CodeDirectionExpression) expression).Direction)
                 {
                     case FieldDirection.In:
-                        PrintExpression(output, ((CodeDirectionExpression)expression).Expression);
+                        PrintExpression(output, ((CodeDirectionExpression) expression).Expression);
                         break;
 
                     case FieldDirection.Out:
                         output.Write("out(");
-                        PrintExpression(output, ((CodeDirectionExpression)expression).Expression);
+                        PrintExpression(output, ((CodeDirectionExpression) expression).Expression);
                         output.Write(')');
                         break;
 
                     case FieldDirection.Ref:
                         output.Write("ref(");
-                        PrintExpression(output, ((CodeDirectionExpression)expression).Expression);
+                        PrintExpression(output, ((CodeDirectionExpression) expression).Expression);
                         output.Write(')');
                         break;
                 }
@@ -427,7 +422,8 @@ namespace Sooda.CodeGen.CDIL
             output.WriteLine("    endif");
         }
 
-        private static void PrintVariableDeclarationStatement(TextWriter output, CodeVariableDeclarationStatement statement)
+        private static void PrintVariableDeclarationStatement(TextWriter output,
+            CodeVariableDeclarationStatement statement)
         {
             output.Write("var ");
             PrintTypeReference(output, statement.Type);
@@ -441,13 +437,15 @@ namespace Sooda.CodeGen.CDIL
 
         private static void PrintExpressionStatement(TextWriter output, CodeExpressionStatement statement)
         {
-            if (statement.Expression is CodeMethodInvokeExpression || statement.Expression is CodeDelegateInvokeExpression)
+            if (statement.Expression is CodeMethodInvokeExpression ||
+                statement.Expression is CodeDelegateInvokeExpression)
             {
                 output.Write("call ");
                 PrintExpression(output, statement.Expression);
             }
             else
-                throw new ArgumentException("statement.Expression is not a CodeMethodInvokeExpression. Was: " + statement.Expression.GetType());
+                throw new ArgumentException("statement.Expression is not a CodeMethodInvokeExpression. Was: " +
+                                            statement.Expression.GetType());
         }
 
         private static void PrintMethodReturnStatement(TextWriter output, CodeMethodReturnStatement statement)
@@ -490,37 +488,37 @@ namespace Sooda.CodeGen.CDIL
         {
             if (statement is CodeVariableDeclarationStatement)
             {
-                PrintVariableDeclarationStatement(output, (CodeVariableDeclarationStatement)statement);
+                PrintVariableDeclarationStatement(output, (CodeVariableDeclarationStatement) statement);
                 return;
             }
             if (statement is CodeExpressionStatement)
             {
-                PrintExpressionStatement(output, (CodeExpressionStatement)statement);
+                PrintExpressionStatement(output, (CodeExpressionStatement) statement);
                 return;
             }
             if (statement is CodeMethodReturnStatement)
             {
-                PrintMethodReturnStatement(output, (CodeMethodReturnStatement)statement);
+                PrintMethodReturnStatement(output, (CodeMethodReturnStatement) statement);
                 return;
             }
             if (statement is CodeAssignStatement)
             {
-                PrintAssignStatement(output, (CodeAssignStatement)statement);
+                PrintAssignStatement(output, (CodeAssignStatement) statement);
                 return;
             }
             if (statement is CodeThrowExceptionStatement)
             {
-                PrintThrowExceptionStatement(output, (CodeThrowExceptionStatement)statement);
+                PrintThrowExceptionStatement(output, (CodeThrowExceptionStatement) statement);
                 return;
             }
             if (statement is CodeConditionStatement)
             {
-                PrintConditionStatement(output, (CodeConditionStatement)statement);
+                PrintConditionStatement(output, (CodeConditionStatement) statement);
                 return;
             }
             if (statement is CodeCommentStatement)
             {
-                PrintCommentStatement(output, (CodeCommentStatement)statement);
+                PrintCommentStatement(output, (CodeCommentStatement) statement);
                 return;
             }
             output.WriteLine("*** UNKNOWN STATEMENT: " + statement.GetType() + " ***");
@@ -604,7 +602,7 @@ namespace Sooda.CodeGen.CDIL
         {
             output.Write("field ");
             PrintTypeReference(output, field.Type);
-            output.Write(' ');
+            output.Write(" ");
             output.WriteLine(field.Name);
             output.Write("    attributes ");
             PrintMemberAttributes(output, field.Attributes);
@@ -694,30 +692,30 @@ namespace Sooda.CodeGen.CDIL
         {
             if (member is CodeConstructor)
             {
-                PrintConstructor(output, (CodeConstructor)member);
+                PrintConstructor(output, (CodeConstructor) member);
                 return;
             }
             if (member is CodeTypeConstructor)
             {
-                PrintTypeConstructor(output, (CodeTypeConstructor)member);
+                PrintTypeConstructor(output, (CodeTypeConstructor) member);
                 return;
             }
             if (member is CodeMemberField)
             {
-                PrintField(output, (CodeMemberField)member);
+                PrintField(output, (CodeMemberField) member);
                 return;
             }
             if (member is CodeMemberProperty)
             {
-                PrintProperty(output, (CodeMemberProperty)member);
+                PrintProperty(output, (CodeMemberProperty) member);
                 return;
             }
             if (member is CodeMemberMethod)
             {
-                PrintMethod(output, (CodeMemberMethod)member);
+                PrintMethod(output, (CodeMemberMethod) member);
             }
-
         }
+
         public static void PrintType(TextWriter output, CodeTypeDeclaration ctd)
         {
             output.WriteLine("class {0}", ctd.Name);

@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,22 +27,21 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.Data;
-using System.Data.SqlTypes;
-
 namespace Sooda.ObjectMapper.FieldHandlers
 {
+    using System;
+    using System.Data;
+    using System.Data.SqlTypes;
+
     public class BooleanAsIntegerFieldHandler : SoodaFieldHandler
     {
-        public BooleanAsIntegerFieldHandler(bool nullable) : base(nullable) { }
+        public BooleanAsIntegerFieldHandler(bool nullable) : base(nullable)
+        {
+        }
 
         protected override string TypeName
         {
-            get
-            {
-                return "boolint";
-            }
+            get { return "boolint"; }
         }
 
         public override object RawRead(IDataRecord record, int pos)
@@ -73,7 +71,7 @@ namespace Sooda.ObjectMapper.FieldHandlers
 
         public static object DeserializeFromString(string s)
         {
-            return s == "true" ? true : false;
+            return s == "true";
         }
 
         private static readonly object _zeroValue = false;
@@ -87,12 +85,12 @@ namespace Sooda.ObjectMapper.FieldHandlers
 
         public override Type GetFieldType()
         {
-            return typeof(bool);
+            return typeof (bool);
         }
 
         public override Type GetSqlType()
         {
-            return typeof(SqlBoolean);
+            return typeof (SqlBoolean);
         }
 
         public override void SetupDBParameter(IDbDataParameter parameter, object value)
@@ -103,12 +101,9 @@ namespace Sooda.ObjectMapper.FieldHandlers
 
         // type conversions - used in generated stub code
 
-        public static System.Data.SqlTypes.SqlBoolean GetSqlNullableValue(object fieldValue)
+        public static SqlBoolean GetSqlNullableValue(object fieldValue)
         {
-            if (fieldValue == null)
-                return System.Data.SqlTypes.SqlBoolean.Null;
-            else
-                return new System.Data.SqlTypes.SqlBoolean((bool) fieldValue);
+            return fieldValue == null ? SqlBoolean.Null : new SqlBoolean((Boolean) fieldValue);
         }
 
         public static bool GetNotNullValue(object val)
@@ -120,15 +115,12 @@ namespace Sooda.ObjectMapper.FieldHandlers
 
         public static bool? GetNullableValue(object fieldValue)
         {
-            if (fieldValue == null)
-                return null;
-            else
-                return (bool) fieldValue;
+            return fieldValue == null ? (bool?) null : (bool) fieldValue;
         }
 
         public override Type GetNullableType()
         {
-            return typeof(bool?);
+            return typeof (bool?);
         }
     }
 }

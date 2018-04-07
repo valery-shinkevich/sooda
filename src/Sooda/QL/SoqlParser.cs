@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,13 +27,13 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using Sooda.Schema;
-using System;
-using System.Globalization;
-using System.Text;
-
 namespace Sooda.QL
 {
+    using System;
+    using System.Globalization;
+    using System.Text;
+    using Schema;
+
     public class SoqlParser
     {
         private SqlTokenizer tokenizer = new SqlTokenizer();
@@ -73,7 +72,7 @@ namespace Sooda.QL
 
         private SoqlExpression ParsePathLikeExpression(string firstKeyword)
         {
-            if (0 == String.Compare(firstKeyword, "soodaclass", true, System.Globalization.CultureInfo.InvariantCulture))
+            if (0 == String.Compare(firstKeyword, "soodaclass", true, CultureInfo.InvariantCulture))
                 return new SoqlSoodaClassExpression();
 
             SoqlPathExpression prop = new SoqlPathExpression(firstKeyword);
@@ -86,7 +85,7 @@ namespace Sooda.QL
                     tokenizer.GetNextToken();
                     return new SoqlAsteriskExpression(prop);
                 }
-                else if (tokenizer.IsKeyword("contains")) // lowercase
+                if (tokenizer.IsKeyword("contains")) // lowercase
                 {
                     string collectionName = prop.PropertyName;
 
@@ -96,31 +95,29 @@ namespace Sooda.QL
                     SoqlExpression expr = ParseLiteralExpression();
                     return new SoqlContainsExpression(prop.Left, collectionName, expr);
                 }
-                else if (tokenizer.IsKeyword("count")) // lowercase
+                if (tokenizer.IsKeyword("count")) // lowercase
                 {
                     string collectionName = prop.PropertyName;
                     tokenizer.EatKeyword();
                     return new SoqlCountExpression(prop.Left, collectionName);
                 }
-                else if (tokenizer.IsKeyword("soodaclass")) // lowercase
+                if (tokenizer.IsKeyword("soodaclass")) // lowercase
                 {
                     tokenizer.EatKeyword();
                     return new SoqlSoodaClassExpression(prop);
                 }
-                else
-                {
-                    string keyword = tokenizer.EatKeyword();
-                    prop = new SoqlPathExpression(prop, keyword);
-                }
+                string keyword = tokenizer.EatKeyword();
+                prop = new SoqlPathExpression(prop, keyword);
             }
+
             if (tokenizer.TokenType == SoqlTokenType.LeftParen)
             {
                 tokenizer.GetNextToken();
-                string functionName = prop.PropertyName;
+                var functionName = prop.PropertyName;
                 while ((prop = prop.Left) != null)
                     functionName = prop.PropertyName + "." + functionName;
 
-                if (0 == String.Compare(functionName, "rawquery", true, System.Globalization.CultureInfo.InvariantCulture))
+                if (0 == String.Compare(functionName, "rawquery", true, CultureInfo.InvariantCulture))
                     return ParseRawExpression();
 
                 return ParseFunctionCall(functionName);
@@ -153,27 +150,20 @@ namespace Sooda.QL
             if (tokenizer.IsToken(SoqlTokenType.LeftParen))
             {
                 tokenizer.GetNextToken();
-                SoqlExpression e;
-                if (tokenizer.IsKeyword("select"))
-                    e = ParseQuery();
-                else
-                    e = ParseExpression();
+                var e = tokenizer.IsKeyword("select")
+                    ? ParseQuery()
+                    : ParseExpression();
                 tokenizer.Expect(SoqlTokenType.RightParen);
                 return e;
-            };
+            }
 
             if (tokenizer.IsNumber())
             {
-                string numberString = (string)tokenizer.TokenValue;
+                var numberString = tokenizer.TokenValue;
                 tokenizer.GetNextToken();
-                if (numberString.IndexOf('.') >= 0)
-                {
-                    return new SoqlLiteralExpression(Double.Parse(numberString, CultureInfo.InvariantCulture));
-                }
-                else
-                {
-                    return new SoqlLiteralExpression(Int32.Parse(numberString, CultureInfo.InvariantCulture));
-                }
+                return (numberString.IndexOf('.') >= 0) || (numberString.IndexOf(',') >= 0)
+                    ? new SoqlLiteralExpression(Decimal.Parse(numberString, CultureInfo.InvariantCulture))
+                    : new SoqlLiteralExpression(Int64.Parse(numberString, CultureInfo.InvariantCulture));
             }
 
             if (tokenizer.TokenType == SoqlTokenType.String)
@@ -186,7 +176,7 @@ namespace Sooda.QL
             if (tokenizer.TokenType == SoqlTokenType.LeftCurlyBrace)
             {
                 tokenizer.GetNextToken();
-                int val = Int32.Parse((string)tokenizer.TokenValue);
+                int val = Int32.Parse(tokenizer.TokenValue);
                 tokenizer.GetNextToken();
                 if (tokenizer.TokenType == SoqlTokenType.Colon)
                 {
@@ -195,11 +185,8 @@ namespace Sooda.QL
                     tokenizer.Expect(SoqlTokenType.RightCurlyBrace);
                     return new SoqlParameterLiteralExpression(val, modifiers);
                 }
-                else
-                {
-                    tokenizer.Expect(SoqlTokenType.RightCurlyBrace);
-                    return new SoqlParameterLiteralExpression(val);
-                }
+                tokenizer.Expect(SoqlTokenType.RightCurlyBrace);
+                return new SoqlParameterLiteralExpression(val);
             }
 
             if (tokenizer.TokenType == SoqlTokenType.Asterisk)
@@ -212,17 +199,28 @@ namespace Sooda.QL
             {
                 string keyword = tokenizer.EatKeyword();
 
-                if (0 == String.Compare(keyword, "not", true, System.Globalization.CultureInfo.InvariantCulture))
-                    return new SoqlBooleanNegationExpression((SoqlBooleanExpression)ParseBooleanPredicate());
+                if (0 == String.Compare(keyword, "not", true, CultureInfo.InvariantCulture))
+                    return new SoqlBooleanNegationExpression((SoqlBooleanExpression) ParseBooleanPredicate());
 
-                if (0 == String.Compare(keyword, "null", true, System.Globalization.CultureInfo.InvariantCulture))
+                if (0 == String.Compare(keyword, "null", true, CultureInfo.InvariantCulture))
                     return new SoqlNullLiteral();
 
-                if (0 == String.Compare(keyword, "true", true, System.Globalization.CultureInfo.InvariantCulture))
+                if (0 == String.Compare(keyword, "true", true, CultureInfo.InvariantCulture))
                     return new SoqlBooleanLiteralExpression(true);
 
-                if (0 == String.Compare(keyword, "false", true, System.Globalization.CultureInfo.InvariantCulture))
+                if (0 == String.Compare(keyword, "false", true, CultureInfo.InvariantCulture))
                     return new SoqlBooleanLiteralExpression(false);
+                /*
+                if (tokenizer.TokenType == SoqlTokenType.LeftParen)
+                {
+                    tokenizer.GetNextToken();
+
+                    if (0 == String.Compare(keyword, "rawquery", true, System.Globalization.CultureInfo.InvariantCulture))
+                        return ParseRawExpression();
+
+                    SoqlFunctionCallExpression callExpr = ParseFunctionCall(keyword);
+                    return callExpr;
+                }
 
                 /*if (tokenizer.IsKeyword("as"))
                 {
@@ -304,7 +302,7 @@ namespace Sooda.QL
 
         private SoqlExpression ParseInExpression(SoqlExpression lhs)
         {
-            SoqlExpressionCollection rhs = new SoqlExpressionCollection();
+            var rhs = new SoqlExpressionCollection();
 
             tokenizer.ExpectKeyword("in");
             tokenizer.Expect(SoqlTokenType.LeftParen);
@@ -329,37 +327,39 @@ namespace Sooda.QL
             {
                 tokenizer.GetNextToken();
                 return new SoqlBooleanRelationalExpression(e, ParseAdditiveExpression(), SoqlRelationalOperator.Equal);
-            };
+            }
 
             if (tokenizer.IsToken(SoqlTokenType.NE))
             {
                 tokenizer.GetNextToken();
                 return new SoqlBooleanRelationalExpression(e, ParseAdditiveExpression(), SoqlRelationalOperator.NotEqual);
-            };
+            }
 
             if (tokenizer.IsToken(SoqlTokenType.LT))
             {
                 tokenizer.GetNextToken();
                 return new SoqlBooleanRelationalExpression(e, ParseAdditiveExpression(), SoqlRelationalOperator.Less);
-            };
+            }
 
             if (tokenizer.IsToken(SoqlTokenType.GT))
             {
                 tokenizer.GetNextToken();
                 return new SoqlBooleanRelationalExpression(e, ParseAdditiveExpression(), SoqlRelationalOperator.Greater);
-            };
+            }
 
             if (tokenizer.IsToken(SoqlTokenType.LE))
             {
                 tokenizer.GetNextToken();
-                return new SoqlBooleanRelationalExpression(e, ParseAdditiveExpression(), SoqlRelationalOperator.LessOrEqual);
-            };
+                return new SoqlBooleanRelationalExpression(e, ParseAdditiveExpression(),
+                    SoqlRelationalOperator.LessOrEqual);
+            }
 
             if (tokenizer.IsToken(SoqlTokenType.GE))
             {
                 tokenizer.GetNextToken();
-                return new SoqlBooleanRelationalExpression(e, ParseAdditiveExpression(), SoqlRelationalOperator.GreaterOrEqual);
-            };
+                return new SoqlBooleanRelationalExpression(e, ParseAdditiveExpression(),
+                    SoqlRelationalOperator.GreaterOrEqual);
+            }
 
             if (tokenizer.IsKeyword("like"))
             {
@@ -395,7 +395,6 @@ namespace Sooda.QL
             if (tokenizer.IsKeyword("exists"))
             {
                 SoqlQueryExpression query;
-
                 tokenizer.GetNextToken();
                 tokenizer.Expect(SoqlTokenType.LeftParen);
                 if (tokenizer.IsKeyword("select"))
@@ -411,22 +410,20 @@ namespace Sooda.QL
                     tokenizer.ExpectKeyword("where");
                     query.WhereClause = ParseBooleanExpression();
                 }
-
                 tokenizer.Expect(SoqlTokenType.RightParen);
                 return new SoqlExistsExpression(query);
             }
-
             return ParseBooleanRelation();
         }
 
         private SoqlExpression ParseBooleanAnd()
         {
             SoqlExpression e = ParseBooleanPredicate();
-
             while (tokenizer.IsKeyword("and") || tokenizer.IsToken(SoqlTokenType.And))
             {
                 tokenizer.GetNextToken();
-                e = new SoqlBooleanAndExpression((SoqlBooleanExpression)e, (SoqlBooleanExpression)ParseBooleanPredicate());
+                e = new SoqlBooleanAndExpression((SoqlBooleanExpression) e,
+                    (SoqlBooleanExpression) ParseBooleanPredicate());
             }
             return e;
         }
@@ -434,11 +431,10 @@ namespace Sooda.QL
         private SoqlExpression ParseBooleanOr()
         {
             SoqlExpression e = ParseBooleanAnd();
-
             while (tokenizer.IsKeyword("or") || tokenizer.IsToken(SoqlTokenType.Or))
             {
                 tokenizer.GetNextToken();
-                e = new SoqlBooleanOrExpression((SoqlBooleanExpression)e, (SoqlBooleanExpression)ParseBooleanAnd());
+                e = new SoqlBooleanOrExpression((SoqlBooleanExpression) e, (SoqlBooleanExpression) ParseBooleanAnd());
             }
             return e;
         }
@@ -450,7 +446,7 @@ namespace Sooda.QL
             {
                 throw new SoqlException("Boolean expected");
             }
-            return (SoqlBooleanExpression)expr;
+            return (SoqlBooleanExpression) expr;
         }
 
         private SoqlExpression ParseExpression()
@@ -477,8 +473,8 @@ namespace Sooda.QL
                 query.SelectExpressions.Add(expr);
                 query.SelectAliases.Add(alias);
 
-                if (!tokenizer.IsToken(SoqlTokenType.Comma))
-                    break;
+                if (!tokenizer.IsToken(SoqlTokenType.Comma)) break;
+
                 tokenizer.GetNextToken();
             }
         }
@@ -487,14 +483,12 @@ namespace Sooda.QL
         {
             tokenizer.ExpectKeyword("group");
             tokenizer.ExpectKeyword("by");
-
             for (;;)
             {
                 SoqlExpression expr = ParseExpression();
                 query.GroupByExpressions.Add(expr);
 
-                if (!tokenizer.IsToken(SoqlTokenType.Comma))
-                    break;
+                if (!tokenizer.IsToken(SoqlTokenType.Comma)) break;
                 tokenizer.GetNextToken();
             }
         }
@@ -503,7 +497,6 @@ namespace Sooda.QL
         {
             tokenizer.ExpectKeyword("order");
             tokenizer.ExpectKeyword("by");
-
             for (;;)
             {
                 SoqlExpression expr = ParseExpression();
@@ -521,8 +514,7 @@ namespace Sooda.QL
                 query.OrderByExpressions.Add(expr);
                 query.OrderByOrder.Add(order);
 
-                if (!tokenizer.IsToken(SoqlTokenType.Comma))
-                    break;
+                if (!tokenizer.IsToken(SoqlTokenType.Comma)) break;
                 tokenizer.GetNextToken();
             }
         }
@@ -539,7 +531,9 @@ namespace Sooda.QL
                     tokenizer.EatKeyword();
                     alias = tokenizer.EatKeyword();
                 }
-                else if (tokenizer.IsEOF() || tokenizer.IsKeyword("where") || tokenizer.IsKeyword("group") || tokenizer.IsKeyword("order") || tokenizer.IsKeyword("having") || tokenizer.TokenType == SoqlTokenType.Comma)
+                else if (tokenizer.IsEOF() || tokenizer.IsKeyword("where") || tokenizer.IsKeyword("group") ||
+                         tokenizer.IsKeyword("order") || tokenizer.IsKeyword("having") ||
+                         tokenizer.TokenType == SoqlTokenType.Comma)
                 {
                     alias = String.Empty;
                 }
@@ -551,8 +545,7 @@ namespace Sooda.QL
                 query.From.Add(tableName);
                 query.FromAliases.Add(alias);
 
-                if (!tokenizer.IsToken(SoqlTokenType.Comma))
-                    break;
+                if (!tokenizer.IsToken(SoqlTokenType.Comma)) break;
                 tokenizer.GetNextToken();
             }
         }
@@ -624,7 +617,7 @@ namespace Sooda.QL
             SoqlLiteralValueModifiers retVal = new SoqlLiteralValueModifiers();
 
             string typeName = tokenizer.EatKeyword();
-            FieldDataType typeOverride = (FieldDataType)FieldDataType.Parse(typeof(FieldDataType), typeName);
+            FieldDataType typeOverride = (FieldDataType) FieldDataType.Parse(typeof (FieldDataType), typeName);
             retVal.DataTypeOverride = typeOverride;
             return retVal;
         }
@@ -634,15 +627,18 @@ namespace Sooda.QL
             SoqlParser parser = new SoqlParser(expr);
             SoqlLiteralValueModifiers e = parser.ParseLiteralValueModifiers();
             if (!parser.tokenizer.IsEOF())
-                throw new SoqlException("Unexpected token: " + parser.tokenizer.TokenValue, parser.tokenizer.TokenPosition);
+                throw new SoqlException("Unexpected token: " + parser.tokenizer.TokenValue,
+                    parser.tokenizer.TokenPosition);
             return e;
         }
+
         public static SoqlExpression ParseExpression(string expr)
         {
             SoqlParser parser = new SoqlParser(expr);
             SoqlExpression e = parser.ParseExpression();
             if (!parser.tokenizer.IsEOF())
-                throw new SoqlException("Unexpected token: " + parser.tokenizer.TokenValue, parser.tokenizer.TokenPosition);
+                throw new SoqlException("Unexpected token: " + parser.tokenizer.TokenValue,
+                    parser.tokenizer.TokenPosition);
             return e;
         }
 
@@ -651,7 +647,8 @@ namespace Sooda.QL
             SoqlParser parser = new SoqlParser(expr);
             parser.ParseOrderByExpressions(query);
             if (!parser.tokenizer.IsEOF())
-                throw new SoqlException("Unexpected token: " + parser.tokenizer.TokenValue, parser.tokenizer.TokenPosition);
+                throw new SoqlException("Unexpected token: " + parser.tokenizer.TokenValue,
+                    parser.tokenizer.TokenPosition);
         }
 
         public static SoqlBooleanExpression ParseBooleanExpression(string expr)
@@ -659,7 +656,8 @@ namespace Sooda.QL
             SoqlParser parser = new SoqlParser(expr);
             SoqlBooleanExpression e = parser.ParseBooleanExpression();
             if (!parser.tokenizer.IsEOF())
-                throw new SoqlException("Unexpected token: " + parser.tokenizer.TokenValue, parser.tokenizer.TokenPosition);
+                throw new SoqlException("Unexpected token: " + parser.tokenizer.TokenValue,
+                    parser.tokenizer.TokenPosition);
             return e;
         }
 
@@ -668,7 +666,8 @@ namespace Sooda.QL
             SoqlParser parser = new SoqlParser(expr);
             SoqlQueryExpression q = parser.ParseQuery();
             if (!parser.tokenizer.IsEOF())
-                throw new SoqlException("Unexpected token: " + parser.tokenizer.TokenValue, parser.tokenizer.TokenPosition);
+                throw new SoqlException("Unexpected token: " + parser.tokenizer.TokenValue,
+                    parser.tokenizer.TokenPosition);
             return q;
         }
     }

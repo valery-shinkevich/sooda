@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,15 +27,15 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using Sooda.Logging;
-using System;
-using System.Collections;
-using System.Data;
-using System.IO;
-using System.Threading;
-
 namespace Sooda.Caching
 {
+    using System;
+    using System.Collections;
+    using System.Data;
+    using System.IO;
+    using System.Threading;
+    using Logging;
+
     public class SoodaInProcessCache : ISoodaCache, ISoodaCacheView
     {
         private ReaderWriterLock _rwlock = new ReaderWriterLock();
@@ -51,18 +50,18 @@ namespace Sooda.Caching
 
         public SoodaInProcessCache()
         {
-            _objectCache.ItemRemoved += new LruCacheDelegate(_objectCache_ItemRemoved);
-            _collectionCache.ItemRemoved += new LruCacheDelegate(_collectionCache_ItemRemoved);
+            _objectCache.ItemRemoved += _objectCache_ItemRemoved;
+            _collectionCache.ItemRemoved += _collectionCache_ItemRemoved;
         }
 
-        void _collectionCache_ItemRemoved(object sender, LruCacheEventArgs args)
+        private void _collectionCache_ItemRemoved(object sender, LruCacheEventArgs args)
         {
             logger.Trace("Collection removed: {0}", args.Key);
         }
 
-        void _objectCache_ItemRemoved(object sender, LruCacheEventArgs args)
+        private void _objectCache_ItemRemoved(object sender, LruCacheEventArgs args)
         {
-            SoodaCacheEntry e = (SoodaCacheEntry)args.Value;
+            SoodaCacheEntry e = (SoodaCacheEntry) args.Value;
             logger.Trace("Item removed: {0}. Invalidating dependent collections...", e);
             IList l = e.GetDependentCollections();
             if (l != null)
@@ -80,7 +79,7 @@ namespace Sooda.Caching
             try
             {
                 SoodaCacheKey cacheKey = new SoodaCacheKey(className, primaryKeyValue);
-                return (SoodaCacheEntry)_objectCache.Get(cacheKey);
+                return (SoodaCacheEntry) _objectCache.Get(cacheKey);
             }
             finally
             {
@@ -88,7 +87,8 @@ namespace Sooda.Caching
             }
         }
 
-        public void Add(string className, object primaryKeyValue, SoodaCacheEntry entry, TimeSpan expirationTimeout, bool slidingExpiration)
+        public void Add(string className, object primaryKeyValue, SoodaCacheEntry entry, TimeSpan expirationTimeout,
+            bool slidingExpiration)
         {
             _rwlock.AcquireWriterLock(-1);
             try
@@ -127,7 +127,7 @@ namespace Sooda.Caching
                 SoodaCacheKey cacheKey = new SoodaCacheKey(className, primaryKeyValue);
                 _objectCache.Remove(cacheKey);
 
-                LruCache cachedCollectionsDependentOnClass = (LruCache)_collectionsDependentOnClass[className];
+                LruCache cachedCollectionsDependentOnClass = (LruCache) _collectionsDependentOnClass[className];
                 if (cachedCollectionsDependentOnClass != null)
                 {
                     foreach (string key in cachedCollectionsDependentOnClass.Keys)
@@ -182,7 +182,7 @@ namespace Sooda.Caching
             if (key == null)
                 return null;
 
-            SoodaCachedCollection cc = (SoodaCachedCollection)_collectionCache[key];
+            SoodaCachedCollection cc = (SoodaCachedCollection) _collectionCache[key];
             if (cc == null)
                 return null;
 
@@ -191,9 +191,10 @@ namespace Sooda.Caching
             return retval;
         }
 
-        private void RegisterDependentCollectionClass(string cacheKey, string dependentClassName, TimeSpan expirationTimeout, bool slidingExpiration)
+        private void RegisterDependentCollectionClass(string cacheKey, string dependentClassName,
+            TimeSpan expirationTimeout, bool slidingExpiration)
         {
-            LruCache cache = (LruCache)_collectionsDependentOnClass[dependentClassName];
+            LruCache cache = (LruCache) _collectionsDependentOnClass[dependentClassName];
             if (cache == null)
             {
                 cache = new LruCache(-1);
@@ -204,7 +205,8 @@ namespace Sooda.Caching
             cache.Set(cacheKey, _marker, expirationTimeout, slidingExpiration);
         }
 
-        public void StoreCollection(string cacheKey, string rootClassName, IList primaryKeys, string[] dependentClassNames, bool evictWhenItemRemoved, TimeSpan expirationTimeout, bool slidingExpiration)
+        public void StoreCollection(string cacheKey, string rootClassName, IList primaryKeys,
+            string[] dependentClassNames, bool evictWhenItemRemoved, TimeSpan expirationTimeout, bool slidingExpiration)
         {
             if (cacheKey != null)
             {
@@ -213,7 +215,8 @@ namespace Sooda.Caching
                 {
                     if (logger.IsTraceEnabled)
                     {
-                        logger.Trace("Storing collection: {0} {1} items. Dependent on: [ {2} ]", cacheKey, primaryKeys.Count, String.Join(",",dependentClassNames));
+                        logger.Trace("Storing collection: {0} {1} items. Dependent on: [ {2} ]", cacheKey,
+                            primaryKeys.Count, String.Join(",", dependentClassNames));
                     }
 
                     SoodaCachedCollection cc = new SoodaCachedCollection(cacheKey, rootClassName, primaryKeys);
@@ -223,12 +226,13 @@ namespace Sooda.Caching
                         foreach (object o in primaryKeys)
                         {
                             SoodaCacheKey k = new SoodaCacheKey(rootClassName, o);
-                            SoodaCacheEntry e = (SoodaCacheEntry)_objectCache[k];
+                            SoodaCacheEntry e = (SoodaCacheEntry) _objectCache[k];
                             if (e != null)
                             {
                                 //logger.Trace("Registering {0} as dependent of {1}", cacheKey, e);
                                 e.RegisterDependentCollection(cc);
-                            };
+                            }
+                            ;
                         }
                     }
                     _collectionCache.Set(cacheKey, cc, expirationTimeout, slidingExpiration);
@@ -238,7 +242,8 @@ namespace Sooda.Caching
                     {
                         for (int i = 0; i < dependentClassNames.Length; ++i)
                         {
-                            RegisterDependentCollectionClass(cacheKey, dependentClassNames[i], expirationTimeout, slidingExpiration);
+                            RegisterDependentCollectionClass(cacheKey, dependentClassNames[i], expirationTimeout,
+                                slidingExpiration);
                         }
                     }
                 }
@@ -265,7 +270,7 @@ namespace Sooda.Caching
 
         public void Unlock(ISoodaCacheLock theLock)
         {
-            ((EndCommitCaller)theLock).Dispose();
+            ((EndCommitCaller) theLock).Dispose();
         }
 
         internal void DoUnlock()
@@ -280,7 +285,7 @@ namespace Sooda.Caching
             _rwlock.ReleaseWriterLock();
         }
 
-        class EndCommitCaller : ISoodaCacheLock
+        private class EndCommitCaller : ISoodaCacheLock
         {
             private SoodaInProcessCache _sipc;
 

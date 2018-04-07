@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,20 +27,21 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-
-
 namespace Sooda.QL
 {
+    using System;
+
     public class SoqlAsteriskExpression : SoqlExpression
     {
         public SoqlPathExpression Left;
 
-        public SoqlAsteriskExpression() { }
+        public SoqlAsteriskExpression()
+        {
+        }
 
         public SoqlAsteriskExpression(SoqlPathExpression left)
         {
-            this.Left = left;
+            Left = left;
         }
 
         // visitor pattern
@@ -54,6 +54,5 @@ namespace Sooda.QL
         {
             throw new NotSupportedException("Asterisk expression is not evaluable.");
         }
-
     }
 }

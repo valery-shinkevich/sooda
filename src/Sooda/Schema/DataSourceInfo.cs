@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,31 +27,29 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.Xml.Serialization;
-
-
 namespace Sooda.Schema
 {
+    using System;
+    using System.Xml.Serialization;
+
     [XmlType(Namespace = "http://www.sooda.org/schemas/SoodaSchema.xsd")]
     [Serializable]
     public class DataSourceInfo
     {
-        [XmlAttribute("name")]
-        public string Name;
+        [XmlAttribute("name")] public string Name;
 
-        [XmlAttribute("type")]
-        public string DataSourceType;
+        [XmlAttribute("type")] public string DataSourceType;
 
-        [XmlAttribute("dynamicFields")]
-        public bool EnableDynamicFields = false;
+        [XmlAttribute("dynamicFields")] public bool EnableDynamicFields;
 
-        public void Resolve() { }
+        public void Resolve()
+        {
+        }
 
         public SoodaDataSource CreateDataSource()
         {
             Type t = Type.GetType(DataSourceType, true);
-            return (SoodaDataSource)Activator.CreateInstance(t, new object[] { this });
+            return (SoodaDataSource) Activator.CreateInstance(t, this);
         }
     }
 }

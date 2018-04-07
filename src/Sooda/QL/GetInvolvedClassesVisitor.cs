@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,13 +27,14 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using Sooda.QL.TypedWrappers;
-using Sooda.Schema;
-using System;
-using System.Collections.Generic;
 
 namespace Sooda.QL
 {
+    using System;
+    using System.Collections.Generic;
+    using Schema;
+    using TypedWrappers;
+
     /// <summary>
     /// Summary description for GetInvolvedClassesVisitor.
     /// </summary>
@@ -78,29 +78,29 @@ namespace Sooda.QL
             }
         }
 
-        void Sooda.QL.ISoqlVisitor.Visit(SoqlTypedWrapperExpression v)
+        void ISoqlVisitor.Visit(SoqlTypedWrapperExpression v)
         {
             v.InnerExpression.Accept(this);
         }
 
-        void Sooda.QL.ISoqlVisitor.Visit(SoqlBooleanWrapperExpression v)
+        void ISoqlVisitor.Visit(SoqlBooleanWrapperExpression v)
         {
             v.InnerExpression.Accept(this);
         }
 
-        void Sooda.QL.ISoqlVisitor.Visit(SoqlBinaryExpression v)
+        void ISoqlVisitor.Visit(SoqlBinaryExpression v)
         {
             v.par1.Accept(this);
             v.par2.Accept(this);
         }
 
-        void Sooda.QL.ISoqlVisitor.Visit(SoqlBooleanAndExpression v)
+        void ISoqlVisitor.Visit(SoqlBooleanAndExpression v)
         {
             v.Left.Accept(this);
             v.Right.Accept(this);
         }
 
-        void Sooda.QL.ISoqlVisitor.Visit(SoqlBooleanInExpression v)
+        void ISoqlVisitor.Visit(SoqlBooleanInExpression v)
         {
             v.Left.Accept(this);
             foreach (SoqlExpression expr in v.Right)
@@ -109,39 +109,39 @@ namespace Sooda.QL
             }
         }
 
-        void Sooda.QL.ISoqlVisitor.Visit(SoqlBooleanIsNullExpression v)
+        void ISoqlVisitor.Visit(SoqlBooleanIsNullExpression v)
         {
             v.Expr.Accept(this);
         }
 
-        void Sooda.QL.ISoqlVisitor.Visit(SoqlBooleanLiteralExpression v)
+        void ISoqlVisitor.Visit(SoqlBooleanLiteralExpression v)
         {
             // nothing here
         }
 
-        void Sooda.QL.ISoqlVisitor.Visit(SoqlBooleanNegationExpression v)
+        void ISoqlVisitor.Visit(SoqlBooleanNegationExpression v)
         {
             v.par.Accept(this);
         }
 
-        void Sooda.QL.ISoqlVisitor.Visit(SoqlBooleanOrExpression v)
+        void ISoqlVisitor.Visit(SoqlBooleanOrExpression v)
         {
             v.par1.Accept(this);
             v.par2.Accept(this);
         }
 
-        void Sooda.QL.ISoqlVisitor.Visit(SoqlBooleanRelationalExpression v)
+        void ISoqlVisitor.Visit(SoqlBooleanRelationalExpression v)
         {
             v.par1.Accept(this);
             v.par2.Accept(this);
         }
 
-        void Sooda.QL.ISoqlVisitor.Visit(SoqlExistsExpression v)
+        void ISoqlVisitor.Visit(SoqlExistsExpression v)
         {
             v.Query.Accept(this);
         }
 
-        void Sooda.QL.ISoqlVisitor.Visit(SoqlFunctionCallExpression v)
+        void ISoqlVisitor.Visit(SoqlFunctionCallExpression v)
         {
             if (v.Parameters != null)
             {
@@ -152,7 +152,7 @@ namespace Sooda.QL
             }
         }
 
-        void Sooda.QL.ISoqlVisitor.Visit(SoqlContainsExpression v)
+        void ISoqlVisitor.Visit(SoqlContainsExpression v)
         {
             if (v.Path != null)
             {
@@ -166,7 +166,7 @@ namespace Sooda.QL
             v.Expr.Accept(this);
         }
 
-        void Sooda.QL.ISoqlVisitor.Visit(SoqlSoodaClassExpression v)
+        void ISoqlVisitor.Visit(SoqlSoodaClassExpression v)
         {
             if (v.Path != null)
             {
@@ -179,7 +179,7 @@ namespace Sooda.QL
             }
         }
 
-        void Sooda.QL.ISoqlVisitor.Visit(SoqlCountExpression v)
+        void ISoqlVisitor.Visit(SoqlCountExpression v)
         {
             if (v.Path != null)
             {
@@ -192,7 +192,7 @@ namespace Sooda.QL
             }
         }
 
-        void Sooda.QL.ISoqlVisitor.Visit(SoqlAsteriskExpression v)
+        void ISoqlVisitor.Visit(SoqlAsteriskExpression v)
         {
             if (v.Left != null)
             {
@@ -205,31 +205,32 @@ namespace Sooda.QL
             }
         }
 
-        void Sooda.QL.ISoqlVisitor.Visit(SoqlLiteralExpression v)
+        void ISoqlVisitor.Visit(SoqlLiteralExpression v)
         {
             // nothing here
         }
 
-        void Sooda.QL.ISoqlVisitor.Visit(SoqlNullLiteral v)
+        void ISoqlVisitor.Visit(SoqlNullLiteral v)
         {
             // nothing here
         }
 
-        void Sooda.QL.ISoqlVisitor.Visit(SoqlParameterLiteralExpression v)
+        void ISoqlVisitor.Visit(SoqlParameterLiteralExpression v)
         {
             // nothing here
         }
 
-        void Sooda.QL.ISoqlVisitor.Visit(SoqlPathExpression v)
+        void ISoqlVisitor.Visit(SoqlPathExpression v)
         {
             v.GetAndAddClassInfo(_rootClass, _result);
         }
 
-        void Sooda.QL.ISoqlVisitor.Visit(SoqlQueryExpression v)
+        void ISoqlVisitor.Visit(SoqlQueryExpression v)
         {
             if (v.From.Count != 1)
                 throw new NotImplementedException();
-            IFieldContainer outerClass = _rootClass;
+
+            var outerClass = _rootClass;
             _rootClass = _rootClass.Schema.FindContainerByName(v.From[0]);
             try
             {
@@ -241,29 +242,29 @@ namespace Sooda.QL
             }
         }
 
-        void Sooda.QL.ISoqlVisitor.Visit(SoqlUnaryNegationExpression v)
+        void ISoqlVisitor.Visit(SoqlUnaryNegationExpression v)
         {
             v.par.Accept(this);
         }
 
-        void Sooda.QL.ISoqlVisitor.Visit(SoqlRawExpression v)
+        void ISoqlVisitor.Visit(SoqlRawExpression v)
         {
-            throw new NotSupportedException("RAW queries not supported.");
+            //throw new NotSupportedException("RAW queries not supported.");
         }
 
-        void Sooda.QL.ISoqlVisitor.Visit(SoqlConditionalExpression v)
+        void ISoqlVisitor.Visit(SoqlConditionalExpression v)
         {
             v.condition.Accept(this);
             v.ifTrue.Accept(this);
             v.ifFalse.Accept(this);
         }
 
-        void Sooda.QL.ISoqlVisitor.Visit(SoqlStringContainsExpression v)
+        void ISoqlVisitor.Visit(SoqlStringContainsExpression v)
         {
             v.haystack.Accept(this);
         }
 
-        void Sooda.QL.ISoqlVisitor.Visit(SoqlCastExpression v)
+        void ISoqlVisitor.Visit(SoqlCastExpression v)
         {
             v.source.Accept(this);
         }

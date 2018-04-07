@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -37,6 +36,7 @@ namespace Sooda.CodeGen
         void LoadFrom(string fileName);
         void SaveTo(string fileName);
         void AddCompileUnit(string relativeFileName);
+        void AddCompileUnit(string relativeFileName, string dependentFileName);
         void AddResource(string relativeFileName);
     }
 }

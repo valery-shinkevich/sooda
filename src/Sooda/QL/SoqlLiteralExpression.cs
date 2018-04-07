@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -33,19 +32,21 @@ namespace Sooda.QL
     public class SoqlLiteralExpression : SoqlExpression, ISoqlConstantExpression, ILiteralModifiers
     {
         public readonly object LiteralValue;
-        private SoqlLiteralValueModifiers _modifiers = null;
+        private SoqlLiteralValueModifiers _modifiers;
 
-        public SoqlLiteralExpression() { }
+        public SoqlLiteralExpression()
+        {
+        }
 
         public SoqlLiteralExpression(object val)
         {
-            this.LiteralValue = val;
+            LiteralValue = val;
         }
 
         public SoqlLiteralExpression(object val, SoqlLiteralValueModifiers modifiers)
         {
-            this.LiteralValue = val;
-            this.Modifiers = modifiers;
+            LiteralValue = val;
+            Modifiers = modifiers;
         }
 
         public SoqlLiteralValueModifiers Modifiers
@@ -62,13 +63,12 @@ namespace Sooda.QL
 
         public object GetConstantValue()
         {
-            return this.LiteralValue;
+            return LiteralValue;
         }
 
         public override object Evaluate(ISoqlEvaluateContext context)
         {
             return LiteralValue;
         }
-
     }
 }

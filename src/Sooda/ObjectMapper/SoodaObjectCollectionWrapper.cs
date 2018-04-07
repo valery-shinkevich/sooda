@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,27 +27,35 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-
 namespace Sooda.ObjectMapper
 {
-    [DebuggerStepThrough]
-    public class SoodaObjectCollectionWrapperGeneric<T> : ISoodaObjectList, ISoodaObjectListInternal, IList<T>
-    {
-        readonly ISoodaObjectList _theList;
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Data;
+    using System.Diagnostics;
+    using QL;
 
-        public SoodaObjectCollectionWrapperGeneric()
+    [DebuggerStepThrough]
+    public class SoodaObjectCollectionWrapperGeneric<T> : ISoodaObjectList, ISoodaObjectListInternal, IBindingListView,
+        IList<T>
+    {
+        private ISoodaObjectList _theList;
+
+        protected SoodaObjectCollectionWrapperGeneric()
         {
             _theList = new SoodaObjectListSnapshot();
+            _mOriginalCollection = new SoodaObjectListSnapshot();
         }
 
-        public SoodaObjectCollectionWrapperGeneric(ISoodaObjectList list)
+        protected SoodaObjectCollectionWrapperGeneric(ISoodaObjectList list)
         {
             _theList = list;
+            _mOriginalCollection = new SoodaObjectListSnapshot();
         }
+
+        #region ISoodaObjectList
 
         SoodaObject ISoodaObjectList.GetItem(int pos)
         {
@@ -57,22 +64,13 @@ namespace Sooda.ObjectMapper
 
         public bool IsReadOnly
         {
-            get
-            {
-                return _theList.IsReadOnly;
-            }
+            get { return _theList.IsReadOnly; }
         }
 
         object IList.this[int index]
         {
-            get
-            {
-                return _theList[index];
-            }
-            set
-            {
-                _theList[index] = value;
-            }
+            get { return _theList[index]; }
+            set { _theList[index] = value; }
         }
 
         public void RemoveAt(int index)
@@ -112,34 +110,22 @@ namespace Sooda.ObjectMapper
 
         bool IList.IsFixedSize
         {
-            get
-            {
-                return _theList.IsFixedSize;
-            }
+            get { return _theList.IsFixedSize; }
         }
 
         bool ICollection.IsSynchronized
         {
-            get
-            {
-                return _theList.IsSynchronized;
-            }
+            get { return _theList.IsSynchronized; }
         }
 
         public int Count
         {
-            get
-            {
-                return _theList.Count;
-            }
+            get { return _theList.Count; }
         }
 
         public int PagedCount
         {
-            get
-            {
-                return _theList.PagedCount;
-            }
+            get { return _theList.PagedCount; }
         }
 
         void ICollection.CopyTo(Array array, int index)
@@ -149,10 +135,7 @@ namespace Sooda.ObjectMapper
 
         object ICollection.SyncRoot
         {
-            get
-            {
-                return _theList.SyncRoot;
-            }
+            get { return _theList.SyncRoot; }
         }
 
         public IEnumerator GetEnumerator()
@@ -175,7 +158,7 @@ namespace Sooda.ObjectMapper
             return _theList.Filter(whereClause);
         }
 
-        ISoodaObjectList ISoodaObjectList.Filter(Sooda.QL.SoqlBooleanExpression filterExpression)
+        ISoodaObjectList ISoodaObjectList.Filter(SoqlBooleanExpression filterExpression)
         {
             return _theList.Filter(filterExpression);
         }
@@ -190,7 +173,7 @@ namespace Sooda.ObjectMapper
             return _theList.Filter(whereClause);
         }
 
-        protected ISoodaObjectList Filter2(Sooda.QL.SoqlBooleanExpression filterExpression)
+        protected ISoodaObjectList Filter2(SoqlBooleanExpression filterExpression)
         {
             return _theList.Filter(filterExpression);
         }
@@ -210,12 +193,12 @@ namespace Sooda.ObjectMapper
             return _theList.Sort(SoodaOrderBy.Parse(sortOrder).GetComparer());
         }
 
-        ISoodaObjectList ISoodaObjectList.Sort(Sooda.QL.SoqlExpression sortExpression)
+        ISoodaObjectList ISoodaObjectList.Sort(SoqlExpression sortExpression)
         {
             return _theList.Sort(SoodaOrderBy.FromExpression(sortExpression, SortOrder.Ascending).GetComparer());
         }
 
-        ISoodaObjectList ISoodaObjectList.Sort(Sooda.QL.SoqlExpression sortExpression, SortOrder sortOrder)
+        ISoodaObjectList ISoodaObjectList.Sort(SoqlExpression sortExpression, SortOrder sortOrder)
         {
             return _theList.Sort(SoodaOrderBy.FromExpression(sortExpression, sortOrder).GetComparer());
         }
@@ -230,12 +213,12 @@ namespace Sooda.ObjectMapper
             return _theList.Sort(SoodaOrderBy.Parse(sortOrder).GetComparer());
         }
 
-        protected ISoodaObjectList Sort2(Sooda.QL.SoqlExpression sortExpression)
+        protected ISoodaObjectList Sort2(SoqlExpression sortExpression)
         {
             return _theList.Sort(SoodaOrderBy.FromExpression(sortExpression, SortOrder.Ascending).GetComparer());
         }
 
-        protected ISoodaObjectList Sort2(Sooda.QL.SoqlExpression sortExpression, SortOrder sortOrder)
+        protected ISoodaObjectList Sort2(SoqlExpression sortExpression, SortOrder sortOrder)
         {
             return _theList.Sort(SoodaOrderBy.FromExpression(sortExpression, sortOrder).GetComparer());
         }
@@ -272,14 +255,221 @@ namespace Sooda.ObjectMapper
 
         public void InternalAdd(SoodaObject o)
         {
-            ((ISoodaObjectListInternal)_theList).InternalAdd(o);
+            ((ISoodaObjectListInternal) _theList).InternalAdd(o);
             // TODO:  Add SoodaObjectCollectionWrapper.InternalAdd implementation
         }
 
         public void InternalRemove(SoodaObject o)
         {
-            ((ISoodaObjectListInternal)_theList).InternalRemove(o);
+            ((ISoodaObjectListInternal) _theList).InternalRemove(o);
         }
+
+        #endregion
+
+        #region IBindingListView Members
+
+        private string _mFilterString = String.Empty;
+        private bool _mFiltered, _mSorted;
+        private readonly ISoodaObjectList _mOriginalCollection;
+        [NonSerialized] private PropertyDescriptor _mSortBy;
+        private ListSortDirection _mSortDirection = ListSortDirection.Ascending;
+
+        string IBindingListView.Filter
+        {
+            get { return _mFilterString; }
+            set
+            {
+                string old = _mFilterString;
+                _mFilterString = value;
+                //Console.WriteLine("set to '{0}'", value);
+                if (_mFilterString != old)
+                {
+                    UpdateFilter();
+                }
+            }
+        }
+
+        void IBindingListView.RemoveFilter()
+        {
+            Console.WriteLine("Removed");
+            if (!_mFiltered)
+                return;
+            _mFilterString = null;
+            _mFiltered = false;
+            _mSorted = false;
+            Clear();
+            foreach (object item in _mOriginalCollection)
+            {
+                _theList.Add(item);
+            }
+            _mOriginalCollection.Clear();
+        }
+
+        protected virtual void UpdateFilter()
+        {
+            if (_mOriginalCollection.Count == 0)
+            {
+                foreach (object item in this)
+                {
+                    _mOriginalCollection.Add(item);
+                }
+            }
+
+            ISoodaObjectList tCollection = _mOriginalCollection.Filter(
+                string.IsNullOrEmpty(_mFilterString)
+                    ? new SoodaWhereClause()
+                    : new SoodaWhereClause(_mFilterString.Replace("[", string.Empty).Replace("]", string.Empty).Trim()));
+
+            Clear();
+
+            foreach (object item in tCollection)
+            {
+                _theList.Add(item);
+            }
+
+            _mFiltered = true;
+
+            OnListChanged(this, new ListChangedEventArgs(ListChangedType.Reset, -1));
+        }
+
+        public bool SupportsFiltering
+        {
+            get { return true; }
+        }
+
+        public void ApplySort(ListSortDescriptionCollection sorts)
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
+        public ListSortDescriptionCollection SortDescriptions
+        {
+            get { throw new Exception("The method or operation is not implemented."); }
+        }
+
+        public bool SupportsAdvancedSorting
+        {
+            get { return false; }
+        }
+
+        #endregion
+
+        #region IBindingList Members
+
+        public void AddIndex(PropertyDescriptor property)
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
+        public object AddNew()
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
+        public bool AllowEdit
+        {
+            get { return true; }
+        }
+
+        public bool AllowNew
+        {
+            get { return false; }
+        }
+
+        public bool AllowRemove
+        {
+            get { return false; }
+        }
+
+        //wash{
+        public void ApplySort(PropertyDescriptor property, ListSortDirection direction)
+        {
+            string sortOrder = property.Name + (direction == ListSortDirection.Ascending ? " asc" : " desc");
+            _theList = _theList.Sort(SoodaOrderBy.Parse(sortOrder).GetComparer());
+            _mSortBy = property;
+            _mSorted = true;
+            _mSortDirection = direction;
+            OnListChanged(this, new ListChangedEventArgs(ListChangedType.Reset, 0));
+        }
+
+        //}wash
+        public int Find(PropertyDescriptor property, object key)
+        {
+            for (int index = 0; index < Count; index++)
+            {
+                var o = this[index] as SoodaObject;
+
+                if (o == null) throw new StrongTypingException("В списке найден объект с нестандартным типом.");
+
+                var a = o.FieldValues.GetBoxedFieldValue(property.Name); //property.GetValue(o);)
+
+                if (a == null && key == null) return index;
+                if (a == null || key == null) continue;
+                if (((IComparable) a).CompareTo(key) == 0)
+                    return index;
+            }
+            return -1;
+        }
+
+        public bool IsSorted
+        {
+            get { return _mSorted; }
+        }
+
+        protected void OnListChanged(object sender, ListChangedEventArgs e)
+        {
+            if (_listChanged != null)
+            {
+                _listChanged(sender, e);
+            }
+        }
+
+        private ListChangedEventHandler _listChanged;
+
+        event ListChangedEventHandler IBindingList.ListChanged
+        {
+            add { _listChanged += value; }
+            // ReSharper disable once DelegateSubtraction
+            remove { if (_listChanged != null) _listChanged -= value; }
+        }
+
+        public void RemoveIndex(PropertyDescriptor property)
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
+        public void RemoveSort()
+        {
+            _mSortBy = null;
+            _mSorted = false;
+        }
+
+        public ListSortDirection SortDirection
+        {
+            get { return _mSortDirection; }
+        }
+
+        public PropertyDescriptor SortProperty
+        {
+            get { return _mSortBy; }
+        }
+
+        public bool SupportsChangeNotification
+        {
+            get { return false; }
+        }
+
+        public bool SupportsSearching
+        {
+            get { return true; }
+        }
+
+        public bool SupportsSorting
+        {
+            get { return true; }
+        }
+
+        #endregion
 
         #region IList<T> Members
 
@@ -330,7 +520,7 @@ namespace Sooda.ObjectMapper
 
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
-            for (int i = 0; i < Count; ++i)
+            for (var i = 0; i < Count; ++i)
             {
                 yield return this[i];
             }

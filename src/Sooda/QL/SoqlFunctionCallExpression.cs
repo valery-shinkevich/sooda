@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,41 +27,40 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-
-using System.Xml.Serialization;
-
 namespace Sooda.QL
 {
+    using System;
+    using System.Xml.Serialization;
+
     public class SoqlFunctionCallExpression : SoqlExpression
     {
-        [XmlAttribute("name")]
-        public string FunctionName;
+        [XmlAttribute("name")] public string FunctionName;
 
-        [XmlElement("param")]
-        public SoqlExpressionCollection Parameters;
+        [XmlElement("param")] public SoqlExpressionCollection Parameters;
 
-        public SoqlFunctionCallExpression() { }
+        public SoqlFunctionCallExpression()
+        {
+        }
 
         public SoqlFunctionCallExpression(string functionName, SoqlExpressionCollection parameters)
         {
-            this.FunctionName = functionName;
-            this.Parameters = parameters;
+            FunctionName = functionName;
+            Parameters = parameters;
         }
 
         public SoqlFunctionCallExpression(string functionName, SoqlExpression p1)
         {
-            this.FunctionName = functionName;
-            this.Parameters = new SoqlExpressionCollection();
-            this.Parameters.Add(p1);
+            FunctionName = functionName;
+            Parameters = new SoqlExpressionCollection();
+            Parameters.Add(p1);
         }
 
         public SoqlFunctionCallExpression(string functionName, SoqlExpression p1, SoqlExpression p2)
         {
-            this.FunctionName = functionName;
-            this.Parameters = new SoqlExpressionCollection();
-            this.Parameters.Add(p1);
-            this.Parameters.Add(p2);
+            FunctionName = functionName;
+            Parameters = new SoqlExpressionCollection();
+            Parameters.Add(p1);
+            Parameters.Add(p2);
         }
 
         // visitor pattern

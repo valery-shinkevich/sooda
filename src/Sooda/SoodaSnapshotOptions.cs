@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,10 +27,10 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-
 namespace Sooda
 {
+    using System;
+
     /// <summary>
     /// Specifies options for creation of object list snapshots using GetList().
     /// </summary>
@@ -56,7 +55,7 @@ namespace Sooda
         NoWriteObjects = 4,
 
         /// <summary>
-        /// Verify objects loaded from the database whether they actually match the
+        /// Verify objects loaded from the database whether they actually match the 
         /// where clause.
         /// </summary>
         VerifyAfterLoad = 8,
@@ -80,6 +79,6 @@ namespace Sooda
         /// <summary>
         /// Use prefetch definition from the schema to load related objects automatically
         /// </summary>
-        PrefetchRelated = 128,
+        PrefetchRelated = 128
     }
 }

@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -45,68 +44,56 @@ namespace Sooda.Schema
     }
 
     [XmlType(Namespace = "http://www.sooda.org/schemas/SoodaSchema.xsd")]
+    public enum TableMigration
+    {
+        Local,
+        All,
+        Selected
+    }
+
+    [XmlType(Namespace = "http://www.sooda.org/schemas/SoodaSchema.xsd")]
     [Serializable]
     public class TableInfo
     {
-        [XmlElement("field")]
-        public List<FieldInfo> Fields = new List<FieldInfo>();
+        [XmlElement("field")] public List<FieldInfo> Fields = new List<FieldInfo>();
 
-        private string _dbTableName = null;
+        private string _dbTableName;
         private TableUsageType _usageType = TableUsageType.Normal;
 
-        [NonSerialized]
-        [XmlIgnore]
-        public ClassInfo OwnerClass = null;
+        [NonSerialized] [XmlIgnore] public ClassInfo OwnerClass;
 
-        [NonSerialized]
-        [XmlIgnore]
-        public int OrdinalInClass = 0;
+        [NonSerialized] [XmlIgnore] public int OrdinalInClass = 0;
 
-        [XmlAnyAttribute()]
-        [NonSerialized]
-        public System.Xml.XmlAttribute[] Extensions;
+        [XmlAnyAttribute] [NonSerialized] public System.Xml.XmlAttribute[] Extensions;
 
-        [NonSerialized]
-        [XmlIgnore]
-        public string NameToken;
+        [NonSerialized] [XmlIgnore] public string NameToken;
 
         [XmlAttribute("name")]
+        // ReSharper disable once InconsistentNaming
         public string DBTableName
         {
-            get
-            {
-                return _dbTableName;
-            }
-            set
-            {
-                _dbTableName = value;
-            }
+            get { return _dbTableName; }
+            set { _dbTableName = value; }
         }
+
+        [XmlAttribute("uid")] public Guid Uid;
+
+        [XmlAttribute("migration")] public TableMigration Migration = TableMigration.All;
 
         [XmlAttribute("usage")]
         [System.ComponentModel.DefaultValueAttribute(TableUsageType.Normal)]
         public TableUsageType TableUsageType
         {
-            get
-            {
-                return _usageType;
-            }
-            set
-            {
-                _usageType = value;
-            }
+            get { return _usageType; }
+            set { _usageType = value; }
         }
 
         internal bool IsDynamic
         {
-            get
-            {
-                return _usageType == TableUsageType.DynamicField;
-            }
+            get { return _usageType == TableUsageType.DynamicField; }
         }
 
-        [XmlElement("description")]
-        public string Description;
+        [XmlElement("description")] public string Description;
 
         public FieldInfo FindFieldByName(string fieldName)
         {
@@ -114,9 +101,9 @@ namespace Sooda.Schema
                 return null;
 
             if (fieldsNameHash == null)
-                this.Rehash();
+                Rehash();
 
-            return (FieldInfo)fieldsNameHash[fieldName];
+            return (FieldInfo) fieldsNameHash[fieldName];
         }
 
         public FieldInfo FindFieldByDBName(string fieldName)
@@ -124,7 +111,7 @@ namespace Sooda.Schema
             if (fieldName == null)
                 return null;
 
-            return (FieldInfo)fieldsDBNameHash[fieldName];
+            return (FieldInfo) fieldsDBNameHash[fieldName];
         }
 
         public void AddField(FieldInfo fi)
@@ -152,30 +139,26 @@ namespace Sooda.Schema
             return FindFieldByName(fieldName) != null;
         }
 
-        [NonSerialized]
-        private Hashtable fieldsNameHash;
+        [NonSerialized] private Hashtable fieldsNameHash;
 
-        [NonSerialized]
-        private Hashtable fieldsDBNameHash;
+        [NonSerialized] private Hashtable fieldsDBNameHash;
 
-        [NonSerialized]
-        [XmlIgnore]
-        public TableInfo[] ArraySingleton;
+        [NonSerialized] [XmlIgnore] public TableInfo[] ArraySingleton;
 
         internal void Rehash()
         {
-            ArraySingleton = new TableInfo[] { this };
+            ArraySingleton = new[] {this};
 
             fieldsNameHash = System.Collections.Specialized.CollectionsUtil.CreateCaseInsensitiveHashtable();
             fieldsDBNameHash = System.Collections.Specialized.CollectionsUtil.CreateCaseInsensitiveHashtable();
 
-            foreach (FieldInfo fi in Fields)
+            foreach (var fi in Fields)
             {
                 if (fi.Name != null)
                     fieldsNameHash[fi.Name] = fi;
                 if (fi.DBColumnName != null)
                     fieldsDBNameHash[fi.DBColumnName] = fi;
-            };
+            }
         }
 
         internal void Resolve(string name, bool isInRelation)
@@ -190,13 +173,14 @@ namespace Sooda.Schema
             }
             if (pkCount == 0 && !isInRelation)
             {
-                throw new SoodaSchemaException("Table '" + NameToken + "' doesn't have a primary key. If you declare a <class> that's based on more than one <table>, you need to have a primary key in each <table>. The primary key can be shared.");
+                throw new SoodaSchemaException("Table '" + NameToken +
+                                               "' doesn't have a primary key. If you declare a <class> that's based on more than one <table>, you need to have a primary key in each <table>. The primary key can be shared.");
             }
         }
 
         public TableInfo Clone(ClassInfo newParent)
         {
-            TableInfo tableInfo = (TableInfo) this.MemberwiseClone();
+            var tableInfo = (TableInfo) MemberwiseClone();
 
             tableInfo.OwnerClass = newParent;
             return tableInfo;
@@ -204,14 +188,14 @@ namespace Sooda.Schema
 
         internal void Merge(TableInfo merge)
         {
-            Hashtable mergeNames = new Hashtable();
-            foreach (FieldInfo fi in this.Fields)
+            var mergeNames = new Hashtable();
+            foreach (FieldInfo fi in Fields)
                 mergeNames.Add(fi.Name, fi);
             foreach (FieldInfo mfi in merge.Fields)
                 if (!mergeNames.ContainsKey(mfi.Name))
-                    this.AddField(mfi);
+                    AddField(mfi);
                 else
-                    ((FieldInfo)mergeNames[mfi.Name]).Merge(mfi);
+                    ((FieldInfo) mergeNames[mfi.Name]).Merge(mfi);
         }
     }
 }

@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,18 +27,21 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using Sooda.ObjectMapper;
-using Sooda.Schema;
-
 namespace Sooda
 {
+    using ObjectMapper;
+    using Schema;
+
     public interface ISoodaObjectFactory
     {
         SoodaObject CreateNew(SoodaTransaction tran);
         SoodaObject GetRef(SoodaTransaction tran, object keyValue);
         SoodaObject TryGet(SoodaTransaction tran, object keyValue);
         SoodaObject GetRawObject(SoodaTransaction tran);
-        System.Collections.IList GetList(SoodaTransaction tran, SoodaWhereClause whereClause, SoodaOrderBy orderByClause, SoodaSnapshotOptions options);
+
+        System.Collections.IList GetList(SoodaTransaction tran, SoodaWhereClause whereClause, SoodaOrderBy orderByClause,
+            SoodaSnapshotOptions options);
+
         SoodaFieldHandler GetPrimaryKeyFieldHandler();
         SoodaFieldHandler GetFieldHandler(int ordinal);
         ClassInfo GetClassInfo();

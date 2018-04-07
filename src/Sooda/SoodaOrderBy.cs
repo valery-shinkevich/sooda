@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,19 +27,19 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using Sooda.QL;
-using System;
-using System.Collections;
-
 namespace Sooda
 {
+    using System;
+    using System.Collections;
+    using QL;
+
     public class SoodaOrderBy
     {
         private readonly SoodaObjectExpressionComparer _comparer;
 
         public SoodaOrderBy(string columnName, SortOrder sortOrder)
         {
-            SoodaObjectExpressionComparer ec = new SoodaObjectExpressionComparer();
+            var ec = new SoodaObjectExpressionComparer();
             ec.AddExpression(SoqlParser.ParseExpression(columnName), sortOrder);
             _comparer = ec;
         }
@@ -48,7 +47,7 @@ namespace Sooda
         public SoodaOrderBy(string columnName1, SortOrder sortOrder1,
             string columnName2, SortOrder sortOrder2)
         {
-            SoodaObjectExpressionComparer ec = new SoodaObjectExpressionComparer();
+            var ec = new SoodaObjectExpressionComparer();
             ec.AddExpression(SoqlParser.ParseExpression(columnName1), sortOrder1);
             ec.AddExpression(SoqlParser.ParseExpression(columnName2), sortOrder2);
             _comparer = ec;
@@ -58,7 +57,7 @@ namespace Sooda
             string columnName2, SortOrder sortOrder2,
             string columnName3, SortOrder sortOrder3)
         {
-            SoodaObjectExpressionComparer ec = new SoodaObjectExpressionComparer();
+            var ec = new SoodaObjectExpressionComparer();
             ec.AddExpression(SoqlParser.ParseExpression(columnName1), sortOrder1);
             ec.AddExpression(SoqlParser.ParseExpression(columnName2), sortOrder2);
             ec.AddExpression(SoqlParser.ParseExpression(columnName3), sortOrder3);
@@ -67,7 +66,7 @@ namespace Sooda
 
         public SoodaOrderBy(string[] columnNames, SortOrder[] sortOrders)
         {
-            SoodaObjectExpressionComparer ec = new SoodaObjectExpressionComparer();
+            var ec = new SoodaObjectExpressionComparer();
             for (int i = 0; i < columnNames.Length; ++i)
             {
                 ec.AddExpression(SoqlParser.ParseExpression(columnNames[i]), sortOrders[i]);
@@ -77,14 +76,14 @@ namespace Sooda
 
         public SoodaOrderBy(SoqlExpression expression, SortOrder sortOrder)
         {
-            SoodaObjectExpressionComparer ec = new SoodaObjectExpressionComparer();
+            var ec = new SoodaObjectExpressionComparer();
             ec.AddExpression(expression, sortOrder);
             _comparer = ec;
         }
 
         public SoodaOrderBy(SoqlExpression[] expressions, SortOrder[] sortOrders)
         {
-            SoodaObjectExpressionComparer ec = new SoodaObjectExpressionComparer();
+            var ec = new SoodaObjectExpressionComparer();
             for (int i = 0; i < expressions.Length; ++i)
                 ec.AddExpression(expressions[i], sortOrders[i]);
             _comparer = ec;
@@ -92,7 +91,7 @@ namespace Sooda
 
         public SoodaOrderBy(SoqlExpression expression, SortOrder sortOrder, SoodaOrderBy other)
         {
-            SoodaObjectExpressionComparer ec = new SoodaObjectExpressionComparer();
+            var ec = new SoodaObjectExpressionComparer();
             ec.AddExpression(expression, sortOrder);
             if (other != null)
                 ec.AddExpressions(other._comparer);
@@ -101,7 +100,7 @@ namespace Sooda
 
         public SoodaOrderBy(SoodaOrderBy other, SoqlExpression expression, SortOrder sortOrder)
         {
-            SoodaObjectExpressionComparer ec = new SoodaObjectExpressionComparer();
+            var ec = new SoodaObjectExpressionComparer();
             if (other != null)
                 ec.AddExpressions(other._comparer);
             ec.AddExpression(expression, sortOrder);
@@ -135,9 +134,9 @@ namespace Sooda
 
         public static SoodaOrderBy Parse(string sortString)
         {
-            string[] components = sortString.Trim().Split(',');
-            string[] columnNames = new string[components.Length];
-            SortOrder[] sortOrders = new SortOrder[components.Length];
+            var components = sortString.Trim().Split(',');
+            var columnNames = new string[components.Length];
+            var sortOrders = new SortOrder[components.Length];
 
             for (int i = 0; i < components.Length; ++i)
             {
@@ -149,7 +148,9 @@ namespace Sooda
                         order = SortOrder.Ascending;
                         break;
                     case 2:
-                        order = tokens[1].Equals("desc", StringComparison.OrdinalIgnoreCase) ? SortOrder.Descending : SortOrder.Ascending;
+                        order = tokens[1].Equals("desc", StringComparison.OrdinalIgnoreCase)
+                            ? SortOrder.Descending
+                            : SortOrder.Ascending;
                         break;
                     default:
                         throw new ArgumentException("Invalid order by string");
@@ -185,4 +186,3 @@ namespace Sooda
         public const SoodaOrderBy Unsorted = null;
     }
 }
-

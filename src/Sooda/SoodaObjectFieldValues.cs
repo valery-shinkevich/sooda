@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -34,11 +33,10 @@ namespace Sooda
     {
         public abstract SoodaObjectFieldValues Clone();
         public abstract void SetFieldValue(int fieldOrdinal, object val);
+        public abstract void SetFieldValue(string fieldName, object val);
         public abstract object GetBoxedFieldValue(int fieldOrdinal);
-        public abstract int Length
-        {
-            get;
-        }
+        public abstract object GetBoxedFieldValue(string fieldName);
+        public abstract int Length { get; }
 
         public abstract bool IsNull(int fieldOrdinal);
     }

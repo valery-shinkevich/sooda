@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -30,14 +29,29 @@
 
 namespace Sooda
 {
+    using System;
+
     public class SoodaObjectArrayFieldValues : SoodaObjectFieldValues
     {
-        readonly object[] _values;
+        private readonly object[] _values;
+        private string[] _orderedFieldNames;
 
         public SoodaObjectArrayFieldValues(int count)
         {
             _values = new object[count];
         }
+
+        public SoodaObjectArrayFieldValues(string[] orderedFieldNames)
+            : this(orderedFieldNames.Length)
+        {
+            _orderedFieldNames = orderedFieldNames;
+        }
+
+        //public SoodaObjectArrayFieldValues(SoodaObjectArrayFieldValues other)
+        //{
+        //    _values = new object[other._values.Length];
+        //    Array.Copy(other._values, 0, _values, 0, other._values.Length);
+        //}
 
         protected SoodaObjectArrayFieldValues(SoodaObjectArrayFieldValues other)
         {
@@ -54,17 +68,24 @@ namespace Sooda
             _values[fieldOrdinal] = val;
         }
 
+        public override void SetFieldValue(string fieldName, object val)
+        {
+            throw new NotImplementedException();
+        }
+
         public override object GetBoxedFieldValue(int fieldOrdinal)
         {
             return _values[fieldOrdinal];
         }
 
+        public override object GetBoxedFieldValue(string fieldName)
+        {
+            throw new NotImplementedException();
+        }
+
         public override int Length
         {
-            get
-            {
-                return _values.Length;
-            }
+            get { return _values.Length; }
         }
 
         public override bool IsNull(int fieldOrdinal)

@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,15 +27,15 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using Sooda.Logging;
-using Sooda.QL;
-using Sooda.Schema;
-using System;
-using System.Globalization;
-using System.IO;
-
 namespace Sooda.Caching
 {
+    using System;
+    using System.Globalization;
+    using System.IO;
+    using Logging;
+    using QL;
+    using Schema;
+
     public class SoodaCache
     {
         private static ISoodaCachingPolicy _defaultCachingPolicy;
@@ -50,22 +49,35 @@ namespace Sooda.Caching
 
             switch (cachingPolicy)
             {
-                case "none": _defaultCachingPolicy = new SoodaNoCachingPolicy(); break;
-                case "all": _defaultCachingPolicy = new SoodaCacheAllPolicy(); break;
-                case "small": _defaultCachingPolicy = new SoodaCacheSmallPolicy(); break;
-                case "smallmedium": _defaultCachingPolicy = new SoodaCacheSmallAndMediumPolicy(); break;
+                case "none":
+                    _defaultCachingPolicy = new SoodaNoCachingPolicy();
+                    break;
+                case "all":
+                    _defaultCachingPolicy = new SoodaCacheAllPolicy();
+                    break;
+                case "small":
+                    _defaultCachingPolicy = new SoodaCacheSmallPolicy();
+                    break;
+                case "smallmedium":
+                    _defaultCachingPolicy = new SoodaCacheSmallAndMediumPolicy();
+                    break;
                 default:
-                _defaultCachingPolicy = Activator.CreateInstance(Type.GetType(cachingPolicy, true)) as ISoodaCachingPolicy;
-                break;
+                    _defaultCachingPolicy =
+                        Activator.CreateInstance(Type.GetType(cachingPolicy, true)) as ISoodaCachingPolicy;
+                    break;
             }
 
             switch (cacheType)
             {
-                case "none": _defaultCache = new SoodaNoCache(); break;
-                case "inprocess": _defaultCache = new SoodaInProcessCache(); break;
+                case "none":
+                    _defaultCache = new SoodaNoCache();
+                    break;
+                case "inprocess":
+                    _defaultCache = new SoodaInProcessCache();
+                    break;
                 default:
-                _defaultCache = Activator.CreateInstance(Type.GetType(cacheType, true)) as ISoodaCache;
-                break;
+                    _defaultCache = Activator.CreateInstance(Type.GetType(cacheType, true)) as ISoodaCache;
+                    break;
             }
 
             if (_defaultCachingPolicy == null)
@@ -76,12 +88,16 @@ namespace Sooda.Caching
             ISoodaCachingPolicyFixedTimeout sft = _defaultCachingPolicy as ISoodaCachingPolicyFixedTimeout;
             if (sft != null)
             {
-                sft.SlidingExpiration = Convert.ToBoolean(SoodaConfig.GetString("sooda.cachingPolicy.slidingExpiration", "true"), CultureInfo.InvariantCulture);
+                sft.SlidingExpiration =
+                    Convert.ToBoolean(SoodaConfig.GetString("sooda.cachingPolicy.slidingExpiration", "true"),
+                        CultureInfo.InvariantCulture);
                 sft.ExpirationTimeout = TimeSpan.FromSeconds(
-                    Convert.ToInt32(SoodaConfig.GetString("sooda.cachingPolicy.expirationTimeout", "120"), CultureInfo.InvariantCulture));
+                    Convert.ToInt32(SoodaConfig.GetString("sooda.cachingPolicy.expirationTimeout", "120"),
+                        CultureInfo.InvariantCulture));
             }
 
-            logger.Debug("Default cache: {0} Policy: {1}", _defaultCache.GetType().Name, _defaultCachingPolicy.GetType().Name);
+            logger.Debug("Default cache: {0} Policy: {1}", _defaultCache.GetType().Name,
+                _defaultCachingPolicy.GetType().Name);
         }
 
         public static ISoodaCachingPolicy DefaultCachingPolicy

@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,45 +27,47 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.ComponentModel;
-using System.Xml.Serialization;
-
 namespace Sooda.Schema
 {
+    using System;
+    using System.ComponentModel;
+    using System.Xml.Serialization;
+
     /// <remarks/>
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://www.sooda.org/schemas/SoodaSchema.xsd")]
+    [XmlType(Namespace = "http://www.sooda.org/schemas/SoodaSchema.xsd")]
     [Serializable]
     public class CollectionOnetoManyInfo : CollectionBaseInfo
     {
-        [System.Xml.Serialization.XmlAttributeAttribute("class")]
-        public string ClassName;
+        [XmlAttribute("class")] public string ClassName;
 
-        [NonSerialized]
-        [XmlIgnore]
-        public ClassInfo Class;
+        [NonSerialized] [XmlIgnore] public ClassInfo Class;
 
-        [System.Xml.Serialization.XmlAttributeAttribute("foreignField")]
-        public string ForeignFieldName;
+        [XmlAttribute("foreignField")] public string ForeignFieldName;
 
-        [NonSerialized]
-        [XmlIgnore]
-        public FieldInfo ForeignField2;
+        [XmlAttribute("prefetch")] [DefaultValue(0)] public int PrefetchLevel;
+
+        [NonSerialized] [XmlIgnore] public FieldInfo ForeignField2;
 
         public string ForeignColumn
         {
-            get
-            {
-                return ForeignField2.DBColumnName;
-            }
+            get { return ForeignField2.DBColumnName; }
         }
 
-        [System.Xml.Serialization.XmlAttributeAttribute("where")]
-        public string Where;
+        [XmlAttribute("where")] public string Where;
 
-        [XmlAttribute("cache")]
-        [DefaultValue(false)]
-        public bool Cache = false;
+        [XmlAttribute("cache")] [DefaultValue(false)] public bool Cache;
+
+        //wash{
+        [XmlAttribute("UITypeEditor")] // ReSharper disable once InconsistentNaming
+        public string UITypeEditor;
+
+        [XmlAttribute("DisplayName")] public string DisplayName;
+        [XmlAttribute("Browsable"), DefaultValue(false)] public bool Browsable;
+        [XmlAttribute("Category")] public string Category;
+
+        [XmlAttribute("ReadOnly"), DefaultValue(true)] public bool ReadOnly;
+        //}wash
+
 
         public override ClassInfo GetItemClass()
         {

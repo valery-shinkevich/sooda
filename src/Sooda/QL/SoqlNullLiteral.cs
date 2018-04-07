@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,15 +27,12 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-
-
 namespace Sooda.QL
 {
+    using System;
+
     public class SoqlNullLiteral : SoqlExpression, ISoqlConstantExpression
     {
-        public SoqlNullLiteral() { }
-
         // visitor pattern
         public override void Accept(ISoqlVisitor visitor)
         {
@@ -52,6 +48,5 @@ namespace Sooda.QL
         {
             return null;
         }
-
     }
 }

@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -43,23 +42,22 @@ namespace Sooda.QL.TypedWrappers
 
         public SoqlInt32WrapperExpression Count
         {
-            get
-            {
-                return new SoqlInt32WrapperExpression(new SoqlCountExpression(_left, _collectionName));
-            }
+            get { return new SoqlInt32WrapperExpression(new SoqlCountExpression(_left, _collectionName)); }
         }
 
-        protected Sooda.QL.TypedWrappers.SoqlBooleanWrapperExpression ContainsImpl(SoqlExpression expr)
+        protected SoqlBooleanWrapperExpression ContainsImpl(SoqlExpression expr)
         {
             return new SoqlBooleanWrapperExpression(new SoqlContainsExpression(_left, _collectionName, expr));
         }
 
-        protected Sooda.QL.TypedWrappers.SoqlBooleanWrapperExpression ContainsImpl(SoodaObject obj)
+        protected SoqlBooleanWrapperExpression ContainsImpl(SoodaObject obj)
         {
-            return new SoqlBooleanWrapperExpression(new SoqlContainsExpression(_left, _collectionName, new SoqlLiteralExpression(obj == null ? null : obj.GetPrimaryKeyValue())));
+            return
+                new SoqlBooleanWrapperExpression(new SoqlContainsExpression(_left, _collectionName,
+                    new SoqlLiteralExpression(obj == null ? null : obj.GetPrimaryKeyValue())));
         }
 
-        protected Sooda.QL.TypedWrappers.SoqlBooleanWrapperExpression ContainsExprImpl(string fromClass, SoqlBooleanExpression expr)
+        protected SoqlBooleanWrapperExpression ContainsExprImpl(string fromClass, SoqlBooleanExpression expr)
         {
             SoqlQueryExpression query = new SoqlQueryExpression();
             query.From.Add(fromClass);

@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,16 +27,20 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.Collections.Specialized;
-
 namespace Sooda.QL
 {
+    using System;
+    using System.Collections.Specialized;
+
     public class SoqlQueryExpression : SoqlExpression
     {
         public bool Distinct = false;
+
         public int StartIdx = 0;
         public int PageCount = -1;
+
+        //public int LimitBegin = -1;
+        //public int LimitEnd = -1;
 
         public readonly SoqlExpressionCollection SelectExpressions = new SoqlExpressionCollection();
         public readonly StringCollection SelectAliases = new StringCollection();
@@ -51,8 +54,6 @@ namespace Sooda.QL
         public readonly SoqlExpressionCollection GroupByExpressions = new SoqlExpressionCollection();
         public readonly SoqlExpressionCollection OrderByExpressions = new SoqlExpressionCollection();
         public readonly StringCollection OrderByOrder = new StringCollection();
-
-        public SoqlQueryExpression() { }
 
         // visitor pattern
         public override void Accept(ISoqlVisitor visitor)
@@ -75,8 +76,6 @@ namespace Sooda.QL
                 else
                     OrderByOrder.Add("desc");
             }
-
         }
-
     }
 }

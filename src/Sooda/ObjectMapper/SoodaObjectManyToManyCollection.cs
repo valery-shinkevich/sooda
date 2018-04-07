@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,58 +27,60 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using Sooda.Logging;
-using Sooda.Schema;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
 namespace Sooda.ObjectMapper
 {
-    public class SoodaObjectManyToManyCollection : SoodaObjectCollectionBase, ISoodaObjectList
-    {
-        static readonly Logger logger = LogManager.GetLogger("Sooda.ManyToManyCollection");
-        protected readonly int masterColumn;
-        protected readonly object masterValue;
-        protected readonly Type relationType;
-        protected readonly Sooda.Schema.RelationInfo relationInfo;
-        SoodaRelationTable relationTable = null;
-        readonly ISoodaObjectFactory _factory;
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using Logging;
+    using Schema;
 
-        public SoodaObjectManyToManyCollection(SoodaTransaction transaction, int masterColumn, object masterValue, Type relationType, Sooda.Schema.RelationInfo relationInfo)
+    public class SoodaObjectManyToManyCollection : SoodaObjectCollectionBase
+    {
+        private static readonly Logger Logger = LogManager.GetLogger("Sooda.ManyToManyCollection");
+        protected readonly int MasterColumn;
+        protected readonly object MasterValue;
+        protected readonly Type RelationType;
+        protected readonly RelationInfo RelationInfo;
+        private SoodaRelationTable _relationTable;
+
+        private readonly ISoodaObjectFactory _factory;
+
+        public SoodaObjectManyToManyCollection(SoodaTransaction transaction, int masterColumn, object masterValue,
+            Type relationType, RelationInfo relationInfo)
             : base(transaction, masterColumn == 0 ? relationInfo.GetRef1ClassInfo() : relationInfo.GetRef2ClassInfo())
         {
-            this.relationInfo = relationInfo;
-            this.masterValue = masterValue;
-            this.masterColumn = masterColumn;
-            this.relationType = relationType;
+            RelationInfo = relationInfo;
+            MasterValue = masterValue;
+            MasterColumn = masterColumn;
+            RelationType = relationType;
 
             _factory = transaction.GetFactory(classInfo);
         }
 
         public override int Add(object obj)
         {
-            SoodaObject so = (SoodaObject) obj;
+            var so = (SoodaObject) obj;
             object pk = so.GetPrimaryKeyValue();
-            SoodaRelationTable rel = this.GetSoodaRelationTable();
-            if (masterColumn == 0)
-                rel.Add(pk, this.masterValue);
+            SoodaRelationTable rel = GetSoodaRelationTable();
+            if (MasterColumn == 0)
+                rel.Add(pk, MasterValue);
             else
-                rel.Add(this.masterValue, pk);
-            return this.InternalAdd(so);
+                rel.Add(MasterValue, pk);
+            return InternalAdd(so);
         }
 
         public override void Remove(object obj)
         {
-            SoodaObject so = (SoodaObject) obj;
+            var so = (SoodaObject) obj;
             object pk = so.GetPrimaryKeyValue();
-            SoodaRelationTable rel = this.GetSoodaRelationTable();
-            if (masterColumn == 0)
-                rel.Remove(pk, this.masterValue);
+            SoodaRelationTable rel = GetSoodaRelationTable();
+            if (MasterColumn == 0)
+                rel.Remove(pk, MasterValue);
             else
-                rel.Remove(this.masterValue, pk);
-            this.InternalRemove(so);
+                rel.Remove(MasterValue, pk);
+            InternalRemove(so);
         }
 
         public override bool Contains(object obj)
@@ -120,9 +121,6 @@ namespace Sooda.ObjectMapper
 
         public bool InternalContains(SoodaObject obj)
         {
-            if (obj == null)
-                return false;
-
             if (itemsArray == null)
                 LoadData();
             return items.ContainsKey(obj);
@@ -130,13 +128,16 @@ namespace Sooda.ObjectMapper
 
         protected void LoadDataFromReader()
         {
-            SoodaDataSource ds = transaction.OpenDataSource(relationInfo.GetDataSource());
+            SoodaDataSource ds = transaction.OpenDataSource(RelationInfo.GetDataSource());
             TableInfo[] loadedTables;
-            using (IDataReader reader = ds.LoadRefObjectList(transaction.Schema, relationInfo, masterColumn, masterValue, out loadedTables))
+            using (
+                IDataReader reader = ds.LoadRefObjectList(transaction.Schema, RelationInfo, MasterColumn, MasterValue,
+                    out loadedTables))
             {
                 while (reader.Read())
                 {
-                    SoodaObject obj = SoodaObject.GetRefFromRecordHelper(transaction, _factory, reader, 0, loadedTables, 0);
+                    SoodaObject obj = SoodaObject.GetRefFromRecordHelper(transaction, _factory, reader, 0, loadedTables,
+                        0);
                     InternalAdd(obj);
                 }
             }
@@ -144,49 +145,50 @@ namespace Sooda.ObjectMapper
 
         protected SoodaRelationTable GetSoodaRelationTable()
         {
-            if (relationTable == null)
-            {
-                relationTable = transaction.GetRelationTable(relationType);
-            }
-            return relationTable;
+            return _relationTable ?? (_relationTable = transaction.GetRelationTable(RelationType));
         }
 
-        void OnTupleChanged(object sender, SoodaRelationTupleChangedArgs args)
+        private void OnTupleChanged(object sender, SoodaRelationTupleChangedArgs args)
         {
-            if (!masterValue.Equals(masterColumn == 0 ? args.Right : args.Left))
+            if (!MasterValue.Equals(MasterColumn == 0 ? args.Right : args.Left))
                 return;
 
-            SoodaObject obj = _factory.GetRef(transaction, masterColumn == 0 ? args.Left : args.Right);
+            var obj = _factory.GetRef(transaction, MasterColumn == 0 ? args.Left : args.Right);
 
-            if (args.Mode == 1)
-                InternalAdd(obj);
-            else if (args.Mode == -1)
-                InternalRemove(obj);
+            switch (args.Mode)
+            {
+                case 1:
+                    InternalAdd(obj);
+                    break;
+                case -1:
+                    InternalRemove(obj);
+                    break;
+            }
         }
 
         protected override void LoadData()
         {
-            bool useCache = false; //transaction.CachingPolicy.ShouldCacheRelation(relationInfo, classInfo);
+            bool useCache = transaction.CachingPolicy.ShouldCacheRelation(RelationInfo, classInfo);
             string cacheKey = null;
-
             items = new Dictionary<SoodaObject, int>();
             itemsArray = new List<SoodaObject>();
-
             if (useCache)
             {
-                if (!transaction.HasBeenPrecommitted(relationInfo) && !transaction.HasBeenPrecommitted(classInfo))
+                if (!transaction.HasBeenPrecommitted(RelationInfo) && !transaction.HasBeenPrecommitted(classInfo))
                 {
-                    cacheKey = relationInfo.Name + " where " + relationInfo.Table.Fields[1 - masterColumn].Name + " = " + masterValue;
+                    cacheKey = RelationInfo.Name + " where " + RelationInfo.Table.Fields[1 - MasterColumn].Name + " = " +
+                               MasterValue;
                 }
                 else
                 {
-                    logger.Debug("Cache miss. Cannot use cache for {0} where {1} = {2} because objects have been precommitted.", relationInfo.Name, relationInfo.Table.Fields[1 - masterColumn].Name, masterValue);
+                    Logger.Debug(
+                        "Cache miss. Cannot use cache for {0} where {1} = {2} because objects have been precommitted.",
+                        RelationInfo.Name, RelationInfo.Table.Fields[1 - MasterColumn].Name, MasterValue);
                     SoodaStatistics.Global.RegisterCollectionCacheMiss();
                     transaction.Statistics.RegisterCollectionCacheMiss();
                 }
             }
-
-            IEnumerable keysCollection = transaction.LoadCollectionFromCache(cacheKey, logger);
+            IEnumerable keysCollection = transaction.LoadCollectionFromCache(cacheKey, Logger);
             if (keysCollection != null)
             {
                 foreach (object o in keysCollection)
@@ -204,27 +206,25 @@ namespace Sooda.ObjectMapper
                 {
                     TimeSpan expirationTimeout;
                     bool slidingExpiration;
-
                     if (transaction.CachingPolicy.GetExpirationTimeout(
-                        relationInfo, classInfo, itemsArray.Count, out expirationTimeout, out slidingExpiration))
+                        RelationInfo, classInfo, itemsArray.Count, out expirationTimeout, out slidingExpiration))
                     {
-                        transaction.StoreCollectionInCache(cacheKey, classInfo, itemsArray, new string[] { relationInfo.Name }, true, expirationTimeout, slidingExpiration);
+                        transaction.StoreCollectionInCache(cacheKey, classInfo, itemsArray, new[] {RelationInfo.Name},
+                            true, expirationTimeout, slidingExpiration);
                     }
                 }
             }
-
             SoodaRelationTable rel = GetSoodaRelationTable();
-            rel.OnTupleChanged += new SoodaRelationTupleChanged(this.OnTupleChanged);
+            rel.OnTupleChanged += OnTupleChanged;
             if (rel.TupleCount != 0)
             {
                 SoodaRelationTable.Tuple[] tuples = rel.Tuples;
                 int count = rel.TupleCount;
-
-                if (masterColumn == 1)
+                if (MasterColumn == 1)
                 {
                     for (int i = 0; i < count; ++i)
                     {
-                        if (tuples[i].ref1.Equals(masterValue))
+                        if (tuples[i].ref1.Equals(MasterValue))
                         {
                             SoodaObject obj = _factory.GetRef(transaction, tuples[i].ref2);
                             if (tuples[i].tupleMode > 0)
@@ -242,7 +242,7 @@ namespace Sooda.ObjectMapper
                 {
                     for (int i = 0; i < count; ++i)
                     {
-                        if (tuples[i].ref2.Equals(masterValue))
+                        if (tuples[i].ref2.Equals(MasterValue))
                         {
                             SoodaObject obj = _factory.GetRef(transaction, tuples[i].ref1);
                             if (tuples[i].tupleMode > 0)

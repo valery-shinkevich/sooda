@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -33,16 +32,16 @@ using System;
 namespace SoodaSchemaTool
 {
     [AttributeUsage(AttributeTargets.Class)]
-    public class CommandAttribute : Attribute
-    {
+	public class CommandAttribute : Attribute
+	{
         private string _name;
         private string _description;
 
-        public CommandAttribute(string name, string description)
-        {
+		public CommandAttribute(string name, string description)
+		{
             _name = name;
             _description = description;
-        }
+		}
 
         public string Name
         {
@@ -53,5 +52,5 @@ namespace SoodaSchemaTool
         {
             get { return _description; }
         }
-    }
+	}
 }

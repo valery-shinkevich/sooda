@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,42 +27,39 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using Sooda.Schema;
-using System;
-using System.Collections;
-using System.Data;
-
 namespace Sooda
 {
+    using System;
+    using System.Collections;
+    using System.Data;
+    using Schema;
+
     public abstract class SoodaDataSource : IDisposable
     {
-        private string _name;
+        private readonly string _name;
 
         protected SoodaDataSource(string name)
         {
             _name = name;
         }
 
-        protected SoodaDataSource(Sooda.Schema.DataSourceInfo dataSourceInfo)
+        protected SoodaDataSource(DataSourceInfo dataSourceInfo)
         {
             _name = dataSourceInfo.Name;
         }
 
         public string Name
         {
-            get
-            {
-                return _name;
-            }
+            get { return _name; }
         }
 
         protected string GetParameter(string name, bool throwOnFailure)
         {
-            string val = SoodaConfig.GetString(this.Name + "." + name);
+            string val = SoodaConfig.GetString(Name + "." + name);
             if (val != null)
                 return val;
 
-            if (this.Name == "default")
+            if (Name == "default")
             {
                 val = SoodaConfig.GetString(name);
                 if (val != null)
@@ -71,7 +67,7 @@ namespace Sooda
             }
 
             if (throwOnFailure)
-                throw new SoodaException("Parameter '" + name + "' not defined for data source '" + this.Name + "'");
+                throw new SoodaException("Parameter '" + name + "' not defined for data source '" + Name + "'");
             return null;
         }
 
@@ -83,17 +79,12 @@ namespace Sooda
             }
         }
 
-        private SoodaStatistics _statistics;
-
-        public SoodaStatistics Statistics
-        {
-            get { return _statistics; }
-            set { _statistics = value; }
-        }
+        public SoodaStatistics Statistics { get; set; }
 
         public IDbConnection Connection;
 
         private CommandBehavior _cmdBehavior = CommandBehavior.Default;
+
         public CommandBehavior CmdBehavior
         {
             get { return _cmdBehavior; }
@@ -112,16 +103,32 @@ namespace Sooda
         public abstract void FinishSaveChanges();
 
         public abstract IDataReader LoadObject(SoodaObject obj, object keyValue, out TableInfo[] tables);
-        public abstract IDataReader LoadObjectTable(SoodaObject obj, object keyValue, int tableNumber, out TableInfo[] tables);
-        public abstract void MakeTuple(string tableName, string leftColumn, string rightColumn, object leftVal, object rightVal, int mode);
-        public abstract IDataReader LoadMatchingPrimaryKeys(SchemaInfo schemaInfo, ClassInfo classInfo, SoodaWhereClause whereClause, SoodaOrderBy orderBy, int startIdx, int pageCount);
-        public abstract IDataReader LoadObjectList(SchemaInfo schemaInfo, ClassInfo classInfo, SoodaWhereClause whereClause, SoodaOrderBy orderBy, int startIdx, int pageCount, SoodaSnapshotOptions options, out TableInfo[] tables);
-        public abstract IDataReader LoadRefObjectList(SchemaInfo schemaInfo, RelationInfo relationInfo, int masterColumn, object masterValue, out TableInfo[] tables);
-        public abstract IDataReader ExecuteQuery(Sooda.QL.SoqlQueryExpression query, SchemaInfo schema, params object[] parameters);
+
+        public abstract IDataReader LoadObjectTable(SoodaObject obj, object keyValue, int tableNumber,
+            out TableInfo[] tables);
+
+        public abstract IDataReader LoadAllObjectTables(SoodaObject obj, object keyValue, out TableInfo[] tables);
+
+        public abstract void MakeTuple(string tableName, string leftColumn, string rightColumn, object leftVal,
+            object rightVal, int mode);
+
+        public abstract IDataReader LoadMatchingPrimaryKeys(SchemaInfo schemaInfo, ClassInfo classInfo,
+            SoodaWhereClause whereClause, SoodaOrderBy orderBy, int startIdx, int pageCount);
+
+        public abstract IDataReader LoadObjectList(SchemaInfo schemaInfo, ClassInfo classInfo,
+            SoodaWhereClause whereClause, SoodaOrderBy orderBy, int startIdx, int pageCount,
+            SoodaSnapshotOptions options, out TableInfo[] tables);
+
+        public abstract IDataReader LoadRefObjectList(SchemaInfo schemaInfo, RelationInfo relationInfo, int masterColumn,
+            object masterValue, out TableInfo[] tables);
+
+        public abstract IDataReader ExecuteQuery(QL.SoqlQueryExpression query, SchemaInfo schema,
+            params object[] parameters);
+
         public abstract IDataReader ExecuteRawQuery(string queryText, params object[] parameters);
         public abstract int ExecuteNonQuery(string queryText, params object[] parameters);
 
-        public IDataReader ExecuteQuery(Sooda.QL.SoqlQueryExpression queryText, SchemaInfo schema, ArrayList parameters)
+        public IDataReader ExecuteQuery(QL.SoqlQueryExpression queryText, SchemaInfo schema, ArrayList parameters)
         {
             return ExecuteQuery(queryText, schema, parameters.ToArray());
         }

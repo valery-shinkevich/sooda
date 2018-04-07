@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2010-2015 Piotr Fusik <piotr@fusik.info>
+// Copyright (c) 2010-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -315,6 +315,8 @@ namespace Sooda.Linq
              || Nullable.GetUnderlyingType(expr.Type) == expr.Operand.Type // T -> Nullable<T>
              || (expr.Type == typeof(long) && expr.Operand.Type == typeof(int)))
                 return TranslateExpression(expr.Operand);
+            if(expr.Type == typeof(int) && expr.Operand.Type.BaseType == typeof(Enum))
+                return new SoqlCastExpression(TranslateExpression(expr.Operand), "int");
             if (expr.Type == typeof(double))
                 return new SoqlCastExpression(TranslateExpression(expr.Operand), "float");
             if (expr.Type == typeof(decimal))
@@ -444,19 +446,12 @@ namespace Sooda.Linq
 
         SoqlPathExpression TryTranslatePath(SoqlPathExpression parent, MemberExpression expr)
         {
-            MemberInfo m = expr.Member;
-
-            if (m.MemberType != MemberTypes.Property)
-                return null;
-
-            Type declaringType = expr.Expression != null ? expr.Expression.Type : m.DeclaringType;
-            if (declaringType == null || !declaringType.IsSubclassOf(typeof(SoodaObject)))
-                return null;
-
-            if (!FindClassInfo(declaringType).ContainsField(m.Name))
-                return null;
-
-            return new SoqlPathExpression(parent, m.Name);
+            string name = expr.Member.Name;
+            if (expr.Member.MemberType == MemberTypes.Property
+             && expr.Member.DeclaringType.IsSubclassOf(typeof(SoodaObject))
+             && FindClassInfo(expr.Expression).ContainsField(name))
+                return new SoqlPathExpression(parent, name);
+            return null;
         }
 
         string GetCollectionName(Expression expr)
@@ -651,7 +646,7 @@ namespace Sooda.Linq
                 }
 
                 string exprName = name + "Expression";
-                PropertyInfo pi = expr.Expression.Type.GetProperty(exprName, BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
+                PropertyInfo pi = t.GetProperty(exprName, BindingFlags.Public | BindingFlags.Static);
                 if (pi != null)
                 {
                     // It's an instance property because static properties are constant-folded.
@@ -888,16 +883,15 @@ namespace Sooda.Linq
         {
             // First look for an XXXExpression method whose signature matches the unknown method.
             // This enables translation of overloaded methods.
-            Type inType = mc.Object != null ? mc.Object.Type : mc.Method.DeclaringType;
             string exprName = mc.Method.Name + "Expression";
             Type[] parameterTypes = mc.Method.GetParameters().Select(p => p.ParameterType).ToArray();
-            MethodInfo exprMethod = inType.GetMethod(exprName, BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy, null, parameterTypes, null);
+            MethodInfo exprMethod = mc.Method.DeclaringType.GetMethod(exprName, BindingFlags.Public | BindingFlags.Static, null, parameterTypes, null);
             if (exprMethod == null)
             {
                 // If not found, try an XXXExpression method with no parameters.
-                exprMethod = inType.GetMethod(exprName, BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy, null, Type.EmptyTypes, null);
+                exprMethod = mc.Method.DeclaringType.GetMethod(exprName, BindingFlags.Public | BindingFlags.Static, null, Type.EmptyTypes, null);
                 if (exprMethod == null)
-                    throw new NotSupportedException(inType.FullName + "." + mc.Method.Name);
+                    throw new NotSupportedException(mc.Method.DeclaringType.FullName + "." + mc.Method.Name);
             }
             // Invoke XXXExpression with default argument values.
             int dummyParameterCount = exprMethod.GetParameters().Length;

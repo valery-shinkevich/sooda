@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,42 +27,45 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using Sooda.Caching;
-using Sooda.Logging;
-using Sooda.QL;
-using Sooda.Schema;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
 namespace Sooda.ObjectMapper
 {
-    enum CollectionChange
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Reflection;
+    using Caching;
+    using Logging;
+    using QL;
+    using Schema;
+
+    internal enum CollectionChange
     {
         Added,
         Removed
     }
 
-    public class SoodaObjectOneToManyCollection : SoodaObjectCollectionBase, ISoodaObjectList, ISoodaObjectListInternal
+    public class SoodaObjectOneToManyCollection : SoodaObjectCollectionBase, ISoodaObjectListInternal
     {
-        static readonly Logger logger = LogManager.GetLogger("Sooda.OneToManyCollection");
+        private static readonly Logger Logger = LogManager.GetLogger("Sooda.OneToManyCollection");
 
-        Dictionary<SoodaObject, CollectionChange> tempItems = null;
-        readonly SoodaObject parentObject;
-        readonly string childRefField;
-        readonly Type childType;
-        readonly SoodaWhereClause additionalWhereClause;
-        readonly bool cached;
+        private Dictionary<SoodaObject, CollectionChange> _tempItems;
+        private readonly SoodaObject _parentObject;
+        private readonly string _childRefField;
+        private readonly Type _childType;
+        private readonly SoodaWhereClause _additionalWhereClause;
+        private readonly bool _cached;
 
-        public SoodaObjectOneToManyCollection(SoodaTransaction tran, Type childType, SoodaObject parentObject, string childRefField, Sooda.Schema.ClassInfo classInfo, SoodaWhereClause additionalWhereClause, bool cached)
+
+        public SoodaObjectOneToManyCollection(SoodaTransaction tran, Type childType, SoodaObject parentObject,
+            string childRefField, ClassInfo classInfo, SoodaWhereClause additionalWhereClause, bool cached)
             : base(tran, classInfo)
         {
-            this.childType = childType;
-            this.parentObject = parentObject;
-            this.childRefField = childRefField;
-            this.additionalWhereClause = additionalWhereClause;
-            this.cached = cached;
+            _childType = childType;
+            _parentObject = parentObject;
+            _childRefField = childRefField;
+            _additionalWhereClause = additionalWhereClause;
+            _cached = cached;
         }
 
         public override int Add(object obj)
@@ -71,9 +73,9 @@ namespace Sooda.ObjectMapper
             if (obj == null)
                 throw new ArgumentNullException("obj");
 
-            Type t = childType;
-            System.Reflection.PropertyInfo prop = t.GetProperty(childRefField);
-            prop.SetValue(obj, parentObject, null);
+            Type t = _childType;
+            PropertyInfo prop = t.GetProperty(_childRefField);
+            prop.SetValue(obj, _parentObject, null);
             return 0;
         }
 
@@ -82,8 +84,8 @@ namespace Sooda.ObjectMapper
             if (obj == null)
                 throw new ArgumentNullException("obj");
 
-            Type t = childType;
-            System.Reflection.PropertyInfo prop = t.GetProperty(childRefField);
+            Type t = _childType;
+            PropertyInfo prop = t.GetProperty(_childRefField);
             prop.SetValue(obj, null, null);
         }
 
@@ -92,21 +94,21 @@ namespace Sooda.ObjectMapper
             if (obj == null)
                 return false;
 
-            Type t = childType;
-            System.Reflection.PropertyInfo prop = t.GetProperty(childRefField);
-            return parentObject == prop.GetValue(obj, null);
+            Type t = _childType;
+            PropertyInfo prop = t.GetProperty(_childRefField);
+            return _parentObject == (SoodaObject) prop.GetValue(obj, null);
         }
 
         public void InternalAdd(SoodaObject c)
         {
-            if (!childType.IsInstanceOfType(c))
+            if (!_childType.IsInstanceOfType(c))
                 return;
 
             if (items == null)
             {
-                if (tempItems == null)
-                    tempItems = new Dictionary<SoodaObject, CollectionChange>();
-                tempItems[c] = CollectionChange.Added;
+                if (_tempItems == null)
+                    _tempItems = new Dictionary<SoodaObject, CollectionChange>();
+                _tempItems[c] = CollectionChange.Added;
                 return;
             }
 
@@ -119,20 +121,21 @@ namespace Sooda.ObjectMapper
 
         public void InternalRemove(SoodaObject c)
         {
-            if (!childType.IsInstanceOfType(c))
+            if (!_childType.IsInstanceOfType(c))
                 return;
 
             if (items == null)
             {
-                if (tempItems == null)
-                    tempItems = new Dictionary<SoodaObject, CollectionChange>();
-                tempItems[c] = CollectionChange.Removed;
+                if (_tempItems == null)
+                    _tempItems = new Dictionary<SoodaObject, CollectionChange>();
+                _tempItems[c] = CollectionChange.Removed;
                 return;
             }
 
             int pos;
             if (!items.TryGetValue(c, out pos))
                 throw new InvalidOperationException("Attempt to remove object not in collection");
+
 
             SoodaObject lastObj = itemsArray[itemsArray.Count - 1];
             if (lastObj != c)
@@ -147,20 +150,22 @@ namespace Sooda.ObjectMapper
         protected override void LoadData()
         {
             SoodaDataSource ds = transaction.OpenDataSource(classInfo.GetDataSource());
-            TableInfo[] loadedTables;
+            bool dsIsOpened = ds.IsOpen; //+wash
+            if (!dsIsOpened) ds.Open(); //+wash
 
             items = new Dictionary<SoodaObject, int>();
             itemsArray = new List<SoodaObject>();
 
             ISoodaObjectFactory factory = transaction.GetFactory(classInfo);
-            SoodaWhereClause whereClause = new SoodaWhereClause(Soql.FieldEqualsParam(childRefField, 0), parentObject.GetPrimaryKeyValue());
+            var whereClause = new SoodaWhereClause(Soql.FieldEqualsParam(_childRefField, 0),
+                _parentObject.GetPrimaryKeyValue());
 
-            if (additionalWhereClause != null)
-                whereClause = whereClause.Append(additionalWhereClause);
+            if (_additionalWhereClause != null)
+                whereClause = whereClause.Append(_additionalWhereClause);
 
             string cacheKey = null;
 
-            if (cached)
+            if (_cached)
             {
                 // cache makes sense only on clean database
                 if (!transaction.HasBeenPrecommitted(classInfo.GetRootClass()))
@@ -168,7 +173,7 @@ namespace Sooda.ObjectMapper
                     cacheKey = SoodaCache.GetCollectionKey(classInfo, whereClause);
                 }
             }
-            IEnumerable keysCollection = transaction.LoadCollectionFromCache(cacheKey, logger);
+            IEnumerable keysCollection = transaction.LoadCollectionFromCache(cacheKey, Logger);
             if (keysCollection != null)
             {
                 foreach (object o in keysCollection)
@@ -177,10 +182,10 @@ namespace Sooda.ObjectMapper
                     // this binds to cache
                     obj.EnsureFieldsInited();
 
-                    if (tempItems != null)
+                    if (_tempItems != null)
                     {
                         CollectionChange change;
-                        if (tempItems.TryGetValue(obj, out change) && change == CollectionChange.Removed)
+                        if (_tempItems.TryGetValue(obj, out change) && change == CollectionChange.Removed)
                             continue;
                     }
 
@@ -190,52 +195,54 @@ namespace Sooda.ObjectMapper
             }
             else
             {
-                using (IDataReader reader = ds.LoadObjectList(transaction.Schema, classInfo, whereClause, null, 0, -1, SoodaSnapshotOptions.Default, out loadedTables))
+                TableInfo[] loadedTables;
+                using (
+                    IDataReader reader = ds.LoadObjectList(transaction.Schema, classInfo, whereClause, null, 0, -1,
+                        SoodaSnapshotOptions.Default, out loadedTables))
                 {
                     List<SoodaObject> readObjects = null;
 
-                    if (cached)
+                    if (_cached)
                         readObjects = new List<SoodaObject>();
 
                     while (reader.Read())
                     {
-                        SoodaObject obj = SoodaObject.GetRefFromRecordHelper(transaction, factory, reader, 0, loadedTables, 0);
+                        SoodaObject obj = SoodaObject.GetRefFromRecordHelper(transaction, factory, reader, 0,
+                            loadedTables, 0);
                         if (readObjects != null)
                             readObjects.Add(obj);
-
-                        if (tempItems != null)
+                        if (_tempItems != null)
                         {
                             CollectionChange change;
-                            if (tempItems.TryGetValue(obj, out change) && change == CollectionChange.Removed)
+                            if (_tempItems.TryGetValue(obj, out change) && change == CollectionChange.Removed)
                                 continue;
                         }
-
                         items.Add(obj, itemsArray.Count);
                         itemsArray.Add(obj);
                     }
-                    if (cached)
+                    if (_cached)
                     {
                         TimeSpan expirationTimeout;
                         bool slidingExpiration;
 
-                        if (transaction.CachingPolicy.GetExpirationTimeout(
+                        if (readObjects != null && transaction.CachingPolicy.GetExpirationTimeout(
                             classInfo, whereClause, null, 0, -1, readObjects.Count,
                             out expirationTimeout, out slidingExpiration))
                         {
-                            transaction.StoreCollectionInCache(cacheKey, classInfo, readObjects, null, true, expirationTimeout, slidingExpiration);
+                            transaction.StoreCollectionInCache(cacheKey, classInfo, readObjects, null, true,
+                                expirationTimeout, slidingExpiration);
                         }
                     }
                 }
             }
 
-            if (tempItems != null)
+            if (_tempItems != null)
             {
-                foreach (KeyValuePair<SoodaObject, CollectionChange> entry in tempItems)
+                foreach (KeyValuePair<SoodaObject, CollectionChange> entry in _tempItems)
                 {
                     if (entry.Value == CollectionChange.Added)
                     {
-                        SoodaObject obj = (SoodaObject) entry.Key;
-
+                        var obj = entry.Key;
                         if (!items.ContainsKey(obj))
                         {
                             items.Add(obj, itemsArray.Count);
@@ -244,6 +251,7 @@ namespace Sooda.ObjectMapper
                     }
                 }
             }
+            if (!dsIsOpened) ds.Close(); //+wash
         }
     }
 }

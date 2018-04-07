@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,20 +27,21 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System.IO;
-
-
 namespace Sooda.QL
 {
+    using System.IO;
+
     public class SoqlSoodaClassExpression : SoqlExpression, ISoqlSelectAliasProvider
     {
         public SoqlPathExpression Path;
 
-        public SoqlSoodaClassExpression() { }
+        public SoqlSoodaClassExpression()
+        {
+        }
 
         public SoqlSoodaClassExpression(SoqlPathExpression path)
         {
-            this.Path = path;
+            Path = path;
         }
 
         // visitor pattern
@@ -52,9 +52,9 @@ namespace Sooda.QL
 
         public void WriteDefaultSelectAlias(TextWriter output)
         {
-            if (this.Path != null)
+            if (Path != null)
             {
-                this.Path.WriteDefaultSelectAlias(output);
+                Path.WriteDefaultSelectAlias(output);
                 output.Write('_');
             }
             output.Write("SoodaClass");
@@ -64,15 +64,15 @@ namespace Sooda.QL
         {
             object val;
 
-            if (this.Path != null)
-                val = this.Path.Evaluate(context);
+            if (Path != null)
+                val = Path.Evaluate(context);
             else
                 val = context.GetRootObject();
 
             if (val == null)
                 return null;
 
-            SoodaObject so = (SoodaObject)val;
+            SoodaObject so = (SoodaObject) val;
             return so.GetClassInfo().Name;
         }
     }

@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2003-2006 Jaroslaw Kowalski <jaak@jkowalski.net>
-// Copyright (c) 2006-2014 Piotr Fusik <piotr@fusik.info>
 //
 // All rights reserved.
 //
@@ -28,12 +27,12 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.Collections;
-using System.Text;
-
 namespace Sooda.CodeGen.CDIL
 {
+    using System;
+    using System.Collections;
+    using System.Text;
+
     public class CDILContext
     {
         public static readonly CDILContext Null = new CDILContext();
@@ -81,14 +80,8 @@ namespace Sooda.CodeGen.CDIL
 
         public object this[string name]
         {
-            get
-            {
-                return _params[name];
-            }
-            set
-            {
-                _params[name] = value;
-            }
+            get { return _params[name]; }
+            set { _params[name] = value; }
         }
     }
 }
